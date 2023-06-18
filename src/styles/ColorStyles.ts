@@ -1,0 +1,78 @@
+export const themes = {
+  light: {
+    text1: "black",
+    text2: "rgba(0,0,0,0.7)",
+    primary: `#fffefa`,
+    secondary: "#fffefa",
+    cafe_fuerte: `#451c00`,
+    cafe_medio: `#7a501f`,
+    cafe_claro: `#e4d6cd`,
+    acento: `#6db575`,
+    gris: `#d9d9d9`,
+    backgroundColor: `#fffefa`,
+    backgroundForm: `#fffefa`,
+    disabled: `#d9d9d9`,
+    warning: `#ef0a0a`,
+    loadingScreen: "rgba(0,0,0,0.7)",
+    card: {
+      backgroundColor: `rgba(255, 255, 255, 0.6)`,
+      boxShadow: `0px 50px 100px rgba(250, 136, 186, 0.3),
+      inset 0 0 0 0.5px rgba(255, 255, 255, 0.6)`,
+      backgroundColorFull: `rgba(255, 255, 255, 1)`,
+    },
+    cardHover: {
+      backgroundColor: `rgba(68, 66, 178, 0.1)`,
+      boxShadow: `inset 0px 0px 0px 0.5px rgba(250, 136, 186, 0.3),`,
+    },
+    pricingCard: {
+      backgroundColor: `rgba(255, 255, 255, 0.3)`,
+    },
+    status: {
+      backgroundColor: "rgba(68, 66, 178, 0.1)",
+    },
+    modal: {
+      backgroundColor: `rgba(255, 255, 255, 0.6)`,
+      boxShadow: `0px 50px 100px rgba(250, 136, 186, 0.3),
+      inset 0 0 0 0.5px rgba(255, 255, 255, 0.6)`,
+      backgroundColorFull: `rgba(255, 255, 255, 1)`,
+    },
+  },
+  dark: {
+    text1: "black",
+    text2: "rgba(0,0,0,0.7)",
+    primary: `#fffefa`,
+    secondary: "#fffefa",
+    cafe_fuerte: `#451c00`,
+    cafe_medio: `#7a501f`,
+    cafe_claro: `#e4d6cd`,
+    acento: `#6db575`,
+    gris: `#d9d9d9`,
+    backgroundColor: `#fffefa`,
+    backgroundForm: `#fffefa`,
+    disabled: `#d9d9d9`,
+    warning: `#ef0a0a`,
+    loadingScreen: "rgba(0,0,0,0.7)",
+    card: {
+      backgroundColor: `rgba(255, 255, 255, 0.6)`,
+      boxShadow: `0px 50px 100px rgba(250, 136, 186, 0.3),
+      inset 0 0 0 0.5px rgba(255, 255, 255, 0.6)`,
+      backgroundColorFull: `rgba(255, 255, 255, 1)`,
+    },
+    cardHover: {
+      backgroundColor: `rgba(68, 66, 178, 0.1)`,
+      boxShadow: `inset 0px 0px 0px 0.5px rgba(250, 136, 186, 0.3),`,
+    },
+    pricingCard: {
+      backgroundColor: `rgba(255, 255, 255, 0.3)`,
+    },
+    status: {
+      backgroundColor: "rgba(68, 66, 178, 0.1)",
+    },
+    modal: {
+      backgroundColor: `rgba(255, 255, 255, 0.6)`,
+      boxShadow: `0px 50px 100px rgba(250, 136, 186, 0.3),
+      inset 0 0 0 0.5px rgba(255, 255, 255, 0.6)`,
+      backgroundColorFull: `rgba(255, 255, 255, 1)`,
+    },
+  },
+};

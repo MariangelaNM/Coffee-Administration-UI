@@ -1,0 +1,45 @@
+{
+    "meta": {
+        "title": "Coffee Administration",
+        "description": "Everything you need at the reach of a click"
+    },
+    "app": {
+        "title": "Coffee Administration"
+    },
+    "landing": {
+        "title": "Coffee Administration"
+    },
+    "loader" : {
+        "text": "loading..."
+    },
+    "dashboard" : {
+        "error": "Error loading data"
+    },
+    "login": {
+        "err_usr_pass": "Username and password must not be null",
+        "err_inv_lgn": "Invalid login",
+        "email_placeholder": "email",
+        "password_placeholder": "password",
+        "button_login": "Log in",
+        "login_title": "Login Panel"
+    },
+    "admin": {
+        "err_invalid_form": "Inputs must not be null",
+        "err_network": "Error, try again",
+        "suc_network": "Success",
+        "suc_network_update": "Full update",
+        "header": "Project Input",
+        "input_title": "Title",
+        "input_description": "Description",
+        "input_link": "Link",
+        "input_tags": "Tags",
+        "input_version": "Version",
+        "button_accept": "Post",
+        "button_delete": "Delete"
+    },
+    "nav": {
+        "home": "Home",
+        "dashboard": "Dashboard",
+        "admin": "Admin"
+    }
+}

@@ -1,0 +1,46 @@
+{
+    "meta": {
+        "title": "Coffee Administration",
+        "description": "Todo lo que necesitas al alcance de un click"
+    },
+    "app": {
+        "title": "Coffee Administration"
+    },
+    "landing": {
+        "title": "Coffee Administration"
+    },
+    "loader" : {
+        "text": "cargando..."
+    },
+    "dashboard" : {
+        "error": "Error en la búsqueda"
+    },
+    "login": {
+        "err_usr_pass": "Usuario o contraseña no pueden estar vacíos",
+        "err_inv_lgn": "Inicio inválido",
+        "email_placeholder": "correo",
+        "password_placeholder": "contraseña",
+        "button_login": "Entrar",
+        "login_title": "Panel de Acceso"
+    },
+    "admin": {
+        "err_invalid_form": "Elementos no pueden estar vacíos",
+        "err_network": "Error, intenta nuevamente",
+        "suc_network": "Proceso exitoso",
+        "suc_network_update": "Actualización completada",
+        "header": "Project Input",
+        "input_title": "Título",
+        "input_description": "Descripción",
+        "input_link": "Enlace",
+        "input_tags": "Tags",
+        "input_version": "Versión",
+        "button_accept": "Publicar",
+        "button_accept_update": "Actualizar",
+        "button_delete": "Eliminar"
+    },
+    "nav": {
+        "home": "Inicio",
+        "dashboard": "Dashboard",
+        "admin": "Admin"
+    }
+}
