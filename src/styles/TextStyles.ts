@@ -1,11 +1,13 @@
 import styled from "styled-components";
 
 export const H1 = styled.h1`
-  font-weight: bold;
+
   font-size: 50px;
   @media (max-width: 450px) {
-    font-size: 48px;
+    font-size: 36px;
   }
+  margin-top: 20px;
+  margin-bottom: 20px;
 `;
 
 export const H2 = styled.h2`

@@ -3,19 +3,21 @@ import { useTranslation } from "react-i18next";
 import styled from "styled-components";
 import { themes } from "../../styles/ColorStyles";
 import { H1 } from "../../styles/TextStyles";
+import { Container, Row, Col } from "react-bootstrap";
 
 const LandingPage = () => {
-  const { t } = useTranslation();
-
   return (
-    <Wrapper>
+<Wrapper></Wrapper>
+  );
+};
+/*
+const { t } = useTranslation();
+  <Wrapper>
       <ContentWrapper>
         <Title>{t("landing.title")}</Title>
       </ContentWrapper>
     </Wrapper>
-  );
-};
-
+*/
 const Wrapper = styled.div`
   overflow: hidden;
   height: 1200px;

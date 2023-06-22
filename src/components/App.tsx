@@ -10,31 +10,31 @@ import LandingPage from "./routes/LandingPage";
 import Login from "./routes/Login";
 import Dashboard from "./routes/Dashboard";
 import Admin from "./routes/Admin";
+import UserRegister from "./routes/UserRegister";
+
+
+import 'bootstrap/dist/css/bootstrap.min.css';
+import '../App.scss'
 
 function App() {
   return (
     <Router>
-      <Layout>
-        <Routes>
-          <Route path="/" element={<LandingPage />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="/admin" element={<Admin />} />
-          <Route path="*" element={<Navigate to="." replace />} />
-        </Routes>
-      </Layout>
-    </Router>
+    <Layout>
+      <Routes>
+        <Route path="/" element={< UserRegister/>} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/signup" element={<UserRegister />} />
+        <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/admin" element={<Admin />} />
+        <Route path="*" element={<Navigate to="." replace />} />
+      </Routes>
+    </Layout>
+  </Router>
   );
 }
 
+
+
 export default App;
-/*
-        <Route
-          path="admin"
-          element={
-            <PrivateRoute>
-              <Admin />
-            </PrivateRoute>
-          }
-        />
-*/
+
+ 
