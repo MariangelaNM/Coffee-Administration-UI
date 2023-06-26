@@ -1,25 +1,28 @@
-import React from "react";
-import { ChangeEvent, FormEvent, useState } from "react";
-import { Container, Form, Button } from "react-bootstrap";
-
+import React, { ChangeEvent, FormEvent, useState } from "react";
+import { Container, Form, Button, InputGroup } from "react-bootstrap";
 import styled from "styled-components";
 import { themes } from "../../styles/ColorStyles";
 import { H1 } from "../../styles/TextStyles";
+import "bootstrap/dist/css/bootstrap.min.css";
+import { FiEye, FiEyeOff } from "react-icons/fi";
 
 const UserRegister = () => {
   const [errorMsg, setErrorMsg] = useState("");
- 
+
   const [username, setUsername] = useState("");
- 
+
   const [mail, setMail] = useState("");
- 
+
   const [password, setPassword] = useState("");
   const [passwordValidate, setPasswordValidate] = useState(false);
- 
+
   const [confirmPass, setConfirmPass] = useState("");
   const [confirmPassValidate, setConfirmPassValidate] = useState(false);
- 
+
   const [validated, setValidated] = useState(false);
+
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPass, setShowConfirmPass] = useState(false);
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     const form = e.currentTarget;
@@ -46,11 +49,12 @@ const UserRegister = () => {
 
   function onChangePassword(e: ChangeEvent<HTMLInputElement>) {
     setPassword(e.target.value);
+    const value = e.target.value;
     if (
-      e.target.value.length > 8 &&
-      e.target.value.search(/[a-z]/) > 0 &&
-      e.target.value.search(/[A-Z]/) > 0 &&
-      e.target.value.search(/[0-9]/) > 0
+      value.length >= 8 &&
+      /[a-z]/.test(value) &&
+      /[A-Z]/.test(value) &&
+      /[0-9]/.test(value)
     ) {
       setPasswordValidate(false);
     } else {
@@ -60,23 +64,40 @@ const UserRegister = () => {
     onChangeAnyInput();
   }
 
-  function onChangeConfirmPassword(e: ChangeEvent<HTMLInputElement>) {
+  function onChangeConfirmPassword(e: ChangeEvent<HTMLInputElement>): void {
     setConfirmPass(e.target.value);
-    if (password == "") {
+    const value = e.target.value;
+    if (password === "") {
       setConfirmPassValidate(false);
     } else {
-      if (confirmPass == password) {
-        setConfirmPassValidate(true);
+      if (value === password) {
+        setConfirmPassValidate(false); // Las contraseñas coinciden
       } else {
-        setConfirmPassValidate(false);
+        setConfirmPassValidate(true); // Las contraseñas no coinciden
       }
     }
     onChangeAnyInput();
   }
 
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
+
+  const toggleConfirmPassVisibility = () => {
+    setShowConfirmPass(!showConfirmPass);
+  };
+
+  function displayErrorMessage() {
+    if (errorMsg) {
+      return <div>Error: {errorMsg}</div>;
+    }
+    return null;
+  }
+
   return (
     <Container className="col-lg-6 col-xxl-4 my-5 mx-auto">
       <Title>{"Crea una nueva cuenta"}</Title>
+      {displayErrorMessage()} {/* Mostrar mensaje de error */}
       <Form noValidate validated={validated} onSubmit={handleSubmit}>
         <Form.Group className="mb-3 sm-1" controlId="formName">
           <Form.Label>Nombre</Form.Label>
@@ -96,7 +117,7 @@ const UserRegister = () => {
           <Form.Label>Correo</Form.Label>
           <Form.Control
             type="email"
-            placeholder="Correo"
+            placeholder="correo@domain.com"
             value={mail}
             onChange={onChangeMail}
             required
@@ -108,32 +129,52 @@ const UserRegister = () => {
 
         <Form.Group className="mb-3" controlId="formBasicPassword">
           <Form.Label>Contraseña</Form.Label>
-          <Form.Control
-            type="text"
-            placeholder="Contraseña"
-            value={password}
-            onChange={onChangePassword}
-            // isInvalid={true}
-            required
-          />
-          <Form.Control.Feedback type="invalid">
-            La contraseña debe contener 8 caracteres, 1 mayuscula, 1 número{" "}
-          </Form.Control.Feedback>
+          <InputGroup>
+            <Form.Control
+              type={showPassword ? "text" : "password"}
+              placeholder="Contraseña"
+              value={password}
+              onChange={onChangePassword}
+              required
+              isInvalid={passwordValidate}
+            />
+            <InputGroup.Text onClick={togglePasswordVisibility}>
+              {showPassword ? <FiEyeOff /> : <FiEye />}
+            </InputGroup.Text>
+          </InputGroup>
+          {passwordValidate && (
+            <Form.Text className="text-danger">
+              La contraseña debe contener al menos 8 caracteres, 1 mayúscula y 1
+              número
+            </Form.Text>
+          )}
         </Form.Group>
 
         <Form.Group className="mb-3" controlId="formBasicPassword">
           <Form.Label>Confirma tu contraseña</Form.Label>
-          <Form.Control
-            type="text"
-            placeholder="Confirma tu contraseña"
-            value={confirmPass}
-            onChange={onChangeConfirmPassword}
-            // isInvalid={true}
-            required
-          />
-          <Form.Control.Feedback type="invalid">
-            El campo no coincide con la contraseña{" "}
-          </Form.Control.Feedback>
+          <InputGroup>
+            <Form.Control
+              type={showConfirmPass ? "text" : "password"}
+              placeholder="Contraseña"
+              value={confirmPass}
+              onChange={onChangeConfirmPassword}
+              required
+              isInvalid={confirmPassValidate}
+            />
+            <InputGroup.Text onClick={toggleConfirmPassVisibility}>
+              {showConfirmPass ? <FiEyeOff /> : <FiEye />}
+            </InputGroup.Text>
+          </InputGroup>
+          {confirmPassValidate && (
+            <Form.Text className="text-danger">
+              Las contraseñas no coinciden
+            </Form.Text>
+          )}
+          {!confirmPass && (
+            <Form.Text className="text-danger">
+              Este campo es obligatorio
+            </Form.Text>
+          )}
         </Form.Group>
 
         <div className="d-grid gap-2">
@@ -141,7 +182,9 @@ const UserRegister = () => {
             Registrar
           </Button>
 
-          <Button variant="primary" className="custombtn-secondary">Cancelar</Button>
+          <Button variant="primary" className="custombtn-secondary">
+            Cancelar
+          </Button>
         </div>
       </Form>
     </Container>
