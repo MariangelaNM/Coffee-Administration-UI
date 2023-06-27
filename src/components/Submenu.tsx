@@ -23,9 +23,6 @@ const SidebarLink = styled(Link)`
     }
 `;
 
-const SidebarLabel = styled.span`
-    margin-left: 1rem;
-`;
 
 const DropdownLink = styled(Link)`
     display: flex;
@@ -51,7 +48,7 @@ const Submenu: FC<SidebarLinkProps> = ({ item }) => {
             <SidebarLink to={item.path} onClick={showSubnav}>
                 <div>
                     {item.icon}
-                    <SidebarLabel>{item.title}</SidebarLabel>
+                    <div className='sideBarLetter'>{item.title}</div>
                 </div>
                 <div>{item?.subnav && subnav ? item?.iconOpened : item?.iconClosed}</div>
             </SidebarLink>
@@ -60,7 +57,7 @@ const Submenu: FC<SidebarLinkProps> = ({ item }) => {
                     return (
                         <DropdownLink to={subnavItem.path} key={index}>
                             {subnavItem.icon}
-                            <SidebarLabel>{subnavItem.title}</SidebarLabel>
+                            <div className='sideBarLetter'>{subnavItem.title}</div>
                         </DropdownLink>
                     );
                 })}

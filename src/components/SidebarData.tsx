@@ -1,8 +1,4 @@
-import {
-    AiOutlineHistory,
-    AiOutlineHome,
-} from 'react-icons/ai';
-import { FaCog} from 'react-icons/fa';
+
 import { SidebarItem } from '../models/SidebarItem';
 
 export const SidebarData: SidebarItem[] = [
@@ -28,26 +24,26 @@ export const SidebarData: SidebarItem[] = [
     {
         title: 'Inicio',
         path: '/Inicio',
-        icon: <AiOutlineHome />,
+        icon: null,
     },
     {
         title: 'Mis Fincas',
         path: '/Mis Fincas',
-        icon: <AiOutlineHistory />
+        icon: null
     },
     {
         title: 'Mis Recolectores',
         path: '/Mis Recolectores',
-        icon: <FaCog />
+        icon: null
     },
     {
-        title: 'Resumen Recolectores',
+        title: 'Resumen de Recolector',
         path: '/Resumen Recolectores',
-        icon: <FaCog />
+        icon: null
     },
     {
         title: 'Resumen Fincas',
         path: '/Resumen Fincas',
-        icon: <FaCog />
+        icon:null
     }
 ];
