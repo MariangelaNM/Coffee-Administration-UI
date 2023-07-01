@@ -18,8 +18,7 @@ const SidebarLink = styled(Link)`
     color: #ffffff;
 
     &:hover {
-        background-color: #1f1f1b;
-        border-left: 4px solid #6d44dc;
+        background-color: #808080;
     }
 `;
 

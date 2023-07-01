@@ -38,6 +38,7 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smothing: grayscale;
   font-display: swap;
+  margin: 0px !important;
 }
 ol, ul {
 	list-style: none;
@@ -75,4 +76,14 @@ a {
     transition: background-color 5000s ease-in-out 0s;
   }
 
+}
+.Nav{
+display: flex;
+justify-content: flex-start;
+align-items: center;
+height: 5rem;
+background-color: #FFFEFA;}
+
+.icon{
+  
 }
