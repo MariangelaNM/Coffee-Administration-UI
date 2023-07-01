@@ -1,13 +1,8 @@
-import React from "react";
-import Layout from "../layout/layout";
-import {
-  BrowserRouter as Router,
-  Navigate,
-  Route,
-  Routes,
-} from "react-router-dom";
+import { FC } from 'react';
+import  Login from './routes/Login'
+import Sidebar from './Sidebar';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import LandingPage from "./routes/LandingPage";
-import Login from "./routes/Login";
 import Dashboard from "./routes/Dashboard";
 import Admin from "./routes/Admin";
 import UserRegister from "./routes/UserRegister";
@@ -15,26 +10,24 @@ import UserRegister from "./routes/UserRegister";
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../App.scss'
-
-function App() {
-  return (
-    <Router>
-    <Layout>
-      <Routes>
-        <Route path="/" element={< UserRegister/>} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/signup" element={<UserRegister />} />
-        <Route path="/dashboard" element={<Dashboard />} />
-        <Route path="/admin" element={<Admin />} />
-        <Route path="*" element={<Navigate to="." replace />} />
-      </Routes>
-    </Layout>
-  </Router>
-  );
-}
-
-
+const App: FC = () => {
+    return (
+        <Router>
+            <Sidebar />
+            <Switch>
+                <Route path="/Inicio"  ></Route>
+                <Route path="/login"  ><Login /> </Route>
+                <Route path="/signup"> <UserRegister /> </Route>  
+                <Route path="/Mis Fincas" ></Route>
+                <Route path="/Mis Recolectores" ></Route>
+                <Route path="/Resumen Recolectores" ></Route>
+                <Route path="/Resumen Fincas" ></Route>
+            </Switch>
+        </Router>
+    );
+};
 
 export default App;
+
 
  
