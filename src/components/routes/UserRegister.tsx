@@ -93,12 +93,42 @@ const UserRegister = () => {
     }
     return null;
   }
+  
+    const postData = async () => {
+      debugger;
+      try {
+        const myHeaders = new Headers();
+        myHeaders.append("Content-Type", "application/json");
 
+        const raw = JSON.stringify({
+          "Correo": mail,
+          "Contrasena": password,
+          "Nombres": username,
+          "Apellidos": "string",
+          "Role": 1
+        });
+
+        const response = await fetch("http://localhost:3000/users",{
+          method: 'POST',
+          headers: myHeaders,
+          body: raw
+        });
+        const result = await response.text();
+        console.log(result);
+      } catch (error) {
+        console.error('Error:', error);
+      }
+    };
+
+
+  function create(){
+    postData();
+  };
   return (
     <Container className="col-lg-6 col-xxl-4 my-5 mx-auto">
       <Title>{"Crea una nueva cuenta"}</Title>
       {displayErrorMessage()} {/* Mostrar mensaje de error */}
-      <Form noValidate validated={validated} onSubmit={handleSubmit}>
+      <Form noValidate validated={validated} >
         <Form.Group className="mb-3 sm-1" controlId="formName">
           <Form.Label>Nombre</Form.Label>
           <Form.Control
@@ -178,7 +208,7 @@ const UserRegister = () => {
         </Form.Group>
 
         <div className="d-grid gap-2">
-          <Button variant="primary" className="custombtn-primary" type="submit">
+          <Button variant="primary" className="custombtn-primary" onClick={()=>create()}>
             Registrar
           </Button>
 
