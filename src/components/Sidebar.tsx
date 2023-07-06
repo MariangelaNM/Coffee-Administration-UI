@@ -6,7 +6,9 @@ import { AiOutlineMenu, AiOutlineClose } from "react-icons/ai";
 import { SidebarData } from "./SidebarData";
 import Submenu from "./Submenu";
 import "../main.css";
+import logoCompleto_blanco from '../assets/logoCompleto_blanco.png';
 
+import logoCompleto from '../assets/logoCompleto.png';
 const SidebarNav = styled.div<{ sidebar: boolean }>`
   width: 250px;
   height: 100vh;
@@ -40,11 +42,13 @@ const Sidebar: FC = () => {
 
   return (
     <IconContext.Provider value={{ color: "#6DB575" }}>
-      <div className="Nav">
-        <NavIcon to="#" onClick={showSidebar}>
+      <div className="Nav" style={{width:"100%"}}>
+        <NavIcon to="#" onClick={showSidebar} style={{width:"100%"}}>
           <AiOutlineMenu />
+          <img src={logoCompleto} alt="Example" className="icon-navbar" />
         </NavIcon>
       </div>
+
       <SidebarNav sidebar={sidebar}>
         <NavIconClose to="#" onClick={showSidebar}>
           <AiOutlineClose />
@@ -54,6 +58,8 @@ const Sidebar: FC = () => {
           return <Submenu item={item} key={index} />;
         })}
       </SidebarNav>
+      <img src={logoCompleto_blanco} alt="Example" className="icon-sidebar" />
+      
     </IconContext.Provider>
   );
 };

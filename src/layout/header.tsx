@@ -28,7 +28,7 @@ export const menuData = [
 const Header = () => {
   return (
     <Container>
-      <Navbar expand="lg">
+      <Navbar >
         <Container>
           <Navbar.Brand href="#">Coffee Administration</Navbar.Brand>
         </Container>
