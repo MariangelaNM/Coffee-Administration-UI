@@ -84,6 +84,27 @@ align-items: center;
 height: 5rem;
 background-color: #FFFEFA;}
 
-.icon{
-  
+.icon-sidebar{
+  width: 80px;
+height: auto;
+margin-left: 35%;
+margin-top: 10%;
+}
+
+
+
+@media (max-width: 450px) {
+  .icon-navbar {
+    width: 60px;
+    height: auto;
+    margin-left: 35%;
+  }
+}
+
+@media (min-width: 451px) {
+  .icon-navbar {
+    width: 60px;
+    height: auto;
+    margin-left: 45%;
+  }
 }
