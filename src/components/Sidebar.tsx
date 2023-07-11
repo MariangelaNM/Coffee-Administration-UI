@@ -1,4 +1,4 @@
-import { FC, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import { IconContext } from "react-icons";
@@ -7,8 +7,8 @@ import { SidebarData } from "./SidebarData";
 import Submenu from "./Submenu";
 import "../main.css";
 import logoCompleto_blanco from '../assets/logoCompleto_blanco.png';
-import { useLocation } from 'react-router-dom';
 import logoCompleto from '../assets/logoCompleto.png';
+
 const SidebarNav = styled.div<{ sidebar: boolean }>`
   width: 250px;
   height: 100vh;
@@ -36,31 +36,37 @@ const NavIconClose = styled(Link)`
   margin: 10px;
 `;
 
+
+
+
 const Sidebar: FC = () => {
   const [sidebar, setSidebar] = useState(false);
   const showSidebar = () => setSidebar(!sidebar);
+  const path = window.location.pathname;
+
+
 
   return (
     <IconContext.Provider value={{ color: "#6DB575" }}>
-      <div className="Nav" style={{width:"100%"}}>
-        <NavIcon to="#" onClick={showSidebar} style={{width:"100%"}}>
-          <AiOutlineMenu />
-          <img src={logoCompleto}  className="icon-navbar" />
+      <div className="Nav" style={{ width: "100%" }}>
+        <NavIcon to="#" onClick={showSidebar} style={{ width: "100%" }}>
+          {path != '/signup' && path != '/login' && <AiOutlineMenu />}
+          <img src={logoCompleto} className="icon-navbar" />
         </NavIcon>
       </div>
+      {path != '/signup' && path != '/login' &&
+        <SidebarNav sidebar={sidebar}>
+          <img src={logoCompleto_blanco} className="icon-sidebar" />
 
-      <SidebarNav sidebar={sidebar}>
-      <img src={logoCompleto_blanco}  className="icon-sidebar" />
-    
-        <NavIconClose to="#" onClick={showSidebar}>
-          <AiOutlineClose />
-        </NavIconClose>
+          <NavIconClose to="#" onClick={showSidebar}>
+            <AiOutlineClose />
+          </NavIconClose>
 
-        {SidebarData.map((item, index) => {
-          return <Submenu item={item} key={index} />;
-        })}
-      </SidebarNav>
-      
+          {SidebarData.map((item, index) => {
+            return <Submenu item={item} key={index} />;
+          })}
+        </SidebarNav>}
+
     </IconContext.Provider>
   );
 };
