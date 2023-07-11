@@ -7,7 +7,7 @@ import { SidebarData } from "./SidebarData";
 import Submenu from "./Submenu";
 import "../main.css";
 import logoCompleto_blanco from '../assets/logoCompleto_blanco.png';
-
+import { useLocation } from 'react-router-dom';
 import logoCompleto from '../assets/logoCompleto.png';
 const SidebarNav = styled.div<{ sidebar: boolean }>`
   width: 250px;
@@ -45,11 +45,13 @@ const Sidebar: FC = () => {
       <div className="Nav" style={{width:"100%"}}>
         <NavIcon to="#" onClick={showSidebar} style={{width:"100%"}}>
           <AiOutlineMenu />
-          <img src={logoCompleto} alt="Example" className="icon-navbar" />
+          <img src={logoCompleto}  className="icon-navbar" />
         </NavIcon>
       </div>
 
       <SidebarNav sidebar={sidebar}>
+      <img src={logoCompleto_blanco}  className="icon-sidebar" />
+    
         <NavIconClose to="#" onClick={showSidebar}>
           <AiOutlineClose />
         </NavIconClose>
@@ -58,7 +60,6 @@ const Sidebar: FC = () => {
           return <Submenu item={item} key={index} />;
         })}
       </SidebarNav>
-      <img src={logoCompleto_blanco} alt="Example" className="icon-sidebar" />
       
     </IconContext.Provider>
   );
