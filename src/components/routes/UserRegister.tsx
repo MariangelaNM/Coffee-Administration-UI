@@ -11,6 +11,8 @@ const UserRegister = () => {
 
   const [username, setUsername] = useState("");
 
+  const [lastName, setlastName] = useState("");
+
   const [mail, setMail] = useState("");
 
   const [password, setPassword] = useState("");
@@ -41,6 +43,12 @@ const UserRegister = () => {
     setUsername(e.target.value);
     onChangeAnyInput();
   }
+
+  function onChangeLastName(e: ChangeEvent<HTMLInputElement>) {
+    setlastName(e.target.value);
+    onChangeAnyInput();
+  }
+
 
   function onChangeMail(e: ChangeEvent<HTMLInputElement>) {
     setMail(e.target.value);
@@ -104,7 +112,7 @@ const UserRegister = () => {
           "Correo": mail,
           "Contrasena": password,
           "Nombres": username,
-          "Apellidos": "string",
+          "Apellidos": lastName,
           "Role": 1
         });
 
@@ -136,6 +144,20 @@ const UserRegister = () => {
             placeholder="Nombre"
             value={username}
             onChange={onChangeUsername}
+            required
+          />
+          <Form.Control.Feedback type="invalid">
+            El campo no puede estar vacio{" "}
+          </Form.Control.Feedback>
+        </Form.Group>
+
+        <Form.Group className="mb-3 sm-1" controlId="formLastName">
+          <Form.Label>Apellidos</Form.Label>
+          <Form.Control
+            type="text"
+            placeholder="Apellidos"
+            value={lastName}
+            onChange={onChangeLastName}
             required
           />
           <Form.Control.Feedback type="invalid">
