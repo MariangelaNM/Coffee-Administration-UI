@@ -1,91 +1,86 @@
-import React, { ChangeEvent, FormEvent, useState } from "react";
+import React, {
+  ChangeEvent,
+  FormEvent,
+  useState,
+  useEffect,
+  useMemo,
+} from "react";
 import { Container, Form, Button, InputGroup } from "react-bootstrap";
 import styled from "styled-components";
 import { themes } from "../../styles/ColorStyles";
 import { H1 } from "../../styles/TextStyles";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { FiEye, FiEyeOff } from "react-icons/fi";
+import createApiClient from "../../api/api-client-factory";
+import { Register } from "../../models/Register";
+import { useCreateUser } from "../../hooks/useCreateUser";
+//import { useNavigate} from 'react-router';
 
 const UserRegister = () => {
+  const emptyRegisterInput: Partial<Register> = {
+    username: "",
+    lastName: "",
+    mail: "",
+    password: "",
+    confirmPass: "",
+  };
+  const [registerInput, setRegisterInput] =
+    useState<Partial<Register>>(emptyRegisterInput);
+  
+  //const navigate = useNavigate();
+
   const [errorMsg, setErrorMsg] = useState("");
-
-  const [username, setUsername] = useState("");
-
-  const [lastName, setlastName] = useState("");
-
-  const [mail, setMail] = useState("");
-
-  const [password, setPassword] = useState("");
   const [passwordValidate, setPasswordValidate] = useState(false);
-
-  const [confirmPass, setConfirmPass] = useState("");
   const [confirmPassValidate, setConfirmPassValidate] = useState(false);
-
-  const [validated, setValidated] = useState(false);
 
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPass, setShowConfirmPass] = useState(false);
 
-  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
-    const form = e.currentTarget;
-    if (form.checkValidity() === false) {
-      e.preventDefault();
-      e.stopPropagation();
-    }
+  const apiClient = useMemo(() => createApiClient(), []);
+  const { create, status, error } = useCreateUser(apiClient.postUser);
 
-    setValidated(true);
-  };
-
-  function onChangeAnyInput() {
-    setErrorMsg("");
-  }
-  function onChangeUsername(e: ChangeEvent<HTMLInputElement>) {
-    setUsername(e.target.value);
-    onChangeAnyInput();
-  }
-
-  function onChangeLastName(e: ChangeEvent<HTMLInputElement>) {
-    setlastName(e.target.value);
-    onChangeAnyInput();
-  }
-
-
-  function onChangeMail(e: ChangeEvent<HTMLInputElement>) {
-    setMail(e.target.value);
-    onChangeAnyInput();
-  }
-
-  function onChangePassword(e: ChangeEvent<HTMLInputElement>) {
-    setPassword(e.target.value);
-    const value = e.target.value;
-    if (
-      value.length >= 8 &&
-      /[a-z]/.test(value) &&
-      /[A-Z]/.test(value) &&
-      /[0-9]/.test(value)
-    ) {
-      setPasswordValidate(false);
+  useEffect(() => {
+    if (status === "success") {
+      console.log("Creacion exitosa");
+      //navigate('/dashboard');
     } else {
-      setPasswordValidate(true);
+      console.log("Creacion NO exitosa");
     }
+    return () => {};
+  }, [status]);
 
-    onChangeAnyInput();
+  function onChange(
+    e: ChangeEvent<HTMLInputElement>,
+    attribute: keyof Register
+  ) {
+    setRegisterInput({ ...registerInput, [attribute]: e.target.value });
+    if (attribute == "password") {
+      const safePass =
+        (e.target.value as string).length >= 8 &&
+        /[a-z]/.test(e.target.value as string) &&
+        /[A-Z]/.test(e.target.value as string) &&
+        /[0-9]/.test(e.target.value as string);
+      console.log("cambiaste pass = " + safePass);
+      setPasswordValidate(safePass);
+    }
+    if (attribute == "confirmPass") {
+      const samePass = e.target.value == registerInput.password;
+      console.log("same pass = " + samePass);
+        setConfirmPassValidate(samePass);
+    }
+  }
+  function onReset() {
+    setRegisterInput(emptyRegisterInput);
   }
 
-  function onChangeConfirmPassword(e: ChangeEvent<HTMLInputElement>): void {
-    setConfirmPass(e.target.value);
-    const value = e.target.value;
-    if (password === "") {
-      setConfirmPassValidate(false);
-    } else {
-      if (value === password) {
-        setConfirmPassValidate(false); // Las contraseñas coinciden
-      } else {
-        setConfirmPassValidate(true); // Las contraseñas no coinciden
-      }
-    }
-    onChangeAnyInput();
-  }
+  const readyToSubmit =
+    registerInput.username !== "" &&
+    registerInput.lastName !== "" &&
+    registerInput.mail !== "" &&
+    registerInput.password !== "" &&
+    registerInput.confirmPass !== "" &&
+    passwordValidate &&
+    confirmPassValidate;
 
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
@@ -101,49 +96,56 @@ const UserRegister = () => {
     }
     return null;
   }
-  
-    const postData = async () => {
-      debugger;
-      try {
-        const myHeaders = new Headers();
-        myHeaders.append("Content-Type", "application/json");
 
-        const raw = JSON.stringify({
-          "Correo": mail,
-          "Contrasena": password,
-          "Nombres": username,
-          "Apellidos": lastName,
-          "Role": 1
-        });
+  const postData = async () => {
+    // debugger;
+    try {
+      const myHeaders = new Headers();
+      myHeaders.append("Content-Type", "application/json");
 
-        const response = await fetch("http://localhost:3000/users",{
-          method: 'POST',
-          headers: myHeaders,
-          body: raw
-        });
-        const result = await response.text();
-        console.log(result);
-      } catch (error) {
-        console.error('Error:', error);
-      }
-    };
+      const raw = JSON.stringify({
+        Correo: registerInput.mail,
+        Contrasena: registerInput.password,
+        Nombres: registerInput.username,
+        Apellidos: registerInput.lastName,
+        Role: 1,
+      });
 
-
-  function create(){
-    postData();
+      const response = await fetch("http://localhost:3000/users", {
+        method: "POST",
+        headers: myHeaders,
+        body: raw,
+      });
+      const result = await response.text();
+      console.log(result);
+    } catch (error) {
+      console.error("Error:", error);
+    }
   };
+
+  function postUser() {
+    if (readyToSubmit) {
+      console.log("TODO OK");
+      postData();
+    }
+    console.log("ERROR");
+  }
+
+
+
   return (
     <Container className="col-lg-6 col-xxl-4 my-5 mx-auto">
       <Title>{"Crea una nueva cuenta"}</Title>
       {displayErrorMessage()} {/* Mostrar mensaje de error */}
-      <Form noValidate validated={validated} >
+      <Form noValidate validated={readyToSubmit}>
         <Form.Group className="mb-3 sm-1" controlId="formName">
-          <Form.Label>Nombre</Form.Label>
+          <Form.Label className="labelForm">Nombre</Form.Label>
           <Form.Control
+            className="inputForm"
             type="text"
             placeholder="Nombre"
-            value={username}
-            onChange={onChangeUsername}
+            value={registerInput.username}
+            onChange={(e) => onChange(e, "username")}
             required
           />
           <Form.Control.Feedback type="invalid">
@@ -152,12 +154,13 @@ const UserRegister = () => {
         </Form.Group>
 
         <Form.Group className="mb-3 sm-1" controlId="formLastName">
-          <Form.Label>Apellidos</Form.Label>
+          <Form.Label className="labelForm">Apellidos</Form.Label>
           <Form.Control
+            className="inputForm"
             type="text"
             placeholder="Apellidos"
-            value={lastName}
-            onChange={onChangeLastName}
+            value={registerInput.lastName}
+            onChange={(e) => onChange(e, "lastName")}
             required
           />
           <Form.Control.Feedback type="invalid">
@@ -166,12 +169,13 @@ const UserRegister = () => {
         </Form.Group>
 
         <Form.Group className="mb-3" controlId="formEmail">
-          <Form.Label>Correo</Form.Label>
+          <Form.Label className="labelForm">Correo</Form.Label>
           <Form.Control
+            className="inputForm"
             type="email"
             placeholder="correo@domain.com"
-            value={mail}
-            onChange={onChangeMail}
+            value={registerInput.mail}
+            onChange={(e) => onChange(e, "mail")}
             required
           />
           <Form.Control.Feedback type="invalid">
@@ -180,57 +184,63 @@ const UserRegister = () => {
         </Form.Group>
 
         <Form.Group className="mb-3" controlId="formBasicPassword">
-          <Form.Label>Contraseña</Form.Label>
+          <Form.Label className="labelForm">Contraseña</Form.Label>
           <InputGroup>
             <Form.Control
+              className="inputForm"
               type={showPassword ? "text" : "password"}
               placeholder="Contraseña"
-              value={password}
-              onChange={onChangePassword}
+              value={registerInput.password}
+              onChange={(e) => onChange(e, "password")}
               required
-              isInvalid={passwordValidate}
+              isInvalid={!passwordValidate && registerInput.password != ""}
             />
-            <InputGroup.Text onClick={togglePasswordVisibility}>
+            <InputGroup.Text
+              className="inputGroupico"
+              onClick={togglePasswordVisibility}
+            >
               {showPassword ? <FiEyeOff /> : <FiEye />}
             </InputGroup.Text>
-          </InputGroup>
-          {passwordValidate && (
-            <Form.Text className="text-danger">
+            <Form.Control.Feedback type="invalid">
               La contraseña debe contener al menos 8 caracteres, 1 mayúscula y 1
               número
-            </Form.Text>
-          )}
+            </Form.Control.Feedback>
+          </InputGroup>
         </Form.Group>
 
         <Form.Group className="mb-3" controlId="formBasicPassword">
-          <Form.Label>Confirma tu contraseña</Form.Label>
+          <Form.Label className="labelForm">Confirma tu contraseña</Form.Label>
           <InputGroup>
             <Form.Control
+              className="inputForm"
               type={showConfirmPass ? "text" : "password"}
               placeholder="Contraseña"
-              value={confirmPass}
-              onChange={onChangeConfirmPassword}
+              value={registerInput.confirmPass}
+              onChange={(e) => onChange(e, "confirmPass")}
               required
-              isInvalid={confirmPassValidate}
+              isInvalid={
+                !confirmPassValidate && registerInput.confirmPass != ""
+              }
             />
-            <InputGroup.Text onClick={toggleConfirmPassVisibility}>
+            <InputGroup.Text
+              className="inputGroupico"
+              onClick={toggleConfirmPassVisibility}
+            >
               {showConfirmPass ? <FiEyeOff /> : <FiEye />}
             </InputGroup.Text>
-          </InputGroup>
-          {confirmPassValidate && (
-            <Form.Text className="text-danger">
+            <Form.Control.Feedback type="invalid">
               Las contraseñas no coinciden
-            </Form.Text>
-          )}
-          {!confirmPass && (
-            <Form.Text className="text-danger">
-              Este campo es obligatorio
-            </Form.Text>
-          )}
+            </Form.Control.Feedback>
+          </InputGroup>
         </Form.Group>
 
         <div className="d-grid gap-2">
-          <Button variant="primary" className="custombtn-primary" onClick={()=>create()}>
+          <Button
+            variant="primary"
+            className="custombtn-primary"
+            onClick={() => postUser()}
+            disabled={status === "loading"||!readyToSubmit}
+          >
             Registrar
           </Button>
 

@@ -1,10 +1,11 @@
 import React from "react";
 import { ChangeEvent, FormEvent, useState } from "react";
 
-import { Container, Form, Button } from "react-bootstrap";
+import { Container, Form, Button, InputGroup } from "react-bootstrap";
 import styled from "styled-components";
 import { themes } from "../../styles/ColorStyles";
 import { H1 } from "../../styles/TextStyles";
+import { FiEye, FiEyeOff } from "react-icons/fi";
 
 const Login = () => {
   const [errorMsg, setErrorMsg] = useState("");
@@ -12,6 +13,11 @@ const Login = () => {
   const [password, setPassword] = useState("");
 
   const [validated, setValidated] = useState(false);
+
+  const [showPassword, setShowPassword] = useState(false);
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     const form = e.currentTarget;
@@ -42,8 +48,9 @@ const Login = () => {
       <Title>{"Ingresar"}</Title>
       <Form noValidate validated={validated} onSubmit={handleSubmit}>
         <Form.Group className="mb-3" controlId="formEmail">
-          <Form.Label>Correo</Form.Label>
+          <Form.Label className="labelForm">Correo</Form.Label>
           <Form.Control
+            className="inputForm"
             type="email"
             placeholder="Correo"
             value={mail}
@@ -56,22 +63,36 @@ const Login = () => {
         </Form.Group>
 
         <Form.Group className="mb-3" controlId="formBasicPassword">
-          <Form.Label>Contraseña</Form.Label>
-          <Form.Control
-            type="text"
-            placeholder="Contraseña"
-            value={password}
-            onChange={onChangePassword}
-            isInvalid={true}
-            required
-          />
+          <Form.Label className="labelForm">Contraseña</Form.Label>
+          <InputGroup>
+            <Form.Control
+              className="inputForm"
+              type={showPassword ? "text" : "password"}
+              placeholder="Contraseña"
+              value={password}
+              onChange={onChangePassword}
+              required
+            />
+            <InputGroup.Text
+              className="inputGroupico"
+              onClick={togglePasswordVisibility}
+            >
+              {showPassword ? <FiEyeOff /> : <FiEye />}
+            </InputGroup.Text>
+          </InputGroup>
         </Form.Group>
 
         <div className="d-grid gap-2">
-          <Button variant="primary" type="submit">
-            Registrar
+          <Button
+            variant="primary"
+            className="custombtn-primary"
+            onClick={() => {
+              console.log("Login");
+            }}
+          >
+            Iniciar sesión
           </Button>
-          <Button variant="btn-outline-secondary" type="submit">
+          <Button variant="primary" className="custombtn-secondary">
             Cancelar
           </Button>
         </div>
