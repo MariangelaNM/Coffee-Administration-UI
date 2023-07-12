@@ -28,11 +28,10 @@ export class UnprocessableEntity implements ApiError {
 export class PreconditionFailed implements ApiError {}
 export class PreconditionRequired implements ApiError {}
 
-
 export interface UserResponse  {
   user: User;
 }
 
 export default interface ApiClient {
-  postUser(register:Register): Promise<UserResponse>;
+  postUser(user:User): Promise<UserResponse>;
 }

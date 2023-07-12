@@ -1,15 +1,9 @@
-import React, {
-  ChangeEvent,
-  FormEvent,
-  useState,
-  useEffect,
-  useMemo,
-} from "react";
-import { Container, Form, Button, InputGroup } from "react-bootstrap";
+import { ChangeEvent, useState, useEffect, useMemo } from "react";
+import { Container, Form, Button, InputGroup, Alert } from "react-bootstrap";
 import styled from "styled-components";
 import { themes } from "../../styles/ColorStyles";
 import { H1 } from "../../styles/TextStyles";
-import "bootstrap/dist/css/bootstrap.min.css";
+
 import { FiEye, FiEyeOff } from "react-icons/fi";
 import createApiClient from "../../api/api-client-factory";
 import { Register } from "../../models/Register";
@@ -26,10 +20,9 @@ const UserRegister = () => {
   };
   const [registerInput, setRegisterInput] =
     useState<Partial<Register>>(emptyRegisterInput);
-  
+
   //const navigate = useNavigate();
 
-  const [errorMsg, setErrorMsg] = useState("");
   const [passwordValidate, setPasswordValidate] = useState(false);
   const [confirmPassValidate, setConfirmPassValidate] = useState(false);
 
@@ -42,12 +35,15 @@ const UserRegister = () => {
   useEffect(() => {
     if (status === "success") {
       console.log("Creacion exitosa");
+      onReset();
+      //TODO navega a la pantalla de para hacer loging o se hace loging automatico para ir a pantalla principal
       //navigate('/dashboard');
     } else {
-      console.log("Creacion NO exitosa");
+      //console.log(error);
     }
     return () => {};
   }, [status]);
+  //TODO   }, [status,navigate]);
 
   function onChange(
     e: ChangeEvent<HTMLInputElement>,
@@ -62,13 +58,18 @@ const UserRegister = () => {
         /[0-9]/.test(e.target.value as string);
       console.log("cambiaste pass = " + safePass);
       setPasswordValidate(safePass);
+      if (registerInput.confirmPass != "") {
+        const samePass = e.target.value == registerInput.password;
+        setConfirmPassValidate(samePass);
+      }
     }
     if (attribute == "confirmPass") {
       const samePass = e.target.value == registerInput.password;
       console.log("same pass = " + samePass);
-        setConfirmPassValidate(samePass);
+      setConfirmPassValidate(samePass);
     }
   }
+
   function onReset() {
     setRegisterInput(emptyRegisterInput);
   }
@@ -91,52 +92,45 @@ const UserRegister = () => {
   };
 
   function displayErrorMessage() {
-    if (errorMsg) {
-      return <div>Error: {errorMsg}</div>;
+    if (error) {
+      return (
+        <Alert key={"danger"} variant={"danger"}>
+          {error.message}
+        </Alert>
+      );
     }
     return null;
   }
-
-  const postData = async () => {
-    // debugger;
-    try {
-      const myHeaders = new Headers();
-      myHeaders.append("Content-Type", "application/json");
-
-      const raw = JSON.stringify({
-        Correo: registerInput.mail,
-        Contrasena: registerInput.password,
-        Nombres: registerInput.username,
-        Apellidos: registerInput.lastName,
-        Role: 1,
-      });
-
-      const response = await fetch("http://localhost:3000/users", {
-        method: "POST",
-        headers: myHeaders,
-        body: raw,
-      });
-      const result = await response.text();
-      console.log(result);
-    } catch (error) {
-      console.error("Error:", error);
+  function displaySuccessMessage() {
+    if (status === "success") {
+      return (
+        <Alert key={"success"} variant={"success"}>
+          {"Cuenta creada exitosamente"}
+        </Alert>
+      );
     }
-  };
-
-  function postUser() {
-    if (readyToSubmit) {
-      console.log("TODO OK");
-      postData();
-    }
-    console.log("ERROR");
+    return null;
   }
-
-
+  async function postUser() {
+    const errorMessage = !readyToSubmit
+      ? "Uno o más datos son incorrectos"
+      : undefined;
+    const newRegister = {
+      Correo: registerInput.mail,
+      Contrasena: registerInput.password,
+      Nombres: registerInput.username,
+      Apellidos: registerInput.lastName,
+      Role: 1,
+    };
+    console.log(newRegister);
+    create(newRegister, errorMessage);
+  }
 
   return (
     <Container className="col-lg-6 col-xxl-4 my-5 mx-auto">
       <Title>{"Crea una nueva cuenta"}</Title>
-      {displayErrorMessage()} {/* Mostrar mensaje de error */}
+      {displayErrorMessage()}
+      {displaySuccessMessage()}
       <Form noValidate validated={readyToSubmit}>
         <Form.Group className="mb-3 sm-1" controlId="formName">
           <Form.Label className="labelForm">Nombre</Form.Label>
@@ -208,13 +202,13 @@ const UserRegister = () => {
           </InputGroup>
         </Form.Group>
 
-        <Form.Group className="mb-3" controlId="formBasicPassword">
+        <Form.Group className="mb-3" controlId="formBasicConfirmPassword">
           <Form.Label className="labelForm">Confirma tu contraseña</Form.Label>
           <InputGroup>
             <Form.Control
               className="inputForm"
               type={showConfirmPass ? "text" : "password"}
-              placeholder="Contraseña"
+              placeholder="Confirma tu contraseña"
               value={registerInput.confirmPass}
               onChange={(e) => onChange(e, "confirmPass")}
               required
@@ -238,8 +232,8 @@ const UserRegister = () => {
           <Button
             variant="primary"
             className="custombtn-primary"
-            onClick={() => postUser()}
-            disabled={status === "loading"||!readyToSubmit}
+            onClick={async () => postUser()}
+            disabled={status === "loading" || !readyToSubmit}
           >
             Registrar
           </Button>

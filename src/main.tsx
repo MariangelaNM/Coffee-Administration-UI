@@ -1,7 +1,7 @@
 import React from "react";
 import ReactDOM from 'react-dom/client';
-import App from "./components/App.tsx";
 import "./main.css";
+import App from "./components/App.tsx";
 import "./i18n";
 //import { AuthProvider } from './context/AuthContext';
 import { HelmetProvider } from "react-helmet-async";

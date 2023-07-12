@@ -1,5 +1,5 @@
-import { useState, useCallback } from 'react';
-import { UserResponse } from '../api/api-client';
+import { useState, useCallback } from "react";
+import { UserResponse } from "../api/api-client";
 
 type UpdateResult<T> = {
   create: (data: T, errorMessage?: string) => Promise<void>;
@@ -7,7 +7,7 @@ type UpdateResult<T> = {
   error: Error | undefined;
 };
 
-type Status = 'success' | 'loading' | undefined;
+type Status = "success" | "loading" | undefined;
 
 export function useCreateUser<T>(
   createFunction: (data: T) => Promise<UserResponse>
@@ -21,15 +21,16 @@ export function useCreateUser<T>(
         setError(new Error(errorMessage));
         return;
       }
-      setStatus('loading');
+      setStatus("loading");
       try {
         await createFunction(data);
-        setStatus('success');
+        setError(undefined);
+        setStatus("success");
       } catch (err) {
         if (err instanceof Error) {
           setError(err);
         } else {
-          setError(new Error('Unknown error'));
+          setError(new Error(err.description));
         }
         setStatus(undefined);
       }
