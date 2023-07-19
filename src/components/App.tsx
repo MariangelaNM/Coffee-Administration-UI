@@ -6,6 +6,7 @@ import LandingPage from "./routes/LandingPage";
 import Dashboard from "./routes/Dashboard";
 import Admin from "./routes/Admin";
 import UserRegister from "./routes/UserRegister";
+import FarmCreate from './routes/FarmCreate';
 
 
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -18,7 +19,7 @@ const App: FC = () => {
                 <Route path="/Inicio"  ></Route>
                 <Route path="/login"  ><Login /> </Route>
                 <Route path="/signup"> <UserRegister /> </Route>  
-                <Route path="/Mis Fincas" ></Route>
+                <Route path="/farms" > <FarmCreate/></Route>
                 <Route path="/Mis Recolectores" ></Route>
                 <Route path="/Resumen Recolectores" ></Route>
                 <Route path="/Resumen Fincas" ></Route>
