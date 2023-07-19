@@ -230,7 +230,7 @@ const UserRegister = () => {
         </Form.Group>
 
         <div className="d-grid gap-2">
-          <Button variant="primary" className="custombtn-primary" onClick={()=>create()}>
+          <Button variant="primary" className="custombtn-primary no-active-style" onClick={()=>create()}>
             Registrar
           </Button>
 
