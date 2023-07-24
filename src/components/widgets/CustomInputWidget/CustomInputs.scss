@@ -1,0 +1,30 @@
+.inputGroupico {
+    color: #6db575;
+    background-color: #fffefa;
+    font-size: 25px;
+}
+
+.inputForm {
+    background-color: #fffefa !important;
+    border: 1px solid #7a501f;
+    border-radius: 4px;
+    color: #451c00;
+}
+
+.inputForm:focus {
+    border-color: white;
+    box-shadow: 0 0 10px #6db575;
+}
+
+.inputForm:disabled {
+    background-color: #d9d9d9;
+}
+
+.inputForm::placeholder {
+    color: rgba(0, 0, 0, 0.7);
+}
+
+.labelForm {
+    color: #451c00;
+
+}
