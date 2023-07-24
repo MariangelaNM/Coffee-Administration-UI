@@ -32,3 +32,24 @@ body {
   text-align: left;
 
 }
+
+.date-picker-container {
+  position: relative;
+}
+
+.calendar-icon {
+  position: absolute;
+  top: 50%;
+  right: 10px;
+  transform: translateY(-50%);
+  cursor: pointer;
+}
+
+button.custombtn-primary:focus {
+  outline: none;
+}
+
+.no-active-style:active {
+  background-color: #7a501f !important;
+
+}

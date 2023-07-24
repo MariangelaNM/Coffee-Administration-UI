@@ -183,12 +183,15 @@ const UserRegister =  () => {
         />
 
         <div className="d-grid gap-2">
-          <CustomButtonPrimary
-            label="Registrar"
-            onClick={async () => postUser()}
-            disabled={status === "loading" || !readyToSubmit}
-          />
-          <CustomButtonSecondary label="Cancelar" onClick={() => onReset()} />
+
+          <Button variant="primary" className="custombtn-primary no-active-style" onClick={()=>create()}>
+            Registrar
+          </Button>
+
+          <Button variant="primary" className="custombtn-secondary">
+            Cancelar
+          </Button>
+
         </div>
       </Form>
     </Container>
