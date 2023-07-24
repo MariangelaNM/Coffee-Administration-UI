@@ -1,5 +1,8 @@
+import 'bootstrap/dist/css/bootstrap.min.css';
+import '../App.scss';
+
 import { FC } from 'react';
-import  Login from './routes/Login'
+import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import Sidebar from './Sidebar';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import LandingPage from "./routes/LandingPage";
@@ -29,9 +32,7 @@ const App: FC = () => {
             </Switch>
         </Router>
     );
+
 };
 
 export default App;
-
-
- 
