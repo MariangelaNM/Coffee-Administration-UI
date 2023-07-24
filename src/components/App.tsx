@@ -7,10 +7,12 @@ import Dashboard from "./routes/Dashboard";
 import Admin from "./routes/Admin";
 import UserRegister from "./routes/UserRegister";
 import FarmCreate from './routes/FarmCreate';
+import RecolectorCreate from './routes/RecolectorCreate';
 
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../App.scss'
+
 const App: FC = () => {
     return (
         <Router>
@@ -20,6 +22,7 @@ const App: FC = () => {
                 <Route path="/login"  ><Login /> </Route>
                 <Route path="/signup"> <UserRegister /> </Route>  
                 <Route path="/farms" > <FarmCreate/></Route>
+                <Route path="/collector" > <RecolectorCreate/></Route>
                 <Route path="/Mis Recolectores" ></Route>
                 <Route path="/Resumen Recolectores" ></Route>
                 <Route path="/Resumen Fincas" ></Route>

@@ -5,13 +5,14 @@ import { themes } from "../../styles/ColorStyles";
 import { H1 } from "../../styles/TextStyles";
 import "bootstrap/dist/css/bootstrap.min.css";
 
-const FarmCreate = () => {
+const RecolectorCreate = () => {
   const [errorMsg, setErrorMsg] = useState("");
-  const [farmName, setFarmName] = useState("");
-  const [description, setDescription] = useState("");
-  const [location, setLocation] = useState("");
+  const [nombre, setNombre] = useState("");
+  const [apellido, setApellido] = useState("");
+  const [identificacion, setIdentificacion] = useState("");
+  const [telefono, setTelefono] = useState("");
   const [validated, setValidated] = useState(false);
-  const [showSuccessMessage, setShowSuccessMessage] = useState(false); 
+  const [showSuccessMessage, setShowSuccessMessage] = useState(false);
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -21,16 +22,16 @@ const FarmCreate = () => {
       e.stopPropagation();
       setValidated(true);
     } else {
-      
-      setShowSuccessMessage(true); 
-      setFarmName("");
-      setDescription("");
-      setLocation("");
+      // Save the data (you'll need to implement this part with your backend)
+      setShowSuccessMessage(true);
+      setNombre("");
+      setApellido("");
+      setIdentificacion("");
+      setTelefono("");
 
-      
       setTimeout(() => {
         setShowSuccessMessage(false);
-      }, 3000); 
+      }, 3000);
     }
   };
 
@@ -38,18 +39,23 @@ const FarmCreate = () => {
     setErrorMsg("");
   }
 
-  function onChangeFarmName(e: ChangeEvent<HTMLInputElement>) {
-    setFarmName(e.target.value);
+  function onChangeNombre(e: ChangeEvent<HTMLInputElement>) {
+    setNombre(e.target.value);
     onChangeAnyInput();
   }
 
-  function onChangeDescription(e: ChangeEvent<HTMLInputElement>) {
-    setDescription(e.target.value);
+  function onChangeApellido(e: ChangeEvent<HTMLInputElement>) {
+    setApellido(e.target.value);
     onChangeAnyInput();
   }
 
-  function onChangeLocation(e: ChangeEvent<HTMLInputElement>) {
-    setLocation(e.target.value);
+  function onChangeIdentificacion(e: ChangeEvent<HTMLInputElement>) {
+    setIdentificacion(e.target.value);
+    onChangeAnyInput();
+  }
+
+  function onChangeTelefono(e: ChangeEvent<HTMLInputElement>) {
+    setTelefono(e.target.value);
     onChangeAnyInput();
   }
 
@@ -62,21 +68,21 @@ const FarmCreate = () => {
 
   return (
     <Container className="col-lg-6 col-xxl-4 my-5 mx-auto">
-      <Title>{"Crear una nueva finca"}</Title>
+      <Title>{"Crear un nuevo recolector"}</Title>
       {displayErrorMessage()}
       {showSuccessMessage && (
         <div className="alert alert-success" role="alert">
-          ¡La finca ha sido registrada exitosamente!
+          ¡El recolector ha sido registrado exitosamente!
         </div>
       )}
       <Form noValidate validated={validated} onSubmit={handleSubmit}>
-        <Form.Group className="mb-3 sm-1" controlId="formFarmName">
-          <Form.Label>Nombre de la finca</Form.Label>
+        <Form.Group className="mb-3 sm-1" controlId="formNombre">
+          <Form.Label>Nombre</Form.Label>
           <Form.Control
             type="text"
-            placeholder="Nombre de la finca"
-            value={farmName}
-            onChange={onChangeFarmName}
+            placeholder="Nombre del recolector"
+            value={nombre}
+            onChange={onChangeNombre}
             required
           />
           <Form.Control.Feedback type="invalid">
@@ -84,14 +90,13 @@ const FarmCreate = () => {
           </Form.Control.Feedback>
         </Form.Group>
 
-        <Form.Group className="mb-3 sm-1" controlId="formDescription">
-          <Form.Label>Descripción</Form.Label>
+        <Form.Group className="mb-3 sm-1" controlId="formApellido">
+          <Form.Label>Apellido</Form.Label>
           <Form.Control
-            as="textarea"
-            rows={3}
-            placeholder="Detalles importante de la finca"
-            value={description}
-            onChange={onChangeDescription}
+            type="text"
+            placeholder="Apellido del recolector"
+            value={apellido}
+            onChange={onChangeApellido}
             required
           />
           <Form.Control.Feedback type="invalid">
@@ -99,13 +104,27 @@ const FarmCreate = () => {
           </Form.Control.Feedback>
         </Form.Group>
 
-        <Form.Group className="mb-3" controlId="formLocation">
-          <Form.Label>Ubicación</Form.Label>
+        <Form.Group className="mb-3" controlId="formIdentificacion">
+          <Form.Label>Identificación</Form.Label>
           <Form.Control
             type="text"
-            placeholder="Ubicación de la finca"
-            value={location}
-            onChange={onChangeLocation}
+            placeholder="Número de identificación del recolector"
+            value={identificacion}
+            onChange={onChangeIdentificacion}
+            required
+          />
+          <Form.Control.Feedback type="invalid">
+            El campo no puede estar vacío
+          </Form.Control.Feedback>
+        </Form.Group>
+
+        <Form.Group className="mb-3" controlId="formTelefono">
+          <Form.Label>Teléfono</Form.Label>
+          <Form.Control
+            type="text"
+            placeholder="Número de teléfono del recolector"
+            value={telefono}
+            onChange={onChangeTelefono}
             required
           />
           <Form.Control.Feedback type="invalid">
@@ -115,7 +134,7 @@ const FarmCreate = () => {
 
         <div className="d-grid gap-2">
           <Button variant="primary" className="custombtn-primary no-active-style" type="submit">
-            Crear Finca
+            Crear Recolector
           </Button>
 
           <Button variant="primary" className="custombtn-secondary" type="button">
@@ -132,4 +151,4 @@ const Title = styled(H1)`
   text-align: start;
 `;
 
-export default FarmCreate;
+export default RecolectorCreate;
