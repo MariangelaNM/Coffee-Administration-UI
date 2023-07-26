@@ -60,6 +60,7 @@ async function createApiError(
 
 export default class HttpApiClient implements ApiClient {
   baseUrl: string;
+  apiKey = process.env.REACT_APP_API_KEY + "";
 
   constructor(baseUrl: string) {
     this.baseUrl = baseUrl;
@@ -70,7 +71,10 @@ export default class HttpApiClient implements ApiClient {
     myHeaders.append("Content-Type", "application/json");
     const response = await fetch(this.baseUrl + "/users", {
       method: "POST",
-      headers: myHeaders,
+      headers: {
+        "Content-Type": "application/json",
+        "coffee-key": this.apiKey,
+      },
       body: JSON.stringify(user),
     });
     if (!response.ok) {

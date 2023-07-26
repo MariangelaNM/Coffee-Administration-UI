@@ -2,19 +2,16 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import '../App.scss';
 
 import { FC } from 'react';
-import { BrowserRouter, Route, Switch } from 'react-router-dom';
+import { Route, BrowserRouter as Router, Switch } from 'react-router-dom';
 import Sidebar from './Sidebar';
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
-import LandingPage from "./routes/LandingPage";
-import Dashboard from "./routes/Dashboard";
-import Admin from "./routes/Admin";
-import UserRegister from "./routes/UserRegister";
 import FarmCreate from './routes/FarmCreate';
 import RecolectorCreate from './routes/RecolectorCreate';
+import UserRegister from "./routes/UserRegister";
 
 
 import 'bootstrap/dist/css/bootstrap.min.css';
-import '../App.scss'
+import '../App.scss';
+import Login from './routes/Login';
 
 const App: FC = () => {
     return (
