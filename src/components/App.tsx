@@ -9,8 +9,6 @@ import FarmCreate from './routes/FarmCreate';
 import RecolectorCreate from './routes/RecolectorCreate';
 
 import UserRegister from "./routes/UserRegister";
-import FarmCreate from './routes/FarmCreate';
-import RecolectorCreate from './routes/RecolectorCreate';
 import RecoleccionCreate from './routes/RecoleccionCreate';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
