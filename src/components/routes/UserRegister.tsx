@@ -1,5 +1,5 @@
 import React, { ChangeEvent, useState, useEffect, useMemo } from "react";
-import { Container, Form } from "react-bootstrap";
+import { Button, Container, Form } from "react-bootstrap";
 
 import createApiClient from "../../api/api-client-factory";
 import { Register } from "../../models/Register";
@@ -14,6 +14,7 @@ import CustomAlert from "../widgets/CustomAlert";
 
 //import { useNavigate } from 'react-router';
 import { useHistory } from "react-router-dom";
+import { User } from "../../models/User";
 
 const UserRegister =  () => {
   const emptyRegisterInput: Partial<Register> = {
@@ -183,12 +184,16 @@ const UserRegister =  () => {
         />
 
         <div className="d-grid gap-2">
-          <CustomButtonPrimary
-            label="Registrar"
-            onClick={async () => postUser()}
-            disabled={status === "loading" || !readyToSubmit}
-          />
-          <CustomButtonSecondary label="Cancelar" onClick={() => onReset()} />
+
+          <Button variant="primary" className="custombtn-primary no-active-style" onClick={()=>postUser()}>
+
+            Registrar
+          </Button>
+
+          <Button variant="primary" className="custombtn-secondary">
+            Cancelar
+          </Button>
+
         </div>
       </Form>
     </Container>

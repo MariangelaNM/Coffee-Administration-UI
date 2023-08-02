@@ -10,6 +10,13 @@ import Zonas from "./routes/Zonas";
 import ZonasControl from "./routes/ZonasControl";
 import MisPeriodos from "./routes/MisPeriodos";
 import MisPeriodosControl from "./routes/MisPeriodosControl";
+import FarmCreate from './routes/FarmCreate';
+import RecolectorCreate from './routes/RecolectorCreate'
+import RecoleccionCreate from './routes/RecoleccionCreate';
+import LandingPage from "./routes/LandingPage";
+import Admin from "./routes/Admin";
+import Dashboard from "./routes/Dashboard";
+
 const App: FC = () => {
   return (
     <BrowserRouter>
@@ -54,6 +61,22 @@ const App: FC = () => {
         <Route path="/Resumen Fincas">
           {/* Lógica y componentes para la ruta /Resumen Fincas */}
         </Route>
+        <Route path="/farms">
+          {" "}
+          <FarmCreate />
+        </Route>
+        <Route path="/collector">
+          {" "}
+          <RecolectorCreate />
+        </Route>
+
+        <Route path="/Recoleccion">
+          {" "}
+          <RecoleccionCreate />
+        </Route>
+        <Route path="/Mis Recolectores"></Route>
+        <Route path="/Resumen Recolectores"></Route>
+        <Route path="/Resumen Fincas"></Route>
       </Switch>
     </BrowserRouter>
   );
