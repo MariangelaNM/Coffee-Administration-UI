@@ -3,8 +3,10 @@ import styled from "styled-components";
 export const H1 = styled.h1`
 
   font-size: 50px;
+  line-height:50px;
   @media (max-width: 450px) {
-    font-size: 36px;
+    font-size: 36px;  
+    line-height:40px;
   }
   margin-top: 20px;
   margin-bottom: 20px;
@@ -20,7 +22,7 @@ export const H2 = styled.h2`
 
 export const H3 = styled.h3`
   font-weight: bold;
-  font-size: 30px;
+  font-size: 27px;
   @media (max-width: 450px) {
     font-size: 24px;
   }

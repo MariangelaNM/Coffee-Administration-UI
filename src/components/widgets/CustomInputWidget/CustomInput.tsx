@@ -6,7 +6,7 @@ interface CustomInputProps {
   label: string;
   placeholder: string;
   typeForm: string;
-  value: string;
+  value: string | number;
   onChange: (e: ChangeEvent<HTMLInputElement>) => void;
   required?: boolean;
   onInvalidText: string;
@@ -25,9 +25,29 @@ const CustomInput: React.FC<CustomInputProps> = ({
     return (
       <Form.Group className="mb-3 sm-1" controlId={label}>
         <Form.Label className="labelForm">{label}</Form.Label>
+
         <Form.Control
           className="inputForm"
           type="email"
+          placeholder={placeholder}
+          value={value}
+          onChange={onChange}
+          required={required}
+        />
+
+        <Form.Control.Feedback type="invalid">
+          {onInvalidText}
+        </Form.Control.Feedback>
+      </Form.Group>
+    );
+  }
+  if (typeForm == "number") {
+    return (
+      <Form.Group className="mb-3 sm-1" controlId={label}>
+        <Form.Label className="labelForm">{label}</Form.Label>
+        <Form.Control
+          className="inputForm"
+          type="number"
           placeholder={placeholder}
           value={value}
           onChange={onChange}

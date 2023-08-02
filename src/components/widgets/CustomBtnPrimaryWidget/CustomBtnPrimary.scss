@@ -7,7 +7,7 @@
     background-color: #451c00;
     border: 1;
   }
-  
+
   &:active,
   &:focus {
     --bs-btn-active-bg: #451c00;
@@ -21,4 +21,12 @@
     background-color: grey;
     outline: 0;
   }
+}
+.text-selection-disable {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
 }
