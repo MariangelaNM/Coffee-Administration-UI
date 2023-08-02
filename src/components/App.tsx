@@ -4,7 +4,6 @@ import '../App.scss';
 
 import { FC } from 'react';
 import Sidebar from './Sidebar';
-
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import LandingPage from "./routes/LandingPage";
 import Dashboard from "./routes/Dashboard";
