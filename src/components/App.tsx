@@ -3,9 +3,7 @@ import '../App.scss';
 
 
 import { FC } from 'react';
-import { Route, BrowserRouter as Router, Switch } from 'react-router-dom';
 import Sidebar from './Sidebar';
-
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import LandingPage from "./routes/LandingPage";
 import Dashboard from "./routes/Dashboard";
@@ -14,10 +12,6 @@ import UserRegister from "./routes/UserRegister";
 import FarmCreate from './routes/FarmCreate';
 import RecolectorCreate from './routes/RecolectorCreate'
 import '../App.scss'
-import FarmCreate from './routes/FarmCreate';
-iort RecolectorCreate from './routes/RecolectorCreate';
-
-import UserRegister from "./routes/UserRegister";
 import RecoleccionCreate from './routes/RecoleccionCreate';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
