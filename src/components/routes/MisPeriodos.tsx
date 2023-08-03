@@ -95,7 +95,7 @@ const MisPeriodos = () => {
   }
   return (
     <Container className="col-lg-6 col-xxl-4 my-5 mx-auto">
-      <CustomTitles txt={"Mis Periodos"} />
+      <CustomTitles txt={"Mis periodos"} />
       <CustomZonaInfoDetail
         nombre={zonaInput.nombre ?? ""}
         descripcion={zonaInput.descripcion ?? ""}

@@ -1,17 +1,48 @@
-import React, { ChangeEvent, FormEvent, useState } from "react";
+import React, { ChangeEvent, FormEvent, useState,useEffect } from "react";
 import { Container, Form, Button } from "react-bootstrap";
 import styled from "styled-components";
 import { themes } from "../../styles/ColorStyles";
 import { H1 } from "../../styles/TextStyles";
 import "bootstrap/dist/css/bootstrap.min.css";
+import { useHistory, useLocation } from "react-router-dom";
+import { Farm } from "../../models/Farm";
 
 const FarmCreate = () => {
   const [errorMsg, setErrorMsg] = useState("");
   const [farmName, setFarmName] = useState("");
   const [description, setDescription] = useState("");
-  const [location, setLocation] = useState("");
+  const [locationf, setLocationf] = useState("");
   const [validated, setValidated] = useState(false);
-  const [showSuccessMessage, setShowSuccessMessage] = useState(false); 
+  const [showSuccessMessage, setShowSuccessMessage] = useState(false);
+
+  const history = useHistory();
+  const location = useLocation();
+  
+  const emptyFarmInput: Partial<Farm> = {
+    id: 0,
+    nombre: "",
+    descripcion: "",
+    ubicacion: "",
+  };
+
+  const [farmInput, setFarmInput] =
+  useState<Partial<Farm>>(emptyFarmInput);
+
+  useEffect(() => {
+    const queryParams = new URLSearchParams(location.search);
+    const farmString = queryParams.get("farm");
+    if (farmString) {
+      setFarmInput(JSON.parse(decodeURIComponent(farmString)));
+      setFarmName(JSON.parse(decodeURIComponent(farmString)).nombre as string);
+      setDescription(JSON.parse(decodeURIComponent(farmString)).descripcion as string);
+      setLocationf(JSON.parse(decodeURIComponent(farmString)).ubicacion as string);
+      // Aquí puedes utilizar el objeto usuario como desees
+      console.log(farmInput);
+    } else {
+      // Redireccionar a otra página si el parámetro no está presente
+      history.push("/error");
+    }
+  }, [history, location.search]);
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -21,16 +52,14 @@ const FarmCreate = () => {
       e.stopPropagation();
       setValidated(true);
     } else {
-      
-      setShowSuccessMessage(true); 
+      setShowSuccessMessage(true);
       setFarmName("");
       setDescription("");
-      setLocation("");
+      setLocationf("");
 
-      
       setTimeout(() => {
         setShowSuccessMessage(false);
-      }, 3000); 
+      }, 3000);
     }
   };
 
@@ -49,7 +78,7 @@ const FarmCreate = () => {
   }
 
   function onChangeLocation(e: ChangeEvent<HTMLInputElement>) {
-    setLocation(e.target.value);
+    setLocationf(e.target.value);
     onChangeAnyInput();
   }
 
@@ -62,7 +91,7 @@ const FarmCreate = () => {
 
   return (
     <Container className="col-lg-6 col-xxl-4 my-5 mx-auto">
-      <Title>{"Crear una nueva finca"}</Title>
+      <Title>{farmInput.id != 0 ? "Editar finca" : "Crear una nueva finca"}</Title>
       {displayErrorMessage()}
       {showSuccessMessage && (
         <div className="alert alert-success" role="alert">
@@ -104,7 +133,7 @@ const FarmCreate = () => {
           <Form.Control
             type="text"
             placeholder="Ubicación de la finca"
-            value={location}
+            value={locationf}
             onChange={onChangeLocation}
             required
           />
@@ -114,11 +143,19 @@ const FarmCreate = () => {
         </Form.Group>
 
         <div className="d-grid gap-2">
-          <Button variant="primary" className="custombtn-primary no-active-style" type="submit">
+          <Button
+            variant="primary"
+            className="custombtn-primary no-active-style"
+            type="submit"
+          >
             Crear Finca
           </Button>
 
-          <Button variant="primary" className="custombtn-secondary" type="button">
+          <Button
+            variant="primary"
+            className="custombtn-secondary"
+            type="button"
+          >
             Cancelar
           </Button>
         </div>
