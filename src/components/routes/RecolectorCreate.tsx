@@ -1,11 +1,16 @@
-import React, { ChangeEvent, FormEvent, useState } from "react";
+import React, { ChangeEvent, FormEvent, useState, useEffect } from "react";
 import { Container, Form, Button } from "react-bootstrap";
 import styled from "styled-components";
 import { themes } from "../../styles/ColorStyles";
 import { H1 } from "../../styles/TextStyles";
 import "bootstrap/dist/css/bootstrap.min.css";
+import { Colector } from "../../models/Colector";
+import { useHistory, useLocation } from "react-router-dom";
 
 const RecolectorCreate = () => {
+  const history = useHistory();
+  const location = useLocation();
+
   const [errorMsg, setErrorMsg] = useState("");
   const [nombre, setNombre] = useState("");
   const [apellido, setApellido] = useState("");
@@ -13,6 +18,42 @@ const RecolectorCreate = () => {
   const [telefono, setTelefono] = useState("");
   const [validated, setValidated] = useState(false);
   const [showSuccessMessage, setShowSuccessMessage] = useState(false);
+
+  const emptyColectorInput: Partial<Colector> = {
+    id: 0,
+    nombre: "",
+    apellido: "",
+    identificacion: "",
+    telefono: 0,
+  };
+  const [colectorInput, setColectorInput] =
+    useState<Partial<Colector>>(emptyColectorInput);
+
+  useEffect(() => {
+    const queryParams = new URLSearchParams(location.search);
+    const colectorString = queryParams.get("colector");
+    if (colectorString) {
+      setColectorInput(JSON.parse(decodeURIComponent(colectorString)));
+      setNombre(
+        JSON.parse(decodeURIComponent(colectorString)).nombre as string
+      );
+      setApellido(
+        JSON.parse(decodeURIComponent(colectorString)).apellido as string
+      );
+      setIdentificacion(
+        JSON.parse(decodeURIComponent(colectorString)).identificacion as string
+      );
+      setTelefono(
+        JSON.parse(decodeURIComponent(colectorString)).telefono as string
+      );
+
+      // Aquí puedes utilizar el objeto usuario como desees
+      console.log(colectorInput);
+    } else {
+      // Redireccionar a otra página si el parámetro no está presente
+      history.push("/error");
+    }
+  }, [history, location.search]);
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -68,7 +109,11 @@ const RecolectorCreate = () => {
 
   return (
     <Container className="col-lg-6 col-xxl-4 my-5 mx-auto">
-      <Title>{"Crear un nuevo recolector"}</Title>
+      <Title>
+        {colectorInput.id != 0
+          ? "Editar recolector"
+          : "Crear un nuevo recolector"}
+      </Title>
       {displayErrorMessage()}
       {showSuccessMessage && (
         <div className="alert alert-success" role="alert">
@@ -131,16 +176,43 @@ const RecolectorCreate = () => {
             El campo no puede estar vacío
           </Form.Control.Feedback>
         </Form.Group>
+        {colectorInput.id != 0 ? (
+          <div className="d-grid gap-2">
+            <Button
+              variant="primary"
+              className="custombtn-primary no-active-style"
+              type="submit"
+            >
+              Editar Recolector
+            </Button>
 
-        <div className="d-grid gap-2">
-          <Button variant="primary" className="custombtn-primary no-active-style" type="submit">
-            Crear Recolector
-          </Button>
+            <Button
+              variant="primary"
+              className="custombtn-secondary"
+              type="button"
+            >
+              Cancelar
+            </Button>
+          </div>
+        ) : (
+          <div className="d-grid gap-2">
+            <Button
+              variant="primary"
+              className="custombtn-primary no-active-style"
+              type="submit"
+            >
+              Crear Recolector
+            </Button>
 
-          <Button variant="primary" className="custombtn-secondary" type="button">
-            Cancelar
-          </Button>
-        </div>
+            <Button
+              variant="primary"
+              className="custombtn-secondary"
+              type="button"
+            >
+              Cancelar
+            </Button>
+          </div>
+        )}
       </Form>
     </Container>
   );
