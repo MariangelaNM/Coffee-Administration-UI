@@ -61,7 +61,9 @@ async function createApiError(
 export default class HttpApiClient implements ApiClient {
   baseUrl: string;
 
-  apiKey = process.env.REACT_APP_API_KEY + "";
+  //apiKey = process.env.NODE_ENV + "";
+  apiKey = "4d4ee570-87bd-42bf-9bda-173f22622871";
+
 
 
   constructor(baseUrl: string) {

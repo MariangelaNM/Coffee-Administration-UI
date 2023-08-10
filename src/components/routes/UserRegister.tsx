@@ -186,6 +186,7 @@ const UserRegister =  () => {
         <div className="d-grid gap-2">
 
           <Button variant="primary" className="custombtn-primary no-active-style" onClick={()=>postUser()}>
+
             Registrar
           </Button>
 

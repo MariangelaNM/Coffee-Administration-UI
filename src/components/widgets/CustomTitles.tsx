@@ -19,7 +19,7 @@ interface CustomTitlesProps {
   const Title = styled(H1)`
   color: ${themes.dark.text1};
   text-align: start;
-  line-height:40px
+
 `;
 
   export default CustomTitle;
