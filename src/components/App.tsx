@@ -77,6 +77,11 @@ const App: FC = () => {
         <Route path="/Resumen Fincas">
           {/* Lógica y componentes para la ruta /Resumen Fincas */}
         </Route>
+
+        <Route path="/collector">
+          {" "}
+          <RecolectorCreate />
+        </Route>
         <Route path="/Recoleccion">
           {" "}
           <RecoleccionCreate />
