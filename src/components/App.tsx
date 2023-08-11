@@ -14,6 +14,10 @@ import Farms from "./routes/Farms";
 import FarmCreate from "./routes/FarmCreate";
 import RecolectorCreate from "./routes/RecolectorCreate";
 import RecoleccionCreate from "./routes/RecoleccionCreate";
+import Recolector from "./routes/Recolector";
+import LandingPage from "./routes/LandingPage";
+import Admin from "./routes/Admin";
+import Dashboard from "./routes/Dashboard";
 
 const App: FC = () => {
   return (
@@ -21,7 +25,7 @@ const App: FC = () => {
       <Sidebar />
       <Switch>
         <Route path="/Inicio">
-          {/* Lógica y componentes para la ruta /Inicio */}
+        <Admin/>
         </Route>
         <Route path="/login">
           <Login />
@@ -57,8 +61,14 @@ const App: FC = () => {
         <Route path="/MisPeriodos">
           <MisPeriodos />
         </Route>
+        <Route path="/Mis Recolectores/Create">
+          <RecolectorCreate />
+        </Route>
+        <Route path="/Mis Recolectores/Edit">
+          <RecolectorCreate />
+        </Route>
         <Route path="/Mis Recolectores">
-          {/* Lógica y componentes para la ruta /Mis Recolectores */}
+         <Recolector/>
         </Route>
         <Route path="/Resumen Recolectores">
           {/* Lógica y componentes para la ruta /Resumen Recolectores */}
@@ -72,14 +82,10 @@ const App: FC = () => {
           {" "}
           <RecolectorCreate />
         </Route>
-
         <Route path="/Recoleccion">
           {" "}
           <RecoleccionCreate />
         </Route>
-        <Route path="/Mis Recolectores"></Route>
-        <Route path="/Resumen Recolectores"></Route>
-        <Route path="/Resumen Fincas"></Route>
       </Switch>
     </BrowserRouter>
   );
