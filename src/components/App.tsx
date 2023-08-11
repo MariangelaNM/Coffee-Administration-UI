@@ -19,7 +19,6 @@ import LandingPage from "./routes/LandingPage";
 import Admin from "./routes/Admin";
 import Dashboard from "./routes/Dashboard";
 
-
 const App: FC = () => {
   return (
     <BrowserRouter>
@@ -74,6 +73,7 @@ const App: FC = () => {
         <Route path="/Resumen Recolectores">
           {/* Lógica y componentes para la ruta /Resumen Recolectores */}
         </Route>
+        <Route path="/Recoleccion" > <RecoleccionCreate/></Route>
         <Route path="/Resumen Fincas">
           {/* Lógica y componentes para la ruta /Resumen Fincas */}
         </Route>
