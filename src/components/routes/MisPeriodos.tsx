@@ -1,10 +1,7 @@
-import React, { ChangeEvent, useState, useEffect, useMemo } from "react";
-import { Container, Form } from "react-bootstrap";
-
+import  { ChangeEvent, useState, useEffect, useMemo } from "react";
+import { Container } from "react-bootstrap";
 import createApiClient from "../../api/api-client-factory";
 import { Zona } from "../../models/Zona";
-import { useCreate } from "../../hooks/useCreateUser";
-
 import CustomTitles from "../widgets/CustomTitles";
 import CustomZonaInfoDetail from "../widgets/CustomZonasWidgets/CustomZonaInfoDetail";
 import CustomAdd from "../widgets/CustomAdd";
@@ -16,16 +13,9 @@ import { Periodo } from "../../models/Periodo";
 const MisPeriodos = () => {
   const history = useHistory();
   const location = useLocation();
-
-  const emptyZonaInput: Partial<Zona> = {
-    id: 0,
-    nombre: "",
-    descripcion: "",
-  };
-  const [zonaInput, setZonaInput] = useState<Partial<Zona>>(emptyZonaInput);
+  const [zonaInput, setZonaInput] = useState<Zona>();
   const [searchInput, setSearchInput] = useState("");
   let zonaId: number;
-  const apiClient = useMemo(() => createApiClient(), []);
   //TODO Esto es un ejemplo
   const periodosList: Periodo[] = [
     {
@@ -52,13 +42,25 @@ const MisPeriodos = () => {
   ];
 
   useEffect(() => {
+    callData()
+  }, [])
+
+  async function callData() {
+    try {
+
+      const response = await createApiClient().makeApiRequest("GET", "/zonas/" + zonaId, null, zonaInput);
+      setZonaInput(response);
+
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    }
+  }
+
+  useEffect(() => {
     const queryParams = new URLSearchParams(location.search);
     const zonaString = queryParams.get("zona");
-    console.log(zonaString);
     if (zonaString) {
-      zonaId=parseInt(zonaString);
-      // Aquí puedes utilizar el objeto usuario como desees
-      console.log(zonaInput);
+      zonaId = parseInt(zonaString);
     } else {
       // Redireccionar a otra página si el parámetro no está presente
       history.push("/error");
@@ -96,8 +98,8 @@ const MisPeriodos = () => {
     <Container className="col-lg-6 col-xxl-4 my-5 mx-auto">
       <CustomTitles txt={"Mis periodos"} />
       <CustomZonaInfoDetail
-        nombre={zonaInput.nombre ?? ""}
-        descripcion={zonaInput.descripcion ?? ""}
+        nombre={zonaInput?.Nombre ?? ""}
+        descripcion={zonaInput?.Descripcion ?? ""}
         onClick={updateZona}
       />
       <CustomAdd onClick={CreatePeriodo} />

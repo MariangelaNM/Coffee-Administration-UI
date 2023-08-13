@@ -18,20 +18,9 @@ const Zonas = () => {
   let id: string;
   const [zonaList, setZonaList] = useState<Zona[]>([]);
   const [fincasData, setFincasData] = useState<Finca>();
+
   useEffect(() => {
     CallIds();
-
-    if (status === "success") {
-      console.log("Creacion exitosa");
-      // history.push('/login')
-    }
-  }, [status]);
-
-  function onChangeFilterTxt(e: ChangeEvent<HTMLInputElement>) {
-    setSearchInput(e.target.value);
-  }
-
-  useEffect(() => {
     callData();
   }, [])
 
@@ -47,6 +36,7 @@ const Zonas = () => {
       console.error('Error fetching data:', error);
     }
   }
+
   async function updateFinca() {
     CallIds();
     history.push(`/Fincas/Edit?farm=${encodeURIComponent(fincaInput)}`);
@@ -55,32 +45,30 @@ const Zonas = () => {
   function CallIds() {
     const queryParams = new URLSearchParams(location.search);
     const fincaString = queryParams.get("farm");
-
     if (fincaString) {
       id = (fincaString);
       setFincaInput((decodeURIComponent(fincaString)));
-    } else {
-      // Redireccionar a otra página si el parámetro no está presente
-      //   history.push("/error");
     }
   }
-  async function CreateZona() {
-    console.log("CreateZona");
 
+  async function CreateZona() {
     history.push(`/Zonas/Create?farm=${encodeURIComponent(fincaInput)}`);
   }
 
   async function getDetalleZona(id: number) {
-    console.log("DetalleZona");
     history.push(`/MisPeriodos?zona=${encodeURIComponent(id)}`);
+  }
+
+  function onChangeFilterTxt(e: React.ChangeEvent<HTMLInputElement>): void {
+    throw new Error("Function not implemented.");
   }
 
   return (
     <Container className="col-lg-6 col-xxl-4 my-5 mx-auto">
       <CustomTitles txt={"Mis zonas"} />
       <CustomFincaInfoDetail
-        nombre={fincasData?.Nombre??""}
-        descripcion={fincasData?.Descripcion??""}
+        nombre={fincasData?.Nombre ?? ""}
+        descripcion={fincasData?.Descripcion ?? ""}
         onClick={updateFinca}
       />
       <CustomAdd onClick={CreateZona} />

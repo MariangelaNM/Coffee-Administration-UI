@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useState, useEffect, useMemo } from "react";
+import { ChangeEvent, useState, useEffect } from "react";
 import { Container } from "react-bootstrap";
 import createApiClient from "../../api/api-client-factory";
 import { Finca } from "../../models/Finca";
@@ -13,25 +13,19 @@ const Farms = () => {
   const [searchInput, setSearchInput] = useState("");
   const [fincasData, setFincasData] = useState<Finca[]>([]);
 
-  async function callData() {
+  useEffect(() => {
+    callDataFinca();
+  }, [])
+
+  async function callDataFinca() {
     try {
-      const data = { CaficultorID: 1 };
+      const data = { CaficultorID: 1 };//corregir
       const response = await createApiClient().makeApiRequest("PUT", "/fincas", JSON.stringify(data), fincasData);
       setFincasData(response);
     } catch (error) {
       console.error('Error fetching data:', error);
     }
   }
-
-  useEffect(() => {
-    callData();
-  }, [])
-
-  useEffect(() => {
-    if (status === "success") {
-      console.log("Creacion exitosa");
-    } 
-  }, [status]);
 
   function onChangeFilterTxt(e: ChangeEvent<HTMLInputElement>) {
     setSearchInput(e.target.value);

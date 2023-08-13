@@ -16,6 +16,7 @@ const ZonasControl = () => {
     Descripcion: "",
     FincaID: undefined
   };
+
   const [errorMsg, setErrorMsg] = useState("Error al registrar la data");
   const [zonaInput, setZonaInput] = useState<Partial<Zona>>(emptyZonaInput);
   const [zonaId, setZonaId] = useState("");
@@ -26,6 +27,15 @@ const ZonasControl = () => {
   const location = useLocation();
   let fincaID: Number;
   let zonaID: Number;
+  
+  useEffect(() => {
+    getData()
+  }, [])
+  
+  useEffect(() => {
+    CallIds();
+  }, [history, location.search, status, emptyZonaInput]);
+
   function CallIds() {
     const queryParams = new URLSearchParams(location.search);
     const fincaString = queryParams.get('farm') ?? "";
@@ -38,23 +48,11 @@ const ZonasControl = () => {
     } else if (zonaString) {
       emptyZonaInput.Id = (parseInt(zonaString));
       zonaID = (emptyZonaInput.Id);
-      
+
     } else {
       history.push("/error");
     }
   }
-useEffect(()=>{
-  getData()
-},[])
-  useEffect(() => {
-    CallIds();
-
-
-    if (status === "success") {
-      console.log("Creacion exitosa");
-    }
-
-  }, [history, location.search, status, emptyZonaInput]);
 
   function onChange(e: ChangeEvent<HTMLInputElement>, attribute: keyof Zona) {
     setZonaInput({ ...zonaInput, [attribute]: e.target.value });
@@ -62,6 +60,7 @@ useEffect(()=>{
 
   function onReset() {
     setZonaInput(emptyZonaInput);
+    history.push("/MisPeriodos?zona=" + zonaID);
   }
 
   async function postZona() {
@@ -89,7 +88,7 @@ useEffect(()=>{
   }
   async function updateZona() {
     try {
-      const response = await createApiClient().makeApiRequest("PATCH", "/zonas/"+ zonaID, JSON.stringify(zonaInput), zonaData);
+      const response = await createApiClient().makeApiRequest("PATCH", "/zonas/" + zonaID, JSON.stringify(zonaInput), zonaData);
       if (response.hasOwnProperty("error")) {
         setShowSuccessMessageError(true);
       }

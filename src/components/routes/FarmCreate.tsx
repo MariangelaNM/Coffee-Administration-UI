@@ -17,10 +17,10 @@ const FarmCreate = () => {
   const [showSuccessMessageError, setShowSuccessMessageError] = useState(false);
   const [fincaId, setFincaId] = useState("");
   const [fincasData, setFincasData] = useState<Finca[]>([]);
-
+  let id: string;
   const [finca, setFinca] = useState<Finca>({
     Id: undefined,
-    CaficultorID: 1,
+    CaficultorID: 1,//corregir
     Nombre: "",
     Ubicacion: "",
     Descripcion: ""
@@ -30,7 +30,6 @@ const FarmCreate = () => {
     setFinca((prev) => ({ ...prev, [field]: e.target.value }));
   };
 
-  let id: string;
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setShowSuccessMessageError(false);
@@ -67,13 +66,11 @@ const FarmCreate = () => {
   useEffect(() => {
     CallIds();
     fincaData();
-
   }, [])
 
   function CallIds() {
     const queryParams = new URLSearchParams(location.search);
     const fincaString = queryParams.get("farm");
-
     if (fincaString) {
       id = (fincaString);
       setFincaId(id);
@@ -89,6 +86,7 @@ const FarmCreate = () => {
       `/Fincas`
     );
   }
+  
   return (
     <Container className="col-lg-6 col-xxl-4 my-5 mx-auto">
       <Title>{fincaId != "" ? "Editar Finca" : "Crear una Nueva Finca"}</Title>
