@@ -1,17 +1,17 @@
 import CustomFincaListElement from "./CustomFincaListElement";
-import { Farm } from "../../../models/Farm";
+import {Finca} from"../../../models/Finca"
 
 interface CustomFincaListProps {
   filterTxt: string;
-  farmList: Farm[];
+  fincasData: Finca[];
   onClick: (id: number) => void;
 }
 const CustomFincaList: React.FC<CustomFincaListProps> = ({
   filterTxt,
-  farmList,
+  fincasData,
   onClick,
 }) => {
-  if (!farmList.length) {
+  if (fincasData==undefined||!fincasData.length) {
     return (
       <div className="center">
         <p className="text-center mt-5">No hay fincas creadas</p>
@@ -20,14 +20,14 @@ const CustomFincaList: React.FC<CustomFincaListProps> = ({
   } else {
     return (
       <div className="row">
-        {farmList
+        {fincasData!=undefined&& fincasData
           .filter((f) =>
-            f.nombre.toLowerCase().includes(filterTxt.toLowerCase())
+            f.Descripcion.toLowerCase().includes(filterTxt.toLowerCase())
           )
           .map((f, i) => (
             <CustomFincaListElement
               key={i}
-              farm={f}
+              finca={f}
               count="3"
               onClick={onClick}
             />

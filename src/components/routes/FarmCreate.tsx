@@ -1,111 +1,117 @@
-import React, { ChangeEvent, FormEvent, useState,useEffect } from "react";
+import { FormEvent, useEffect, useState } from "react";
 import { Container, Form, Button } from "react-bootstrap";
+import Alert from "@mui/material/Alert";
 import styled from "styled-components";
 import { themes } from "../../styles/ColorStyles";
 import { H1 } from "../../styles/TextStyles";
 import "bootstrap/dist/css/bootstrap.min.css";
-import { useHistory, useLocation } from "react-router-dom";
-import { Farm } from "../../models/Farm";
+import createApiClient from "../../api/api-client-factory";
+import { Finca } from "../../models/Finca";
+import { useHistory } from "react-router-dom";
 
 const FarmCreate = () => {
+  const history = useHistory();
   const [errorMsg, setErrorMsg] = useState("");
-  const [farmName, setFarmName] = useState("");
-  const [description, setDescription] = useState("");
-  const [locationf, setLocationf] = useState("");
   const [validated, setValidated] = useState(false);
   const [showSuccessMessage, setShowSuccessMessage] = useState(false);
+  const [showSuccessMessageError, setShowSuccessMessageError] = useState(false);
+  const [fincaId, setFincaId] = useState("");
+  const [fincasData, setFincasData] = useState<Finca[]>([]);
 
-  const history = useHistory();
-  const location = useLocation();
-  
-  const emptyFarmInput: Partial<Farm> = {
-    id: 0,
-    nombre: "",
-    descripcion: "",
-    ubicacion: "",
+  const [finca, setFinca] = useState<Finca>({
+    Id: undefined,
+    CaficultorID: 1,
+    Nombre: "",
+    Ubicacion: "",
+    Descripcion: ""
+  });
+
+  const handleInputChange = (field: string) => (e: { target: { value: any; }; }) => {
+    setFinca((prev) => ({ ...prev, [field]: e.target.value }));
   };
 
-  const [farmInput, setFarmInput] =
-  useState<Partial<Farm>>(emptyFarmInput);
-
-  useEffect(() => {
-    const queryParams = new URLSearchParams(location.search);
-    const farmString = queryParams.get("farm");
-    if (farmString) {
-      setFarmInput(JSON.parse(decodeURIComponent(farmString)));
-      setFarmName(JSON.parse(decodeURIComponent(farmString)).nombre as string);
-      setDescription(JSON.parse(decodeURIComponent(farmString)).descripcion as string);
-      setLocationf(JSON.parse(decodeURIComponent(farmString)).ubicacion as string);
-      // Aquí puedes utilizar el objeto usuario como desees
-      console.log(farmInput);
-    } else {
-      // Redireccionar a otra página si el parámetro no está presente
-      history.push("/error");
-    }
-  }, [history, location.search]);
-
-  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+  let id: string;
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const form = e.currentTarget;
+    setShowSuccessMessageError(false);
 
-    if (form.checkValidity() === false) {
+    if (e.currentTarget.checkValidity() === false) {
       e.stopPropagation();
       setValidated(true);
     } else {
-      setShowSuccessMessage(true);
-      setFarmName("");
-      setDescription("");
-      setLocationf("");
-
-      setTimeout(() => {
-        setShowSuccessMessage(false);
-      }, 3000);
+      try {
+        if (fincaId != "") {
+          await createApiClient().makeApiRequest("PATCH", "/fincas/" + fincaId, JSON.stringify(finca), fincasData);
+        } else {
+          await createApiClient().makeApiRequest("POST", "/fincas", JSON.stringify(finca), fincasData);
+        }
+        setShowSuccessMessage(true);
+        setFinca({
+          ...finca,
+          Nombre: "",
+          Ubicacion: "",
+          Descripcion: ""
+        });
+        setTimeout(() => {
+          setShowSuccessMessage(false);
+        }, 3000);
+      } catch (error) {
+        setShowSuccessMessageError(true);
+        e.stopPropagation();
+        setValidated(true);
+        setErrorMsg("Error en la respuesta de la API");
+      }
     }
   };
 
-  function onChangeAnyInput() {
-    setErrorMsg("");
-  }
+  useEffect(() => {
+    CallIds();
+    fincaData();
 
-  function onChangeFarmName(e: ChangeEvent<HTMLInputElement>) {
-    setFarmName(e.target.value);
-    onChangeAnyInput();
-  }
+  }, [])
 
-  function onChangeDescription(e: ChangeEvent<HTMLInputElement>) {
-    setDescription(e.target.value);
-    onChangeAnyInput();
-  }
+  function CallIds() {
+    const queryParams = new URLSearchParams(location.search);
+    const fincaString = queryParams.get("farm");
 
-  function onChangeLocation(e: ChangeEvent<HTMLInputElement>) {
-    setLocationf(e.target.value);
-    onChangeAnyInput();
-  }
-
-  function displayErrorMessage() {
-    if (errorMsg) {
-      return <div>Error: {errorMsg}</div>;
+    if (fincaString) {
+      id = (fincaString);
+      setFincaId(id);
     }
-    return null;
+  }
+  async function fincaData() {
+    const response = await createApiClient().makeApiRequest("GET", "/fincas/" + id, null, fincasData);
+    setFinca(response);
   }
 
+  async function Cancelar() {
+    console.log("CreateFinca");
+    history.push(
+      `/Fincas`
+    );
+  }
   return (
     <Container className="col-lg-6 col-xxl-4 my-5 mx-auto">
-      <Title>{farmInput.id != 0 ? "Editar finca" : "Crear una nueva finca"}</Title>
-      {displayErrorMessage()}
-      {showSuccessMessage && (
-        <div className="alert alert-success" role="alert">
-          ¡La finca ha sido registrada exitosamente!
-        </div>
+      <Title>{fincaId != "" ? "Editar Finca" : "Crear una Nueva Finca"}</Title>
+      {showSuccessMessageError && (
+        <Alert severity="error" style={{ marginBottom: "10px" }}>
+          Error: {errorMsg}
+        </Alert>
       )}
+      {showSuccessMessage && (
+        <Alert severity="success" style={{ marginBottom: "10px" }}>
+          ¡La finca ha sido registrada exitosamente!
+        </Alert>
+      )}
+
       <Form noValidate validated={validated} onSubmit={handleSubmit}>
         <Form.Group className="mb-3 sm-1" controlId="formFarmName">
           <Form.Label>Nombre de la finca</Form.Label>
           <Form.Control
             type="text"
             placeholder="Nombre de la finca"
-            value={farmName}
-            onChange={onChangeFarmName}
+            value={finca.Nombre}
+            onChange={handleInputChange("Nombre")}
             required
           />
           <Form.Control.Feedback type="invalid">
@@ -119,8 +125,8 @@ const FarmCreate = () => {
             as="textarea"
             rows={3}
             placeholder="Detalles importante de la finca"
-            value={description}
-            onChange={onChangeDescription}
+            value={finca.Descripcion}
+            onChange={handleInputChange("Descripcion")}
             required
           />
           <Form.Control.Feedback type="invalid">
@@ -133,8 +139,8 @@ const FarmCreate = () => {
           <Form.Control
             type="text"
             placeholder="Ubicación de la finca"
-            value={locationf}
-            onChange={onChangeLocation}
+            value={finca.Ubicacion}
+            onChange={handleInputChange("Ubicacion")}
             required
           />
           <Form.Control.Feedback type="invalid">
@@ -148,13 +154,14 @@ const FarmCreate = () => {
             className="custombtn-primary no-active-style"
             type="submit"
           >
-            Crear Finca
+           {fincaId != "" ? "Editar Finca" : "Crear Finca"} 
           </Button>
 
           <Button
             variant="primary"
             className="custombtn-secondary"
             type="button"
+            onClick={() => Cancelar()}
           >
             Cancelar
           </Button>

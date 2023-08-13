@@ -3,7 +3,7 @@ import { Container, Form } from "react-bootstrap";
 
 import createApiClient from "../../api/api-client-factory";
 import { Zona } from "../../models/Zona";
-import { useCreateUser } from "../../hooks/useCreateUser";
+import { useCreate } from "../../hooks/useCreateUser";
 
 import CustomTitles from "../widgets/CustomTitles";
 import CustomInput from "../widgets/CustomInputWidget/CustomInput";
@@ -31,7 +31,7 @@ import { useHistory, useLocation } from 'react-router-dom';
   const location = useLocation();
 
   const apiClient = useMemo(() => createApiClient(), []);
-  const { create, status, error } = useCreateUser(apiClient.postUser);
+ // const { create, status, error } = useCreate(apiClient.postUser);
 
   useEffect(() => {
     const queryParams = new URLSearchParams(location.search);
@@ -64,12 +64,12 @@ import { useHistory, useLocation } from 'react-router-dom';
 
   const readyToSubmit = zonaInput.nombre !== "" && zonaInput.descripcion !== "";
 
-  function displayErrorMessage() {
+  /*function displayErrorMessage() {
     if (error) {
       return <CustomAlert success={false} label={error.message} />;
     }
     return null;
-  }
+  }*/
   function displaySuccessMessage() {
     if (status === "success") {
       return <CustomAlert success={true} label="Cuenta creada exitosamente" />;
@@ -88,8 +88,7 @@ import { useHistory, useLocation } from 'react-router-dom';
       <CustomTitles
         txt={zonaInput.id!=0 ? "Editar zona" : "Crea una nueva zona"}
       />
-      {displayErrorMessage()}
-      {displaySuccessMessage()}
+
       <Form noValidate validated={readyToSubmit}>
         <CustomInput
           label="Nombre"

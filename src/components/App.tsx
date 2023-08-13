@@ -33,15 +33,15 @@ const App: FC = () => {
         <Route path="/signup">
           <UserRegister />
         </Route>
-        <Route path="/Mis Fincas/Create">
+        <Route path="/Fincas/Create">
           {" "}
           <FarmCreate />
         </Route>
-        <Route path="/Mis Fincas/Edit">
+        <Route path="/Fincas/Edit">
           <FarmCreate />
         </Route>
-        <Route path="/Mis Fincas">
-          <Farms />
+        <Route path="/Fincas">
+          <Farms/>
         </Route>
         <Route path="/Zonas/Create">
           <ZonasControl />
@@ -53,10 +53,10 @@ const App: FC = () => {
           <Zonas />
         </Route>
         <Route path="/MisPeriodos/Create">
-          <MisPeriodosControl />
+       
         </Route>
         <Route path="/MisPeriodos/Edit">
-          <MisPeriodosControl />
+   
         </Route>
         <Route path="/MisPeriodos">
           <MisPeriodos />

@@ -3,13 +3,11 @@ import { Button, Container, Form } from "react-bootstrap";
 
 import createApiClient from "../../api/api-client-factory";
 import { Register } from "../../models/Register";
-import { useCreateUser } from "../../hooks/useCreateUser";
+import { useCreate } from "../../hooks/useCreateUser";
 
 import CustomTitles from "../widgets/CustomTitles";
 import CustomInput from "../widgets/CustomInputWidget/CustomInput"; 
 import CustomPasswordInput from "../widgets/CustomInputWidget/CustomPasswordInput"; 
-import CustomButtonPrimary from "../widgets/CustomBtnPrimaryWidget/CustomBtnPrimary"; 
-import CustomButtonSecondary from "../widgets/CustomButtonSecondaryWidget/CustomButtonSecondary"; 
 import CustomAlert from "../widgets/CustomAlert";
 
 //import { useNavigate } from 'react-router';
@@ -36,7 +34,9 @@ const UserRegister =  () => {
   const [showConfirmPass, setShowConfirmPass] = useState(false);
 
   const apiClient = useMemo(() => createApiClient(), []);
-  const { create, status, error } = useCreateUser(apiClient.postUser);
+  //const { create, status, error } = useCreate(apiClient.postUser);
+  //const user: User = /* crea el objeto de usuario */;
+ // const userResponse = await apiClient.post("POST", "/users", user);
 
   useEffect(() => {
     if (status === "success") {
@@ -97,7 +97,7 @@ const UserRegister =  () => {
   const toggleConfirmPassVisibility = () => {
     setShowConfirmPass(!showConfirmPass);
   };
-
+/*
   function displayErrorMessage() {
     if (error) {
       return <CustomAlert success={false} label={error.message} />;
@@ -122,14 +122,14 @@ const UserRegister =  () => {
       Role: 1,
     };
     console.log(newRegister);
+    
     create(newRegister as User, errorMessage);
-  }
+  }*/
 
   return (
     <Container className="col-lg-6 col-xxl-4 my-5 mx-auto">
       <CustomTitles txt={"Crea una nueva cuenta"} />
-      {displayErrorMessage()}
-      {displaySuccessMessage()}
+
       <Form noValidate validated={readyToSubmit}>
         <CustomInput
           label="Nombre"
@@ -185,10 +185,6 @@ const UserRegister =  () => {
 
         <div className="d-grid gap-2">
 
-          <Button variant="primary" className="custombtn-primary no-active-style" onClick={()=>postUser()}>
-
-            Registrar
-          </Button>
 
           <Button variant="primary" className="custombtn-secondary">
             Cancelar

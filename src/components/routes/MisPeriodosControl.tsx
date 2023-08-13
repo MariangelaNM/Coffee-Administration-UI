@@ -4,7 +4,7 @@ import { Container, Form } from "react-bootstrap";
 import createApiClient from "../../api/api-client-factory";
 import { Zona } from "../../models/Zona";
 import { Periodo } from "../../models/Periodo";
-import { useCreateUser } from "../../hooks/useCreateUser";
+import { useCreate } from "../../hooks/useCreateUser";
 
 import CustomTitles from "../widgets/CustomTitles";
 import CustomInput from "../widgets/CustomInputWidget/CustomInput";
@@ -18,7 +18,7 @@ import { useHistory, useLocation } from "react-router-dom";
 import { TipoRecoleccion } from "../../models/TipoRecoleccion";
 
 const MisPeriodosControl = () => {
-  const emptyPeriodoInput: Partial<Periodo> = {
+ /* const emptyPeriodoInput: Partial<Periodo> = {
     id: 0,
     TipoRecoleccionID: 0,
     Desde: new Date(),
@@ -41,7 +41,7 @@ const MisPeriodosControl = () => {
   const location = useLocation();
 
   const apiClient = useMemo(() => createApiClient(), []);
-  const { create, status, error } = useCreateUser(apiClient.postUser);
+  const { create, status, error } = useCreate(apiClient.postUser);
 
   useEffect(() => {
     const queryParams = new URLSearchParams(location.search);
@@ -178,7 +178,7 @@ const MisPeriodosControl = () => {
         )}
       </Form>
     </Container>
-  );
+  );*/
 };
 
 export default MisPeriodosControl;
