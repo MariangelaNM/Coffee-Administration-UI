@@ -30,10 +30,7 @@ const Farms = () => {
   useEffect(() => {
     if (status === "success") {
       console.log("Creacion exitosa");
-    } else {
-      //console.log(error);
-    }
-    // return () => {};
+    } 
   }, [status]);
 
   function onChangeFilterTxt(e: ChangeEvent<HTMLInputElement>) {

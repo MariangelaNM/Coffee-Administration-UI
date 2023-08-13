@@ -20,12 +20,12 @@ const CustomZonaListElement: React.FC<CustomZonaListElementProps> = ({
   onClick,
 }) => {
   return (
-    <Container className="detail-card mb-3" onClick={() => onClick(zona.id)}>
+    <Container className="detail-card mb-3" onClick={() => onClick(zona.Id)}>
       <Row className="mt-2">
         <Col className="d-flex flex-column justify-content-center">
-          <Title className="text-selection-disable">{zona.nombre}</Title>
+          <Title className="text-selection-disable">{zona.Nombre}</Title>
           <Description className="text-selection-disable">
-            {zona.descripcion}
+            {zona.Descripcion}
           </Description>
           <Description className="text-selection-disable">
             {count + " periodos"}

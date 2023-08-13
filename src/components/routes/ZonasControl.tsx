@@ -1,58 +1,60 @@
 import React, { ChangeEvent, useState, useEffect, useMemo } from "react";
 import { Container, Form } from "react-bootstrap";
-
 import createApiClient from "../../api/api-client-factory";
 import { Zona } from "../../models/Zona";
-import { useCreate } from "../../hooks/useCreateUser";
-
 import CustomTitles from "../widgets/CustomTitles";
 import CustomInput from "../widgets/CustomInputWidget/CustomInput";
 import CustomButtonPrimary from "../widgets/CustomBtnPrimaryWidget/CustomBtnPrimary";
 import CustomButtonSecondary from "../widgets/CustomButtonSecondaryWidget/CustomButtonSecondary";
-import CustomAlert from "../widgets/CustomAlert";
-
 import { useHistory, useLocation } from 'react-router-dom';
+import Alert from "@mui/material/Alert";
 
-// interface ZonaEditProps {
-//   zona?: Zona; // Cambia el tipo según el tipo de la variable que estés enviando
-// }
-
-//const ZonasControl: React.FC<ZonaEditProps> = (zonaEdit) => {
-  const ZonasControl=() => {
+const ZonasControl = () => {
   const emptyZonaInput: Partial<Zona> = {
-    id:0,
-    nombre: "",
-    descripcion: "",
+    Id: undefined,
+    Nombre: "",
+    Descripcion: "",
+    FincaID: undefined
   };
-
+  const [errorMsg, setErrorMsg] = useState("Error al registrar la data");
   const [zonaInput, setZonaInput] = useState<Partial<Zona>>(emptyZonaInput);
-
+  const [zonaId, setZonaId] = useState("");
+  const [zonaData, setzonaData] = useState<Zona[]>([]);
+  const [showSuccessMessageError, setShowSuccessMessageError] = useState(false);
+  const [showSuccessMessage, setShowSuccessMessage] = useState(false);
   const history = useHistory();
   const location = useLocation();
-
-  const apiClient = useMemo(() => createApiClient(), []);
- // const { create, status, error } = useCreate(apiClient.postUser);
-
-  useEffect(() => {
+  let fincaID: Number;
+  let zonaID: Number;
+  function CallIds() {
     const queryParams = new URLSearchParams(location.search);
-    const zonaString = queryParams.get('zona');
-    if (zonaString) {
-      setZonaInput(JSON.parse(decodeURIComponent(zonaString))) ;
-      // Aquí puedes utilizar el objeto usuario como desees
-      console.log(zonaInput);
+    const fincaString = queryParams.get('farm') ?? "";
+    const zonaString = queryParams.get('zona') ?? "";
+    setZonaId(zonaString);
+    if (fincaString) {
+      const id = (fincaString);
+      emptyZonaInput.FincaID = (parseInt(id));
+      fincaID = (emptyZonaInput.FincaID);
+    } else if (zonaString) {
+      emptyZonaInput.Id = (parseInt(zonaString));
+      zonaID = (emptyZonaInput.Id);
+      
     } else {
-      // Redireccionar a otra página si el parámetro no está presente
-      history.push('/error');
+      history.push("/error");
     }
+  }
+useEffect(()=>{
+  getData()
+},[])
+  useEffect(() => {
+    CallIds();
+
 
     if (status === "success") {
       console.log("Creacion exitosa");
-      // history.push('/login')
-    } else {
-      //console.log(error);
     }
-    // return () => {};
-  }, [history, location.search, status]);
+
+  }, [history, location.search, status, emptyZonaInput]);
 
   function onChange(e: ChangeEvent<HTMLInputElement>, attribute: keyof Zona) {
     setZonaInput({ ...zonaInput, [attribute]: e.target.value });
@@ -62,40 +64,82 @@ import { useHistory, useLocation } from 'react-router-dom';
     setZonaInput(emptyZonaInput);
   }
 
-  const readyToSubmit = zonaInput.nombre !== "" && zonaInput.descripcion !== "";
-
-  /*function displayErrorMessage() {
-    if (error) {
-      return <CustomAlert success={false} label={error.message} />;
-    }
-    return null;
-  }*/
-  function displaySuccessMessage() {
-    if (status === "success") {
-      return <CustomAlert success={true} label="Cuenta creada exitosamente" />;
-    }
-    return null;
-  }
   async function postZona() {
-    console.log("postZona");
+    try {
+      const response = await createApiClient().makeApiRequest("POST", "/Zonas", JSON.stringify(zonaInput), zonaData);
+      if (response.hasOwnProperty("error")) {
+        setShowSuccessMessageError(true);
+      }
+      if (response.toString() == "201") {
+        setShowSuccessMessageError(false);
+        setShowSuccessMessage(true);
+        history.push("/Zonas?farm=" + fincaID);
+      } else {
+        setTimeout(() => {
+          setShowSuccessMessageError(false);
+        }, 3000);
+      }
+    }
+
+    catch {
+      setTimeout(() => {
+        setShowSuccessMessageError(false);
+      }, 3000);
+    }
   }
   async function updateZona() {
-    console.log("updateZona");
+    try {
+      const response = await createApiClient().makeApiRequest("PATCH", "/zonas/"+ zonaID, JSON.stringify(zonaInput), zonaData);
+      if (response.hasOwnProperty("error")) {
+        setShowSuccessMessageError(true);
+      }
+      if (response.toString() == "201") {
+        setShowSuccessMessageError(false);
+        setShowSuccessMessage(true);
+        history.push("/Zonas?farm=" + fincaID);
+      } else {
+        setTimeout(() => {
+          setShowSuccessMessageError(false);
+        }, 3000);
+      }
+    }
+
+    catch {
+      setTimeout(() => {
+        setShowSuccessMessageError(false);
+      }, 3000);
+    }
   }
+  async function getData() {
+    const response = await createApiClient().makeApiRequest("GET", "/zonas/" + zonaID, null, zonaData);
+    setZonaInput(response);
+
+  }
+  const readyToSubmit = zonaInput.Nombre !== "" && zonaInput.Descripcion !== "";
 
   return (
     <Container className="col-lg-6 col-xxl-4 my-5 mx-auto">
       <CustomTitles
-        txt={zonaInput.id!=0 ? "Editar zona" : "Crea una nueva zona"}
+        txt={zonaId != undefined ? "Editar zona" : "Crea una nueva zona"}
       />
 
       <Form noValidate validated={readyToSubmit}>
+        {showSuccessMessageError && (
+          <Alert severity="error" style={{ marginBottom: "10px" }}>
+            Error: {errorMsg}
+          </Alert>
+        )}
+        {showSuccessMessage && (
+          <Alert severity="success" style={{ marginBottom: "10px" }}>
+            Zona guardada correctamente
+          </Alert>
+        )}
         <CustomInput
           label="Nombre"
           placeholder="Nombre"
           typeForm="text"
-          value={zonaInput.nombre as string}
-          onChange={(e) => onChange(e, "nombre")}
+          value={zonaInput.Nombre as string}
+          onChange={(e) => onChange(e, "Nombre")}
           required
           onInvalidText={"El campo no puede estar vacio"}
         />
@@ -103,12 +147,12 @@ import { useHistory, useLocation } from 'react-router-dom';
           label="Descripción"
           placeholder="Descripción"
           typeForm="text"
-          value={zonaInput.descripcion as string}
-          onChange={(e) => onChange(e, "descripcion")}
+          value={zonaInput.Descripcion as string}
+          onChange={(e) => onChange(e, "Descripcion")}
           required
           onInvalidText={"El campo no puede estar vacio"}
         />
-        {zonaInput.id!= 0 ? (
+        {zonaInput.Id != undefined ? (
           <div className="d-grid gap-2">
             <CustomButtonPrimary
               label="Actualizar"

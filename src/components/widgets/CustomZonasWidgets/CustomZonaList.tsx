@@ -22,7 +22,7 @@ const CustomZonaList: React.FC<CustomZonaListProps> = ({
       <div className="row">
         {zonaList
           .filter((z) =>
-            z.nombre.toLowerCase().includes(filterTxt.toLowerCase())
+            z.Nombre.toLowerCase().includes(filterTxt.toLowerCase())
           )
           .map((z, i) => (
             <CustomZonaListElement

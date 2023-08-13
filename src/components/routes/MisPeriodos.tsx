@@ -24,7 +24,7 @@ const MisPeriodos = () => {
   };
   const [zonaInput, setZonaInput] = useState<Partial<Zona>>(emptyZonaInput);
   const [searchInput, setSearchInput] = useState("");
-
+  let zonaId: number;
   const apiClient = useMemo(() => createApiClient(), []);
   //TODO Esto es un ejemplo
   const periodosList: Periodo[] = [
@@ -56,7 +56,7 @@ const MisPeriodos = () => {
     const zonaString = queryParams.get("zona");
     console.log(zonaString);
     if (zonaString) {
-      setZonaInput(JSON.parse(decodeURIComponent(zonaString)));
+      zonaId=parseInt(zonaString);
       // Aquí puedes utilizar el objeto usuario como desees
       console.log(zonaInput);
     } else {
@@ -71,8 +71,7 @@ const MisPeriodos = () => {
 
   async function updateZona() {
     console.log("updateZona");
-    const newZonaString = JSON.stringify(zonaInput);
-    history.push(`/Zonas/Edit?zona=${encodeURIComponent(newZonaString)}`);
+    history.push(`/Zonas/Edit?zona=${zonaId}`);
   }
 
   async function CreatePeriodo() {

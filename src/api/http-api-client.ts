@@ -37,7 +37,9 @@ export default class HttpApiClient {
       console.log(responseData)
       return responseData as ApiResponse<T>;
     } catch (error) {
-      throw new Error("API request failed");
+      
+      return { error: "API request failed" };
+    
     }
   }
 }  

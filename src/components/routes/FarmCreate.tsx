@@ -85,7 +85,6 @@ const FarmCreate = () => {
   }
 
   async function Cancelar() {
-    console.log("CreateFinca");
     history.push(
       `/Fincas`
     );
