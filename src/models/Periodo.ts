@@ -9,7 +9,7 @@ export interface Periodo {
    * @type {number}
    * @memberof Periodo
    */
-  id: number;
+  Id: number;
   /**
    *
    * @type {number}
@@ -33,5 +33,23 @@ export interface Periodo {
    * @type {number}
    * @memberof Periodo
    */
-  Value: number;
+  PrecioCajuela: number;
+  /**
+   *
+   * @type {number}
+   * @memberof Periodo
+   */
+  CaficultorID: number,
+  /**
+   *
+   * @type {Date}
+   * @memberof Periodo
+   */
+  createdAt: Date,
+  /**
+   *
+   * @type {Date}
+   * @memberof Periodo
+   */
+  updatedAt: Date
 }

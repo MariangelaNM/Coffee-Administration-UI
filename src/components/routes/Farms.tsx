@@ -1,53 +1,31 @@
-import React, { ChangeEvent, useState, useEffect, useMemo } from "react";
-import { Container, Form } from "react-bootstrap";
-
+import { ChangeEvent, useState, useEffect } from "react";
+import { Container } from "react-bootstrap";
 import createApiClient from "../../api/api-client-factory";
-import { Farm } from "../../models/Farm";
-import { useCreateUser } from "../../hooks/useCreateUser";
-
+import { Finca } from "../../models/Finca";
 import CustomTitles from "../widgets/CustomTitles";
-import CustomAdd from "../widgets/CustomAdd";
 import CustomSearch from "../widgets/CustomInputWidget/CustomSearch";
 import CustomFincaList from "../widgets/CustomFincaWidgets/CustomFincaList";
-import CustomAlert from "../widgets/CustomAlert";
-
 import { useHistory } from "react-router-dom";
+import CustomAdd from "../widgets/CustomAdd";
 
 const Farms = () => {
   const history = useHistory();
   const [searchInput, setSearchInput] = useState("");
-  const apiClient = useMemo(() => createApiClient(), []);
-  const { create, status, error } = useCreateUser(apiClient.postUser);
-  //TODO Esto es un ejemplo
-  const FincaList: Farm[] = [
-    {
-      id: 1,
-      nombre: "Finca A",
-      descripcion: "Descripción de Finca A",
-      ubicacion: "Ubicacion de Finca A",
-    },
-    {
-      id: 2,
-      nombre: "Finca B",
-      descripcion: "Descripción de Finca B",
-      ubicacion: "Ubicacion de Finca B",
-    },
-    {
-      id: 3,
-      nombre: "Finca C",
-      descripcion: "Descripción de Finca C",
-      ubicacion: "Ubicacion de Finca C",
-    },
-  ];
+  const [fincasData, setFincasData] = useState<Finca[]>([]);
 
   useEffect(() => {
-    if (status === "success") {
-      console.log("Creacion exitosa");
-    } else {
-      //console.log(error);
+    callDataFinca();
+  }, [])
+
+  async function callDataFinca() {
+    try {
+      const data = { CaficultorID: 1 };//corregir
+      const response = await createApiClient().makeApiRequest("PUT", "/fincas", JSON.stringify(data), fincasData);
+      setFincasData(response);
+    } catch (error) {
+      console.error('Error fetching data:', error);
     }
-    // return () => {};
-  }, [status]);
+  }
 
   function onChangeFilterTxt(e: ChangeEvent<HTMLInputElement>) {
     setSearchInput(e.target.value);
@@ -55,29 +33,19 @@ const Farms = () => {
 
   async function CreateFinca() {
     console.log("CreateFinca");
-    const emptyFincaInput: Partial<Farm> = {
-      id: 0,
-      nombre: "",
-      descripcion: "",
-      ubicacion: "",
-    };
-    const newFincaString = JSON.stringify(emptyFincaInput);
     history.push(
-      `/Mis Fincas/Create?farm=${encodeURIComponent(newFincaString)}`
+      `/Fincas/Create`
     );
   }
-  async function getDetalleFinca(id: number) {
-    console.log("DetalleFinca");
-    console.log(id);
-    const selectedFinca = FincaList.find((finca) => finca.id === id);
 
-    const selectedFincaString = JSON.stringify(selectedFinca);
-    history.push(`/Zonas?farm=${encodeURIComponent(selectedFincaString)}`);
+  async function getDetalleFinca(id: number) {
+    history.push(`/Zonas?farm=${encodeURIComponent(id)}`);
   }
+
   return (
     <Container className="col-lg-6 col-xxl-4 my-5 mx-auto">
-      <CustomTitles txt={"Mis fincas"} />
-      <CustomAdd onClick={CreateFinca} />
+      <CustomTitles txt={"Mis Fincas"} />
+      {<CustomAdd onClick={CreateFinca} />}
       <CustomSearch
         label="Buscar"
         placeholder="Buscar"
@@ -87,7 +55,7 @@ const Farms = () => {
       <Container>
         <CustomFincaList
           filterTxt={searchInput}
-          farmList={FincaList}
+          fincasData={fincasData}
           onClick={getDetalleFinca}
         />
       </Container>

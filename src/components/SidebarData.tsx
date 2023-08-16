@@ -28,7 +28,7 @@ export const SidebarData: SidebarItem[] = [
     },
     {
         title: 'Mis Fincas',
-        path: '/Mis Fincas',
+        path: '/fincas',
         icon: null
     },
     {

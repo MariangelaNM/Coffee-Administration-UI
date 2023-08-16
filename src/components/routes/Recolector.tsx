@@ -4,7 +4,6 @@ import { Container, Form } from "react-bootstrap";
 import createApiClient from "../../api/api-client-factory";
 import { Colector } from "../../models/Colector";
 import { useCreateUser } from "../../hooks/useCreateUser";
-
 import CustomTitles from "../widgets/CustomTitles";
 import CustomAdd from "../widgets/CustomAdd";
 import CustomSearch from "../widgets/CustomInputWidget/CustomSearch";
@@ -17,7 +16,9 @@ const Recolector = () => {
   const history = useHistory();
   const [searchInput, setSearchInput] = useState("");
   const apiClient = useMemo(() => createApiClient(), []);
-  const { create, status, error } = useCreateUser(apiClient.postUser);
+
+  //const { create, status, error } = useCreate(apiClient.postUser);
+
   //TODO Esto es un ejemplo
   const ColectorList: Colector[] = [
     {

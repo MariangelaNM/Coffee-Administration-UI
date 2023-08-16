@@ -1,10 +1,7 @@
-import React, { ChangeEvent, useState, useEffect, useMemo } from "react";
-import { Container, Form } from "react-bootstrap";
-
+import { ChangeEvent, useState, useEffect, useMemo } from "react";
+import { Container } from "react-bootstrap";
 import createApiClient from "../../api/api-client-factory";
 import { Zona } from "../../models/Zona";
-import { useCreateUser } from "../../hooks/useCreateUser";
-
 import CustomTitles from "../widgets/CustomTitles";
 import CustomZonaInfoDetail from "../widgets/CustomZonasWidgets/CustomZonaInfoDetail";
 import CustomAdd from "../widgets/CustomAdd";
@@ -16,49 +13,40 @@ import { Periodo } from "../../models/Periodo";
 const MisPeriodos = () => {
   const history = useHistory();
   const location = useLocation();
-
-  const emptyZonaInput: Partial<Zona> = {
-    id: 0,
-    nombre: "",
-    descripcion: "",
-  };
-  const [zonaInput, setZonaInput] = useState<Partial<Zona>>(emptyZonaInput);
+  const [zonaInput, setZonaInput] = useState<Zona>();
   const [searchInput, setSearchInput] = useState("");
+  const [periodoData, setperiodoData] = useState<Periodo[]>([]);
+  let zonaId: number;
 
-  const apiClient = useMemo(() => createApiClient(), []);
-  //TODO Esto es un ejemplo
-  const periodosList: Periodo[] = [
-    {
-      id: 1,
-      TipoRecoleccionID: 1,
-      Desde: new Date(),
-      Hasta: new Date(),
-      Value: 2,
-    },
-    {
-      id: 2,
-      TipoRecoleccionID: 2,
-      Desde: new Date(),
-      Hasta: new Date(),
-      Value: 5,
-    },
-    {
-      id: 3,
-      TipoRecoleccionID: 3,
-      Desde: new Date(),
-      Hasta: new Date(),
-      Value: 3,
-    },
-  ];
+  useEffect(() => {
+    callDataZona();
+    callDataPeriodo();
+  }, [])
+
+  async function callDataZona() {
+    try {
+      const response = await createApiClient().makeApiRequest("GET", "/zonas/" + zonaId, null, zonaInput);
+      setZonaInput(response);
+      
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    }
+  }
+  async function callDataPeriodo() {
+    try {
+      //corregir id caficultor
+      const response = await createApiClient().makeApiRequest("GET", "/periodos/" + 1, null, periodoData);
+      setperiodoData(response);
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    }
+  }
 
   useEffect(() => {
     const queryParams = new URLSearchParams(location.search);
     const zonaString = queryParams.get("zona");
-    console.log(zonaString);
     if (zonaString) {
-      setZonaInput(JSON.parse(decodeURIComponent(zonaString)));
-      // Aquí puedes utilizar el objeto usuario como desees
-      console.log(zonaInput);
+      zonaId = parseInt(zonaString);
     } else {
       // Redireccionar a otra página si el parámetro no está presente
       history.push("/error");
@@ -71,13 +59,12 @@ const MisPeriodos = () => {
 
   async function updateZona() {
     console.log("updateZona");
-    const newZonaString = JSON.stringify(zonaInput);
-    history.push(`/Zonas/Edit?zona=${encodeURIComponent(newZonaString)}`);
+    history.push(`/Zonas/Edit?zona=${zonaId}`);
   }
 
   async function CreatePeriodo() {
     console.log("CreatePeriodo");
-    const emptyPeriodoInput: Partial<Periodo> = {
+   /* const emptyPeriodoInput: Partial<Periodo> = {
       id: 0,
       TipoRecoleccionID: 0,
       Desde: new Date(),
@@ -87,7 +74,7 @@ const MisPeriodos = () => {
     const newPeriodoString = JSON.stringify(emptyPeriodoInput);
     history.push(
       `/MisPeriodos/Create?periodo=${encodeURIComponent(newPeriodoString)}`
-    );
+    );*/
   }
   async function getDetallePeriodo() {
     console.log("DetalleZona");
@@ -97,8 +84,8 @@ const MisPeriodos = () => {
     <Container className="col-lg-6 col-xxl-4 my-5 mx-auto">
       <CustomTitles txt={"Mis periodos"} />
       <CustomZonaInfoDetail
-        nombre={zonaInput.nombre ?? ""}
-        descripcion={zonaInput.descripcion ?? ""}
+        nombre={zonaInput?.Nombre ?? ""}
+        descripcion={zonaInput?.Descripcion ?? ""}
         onClick={updateZona}
       />
       <CustomAdd onClick={CreatePeriodo} />
@@ -111,7 +98,7 @@ const MisPeriodos = () => {
       <Container>
         <CustomPeriodoList
           filterTxt={searchInput}
-          periodoList={periodosList}
+          periodoList={periodoData}
           onClick={getDetallePeriodo}
         />
       </Container>

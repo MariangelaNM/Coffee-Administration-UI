@@ -1,5 +1,4 @@
 import { useState, useCallback } from "react";
-import { UserResponse } from "../api/api-client";
 
 type UpdateResult<T> = {
   create: (data: T, errorMessage?: string) => Promise<void>;
@@ -9,8 +8,8 @@ type UpdateResult<T> = {
 
 type Status = "success" | "loading" | undefined;
 
-export function useCreateUser<T>(
-  createFunction: (data: T) => Promise<UserResponse>
+export function useCreate<T, ResponseType>(
+  createFunction: (data: T) => Promise<ResponseType>
 ): UpdateResult<T> {
   const [status, setStatus] = useState<Status>(undefined);
   const [error, setError] = useState<Error | undefined>(undefined);

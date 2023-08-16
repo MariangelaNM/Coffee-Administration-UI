@@ -6,32 +6,29 @@ import { H3, MediumText } from "../../../styles/TextStyles";
 import { FiArrowRight } from "react-icons/fi";
 import "../Customicon.scss";
 import "../CustomZonasWidgets/TableStyle.scss";
-import { Farm } from "../../../models/Farm";
+import { Finca } from "../../../models/Finca";
 
 interface CustomFincaListElementProps {
-  farm: Farm;
+  finca: Finca;
   count: string;
   onClick: (id: number) => void;
 }
 
 const CustomFincaListElement: React.FC<CustomFincaListElementProps> = ({
-    farm,
+  finca,
   count,
   onClick,
 }) => {
   return (
-    <Container className="detail-card mb-3" onClick={() => onClick(farm.id)}>
+    <Container className="detail-card mb-3" onClick={() => onClick(finca.Id)}>
       <Row className="mt-2">
         <Col className="d-flex flex-column justify-content-center">
-          <Title className="text-selection-disable">{farm.nombre}</Title>
+          <Title className="text-selection-disable">{finca.Nombre}</Title>
           <Description className="text-selection-disable">
-          {farm.ubicacion}
+            {finca.Ubicacion}
           </Description>
           <Description className="text-selection-disable">
-            {farm.descripcion}
-          </Description>
-          <Description className="text-selection-disable">
-            {count + " zonas"}
+            {finca.Descripcion}
           </Description>
         </Col>
         <Col

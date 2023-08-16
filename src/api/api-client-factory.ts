@@ -1,6 +1,8 @@
 import HttpApiClient from './http-api-client';
-import ApiClient from './api-client';
 
-export default function createApiClient(): ApiClient {
-    return new HttpApiClient('http://localhost:3000');
+const BASE_URL = 'http://localhost:3000';
+
+export default function createApiClient() {
+    return new HttpApiClient(BASE_URL);
 }
+
