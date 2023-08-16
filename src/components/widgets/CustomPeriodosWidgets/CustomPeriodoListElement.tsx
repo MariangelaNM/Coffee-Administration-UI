@@ -22,18 +22,18 @@ const CustomPeriodoListElement: React.FC<CustomPeriodoListElementProps> = ({
 
   onClick,
 }) => {
-  const desde = periodo.Desde.toLocaleDateString('es-ES', {
+  const desde = new Date(periodo.Desde).toLocaleDateString('es-ES', {
     year: 'numeric',
     month: 'numeric',
     day: 'numeric',
   });
-  const hasta = periodo.Hasta.toLocaleDateString('es-ES', {
+  const hasta = new Date(periodo.Hasta).toLocaleDateString('es-ES', {
     year: 'numeric',
     month: 'numeric',
     day: 'numeric',
   });
   return (
-    <Container className="detail-card mb-3" onClick={() => onClick(periodo.id)}>
+    <Container className="detail-card mb-3" onClick={() => onClick(periodo.Id)}>
       <Row className="mt-2">
         <Col className="d-flex flex-column justify-content-center">
           <Title className="text-selection-disable">{TipoRecoleccion[periodo.TipoRecoleccionID]}</Title>
@@ -41,7 +41,7 @@ const CustomPeriodoListElement: React.FC<CustomPeriodoListElementProps> = ({
             {desde+ " - " + hasta}
           </Description>
           <Description className="text-selection-disable">
-            {"$" + periodo.Value}
+            {"$" + periodo.PrecioCajuela}
           </Description>
         </Col>
         <Col

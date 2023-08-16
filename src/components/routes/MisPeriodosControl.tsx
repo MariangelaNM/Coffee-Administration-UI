@@ -18,7 +18,7 @@ import { useHistory, useLocation } from "react-router-dom";
 import { TipoRecoleccion } from "../../models/TipoRecoleccion";
 
 const MisPeriodosControl = () => {
- /* const emptyPeriodoInput: Partial<Periodo> = {
+  const emptyPeriodoInput: Partial<Periodo> = {
     id: 0,
     TipoRecoleccionID: 0,
     Desde: new Date(),
@@ -41,7 +41,7 @@ const MisPeriodosControl = () => {
   const location = useLocation();
 
   const apiClient = useMemo(() => createApiClient(), []);
-  const { create, status, error } = useCreate(apiClient.postUser);
+  //const { create, status, error } = useCreate(apiClient.postUser);
 
   useEffect(() => {
     const queryParams = new URLSearchParams(location.search);
@@ -50,9 +50,9 @@ const MisPeriodosControl = () => {
       setPeriodoInput(JSON.parse(decodeURIComponent(periodoString)));
       // Aquí puedes utilizar el objeto usuario como desees
       console.log(periodoInput);
-    } else {
+   /* } else {
       // Redireccionar a otra página si el parámetro no está presente
-      history.push("/error");
+      history.push("/error");*/
     }
 
     if (status === "success") {
@@ -82,18 +82,21 @@ const MisPeriodosControl = () => {
     setPeriodoInput(emptyPeriodoInput);
   }
 
+  const desdeDate = periodoInput.Desde ? new Date(Date.parse(periodoInput.Desde)) : null;
+  const hastaDate = periodoInput.Hasta ? new Date(Date.parse(periodoInput.Hasta)) : null;
+  
   const readyToSubmit =
     periodoInput.TipoRecoleccionID !== 0 &&
-    periodoInput.Value > 0 &&
-    new Date(Date.parse(periodoInput.Desde)).getTime() <=
-    new Date(Date.parse(periodoInput.Hasta)).getTime();
+    (periodoInput.PrecioCajuela ?? 0) > 0 &&
+    (!desdeDate || !hastaDate || desdeDate.getTime() <= hastaDate.getTime());
+  
 
-  function displayErrorMessage() {
+ /* function displayErrorMessage() {
     if (error) {
       return <CustomAlert success={false} label={error.message} />;
     }
     return null;
-  }
+  }*/
   function displaySuccessMessage() {
     if (status === "success") {
       return <CustomAlert success={true} label="Cuenta creada exitosamente" />;
@@ -119,10 +122,9 @@ const MisPeriodosControl = () => {
   return (
     <Container className="col-lg-6 col-xxl-4 my-5 mx-auto">
       <CustomTitles
-        txt={periodoInput.id != 0 ? "Editar periodo" : "Crea un nuevo periodo"}
+        txt={periodoInput.Id != 0 ? "Editar periodo" : "Crea un nuevo periodo"}
       />
-      {displayErrorMessage()}
-      {displaySuccessMessage()}
+     
       <Form noValidate validated={readyToSubmit}>
         <CustomDropDown
           labelname={"Seleccionar opción"}
@@ -135,8 +137,8 @@ const MisPeriodosControl = () => {
           label="Pago por unidad"
           placeholder="Pago por unidad"
           typeForm="number"
-          value={periodoInput.Value as number}
-          onChange={(e) => onChange(e, "Value")}
+          value={periodoInput.PrecioCajuela as number}
+          onChange={(e) => onChange(e, "PrecioCajuela")}
           required
           onInvalidText={"El campo no puede estar vacio"}
         />
@@ -144,20 +146,21 @@ const MisPeriodosControl = () => {
         <CustomDatePiker
           label="Desde"
           placeholder="Desde"
-          valuedate={new Date(Date.parse(periodoInput.Desde))}
+          valuedate={periodoInput.Desde ? new Date(periodoInput.Desde) : null} // Cambia 'null' por un valor predeterminado si lo deseas
           onChange={(e) => onChange(e, "Desde")}
           required
-          onInvalidText={"El campo no puede estar vacio"}
+          onInvalidText={"El campo no puede estar vacío"}
         />
+
         <CustomDatePiker
           label="Hasta"
           placeholder="Hasta"
-          valuedate={new Date(Date.parse(periodoInput.Hasta))}
+          valuedate={periodoInput.Hasta ? new Date(periodoInput.Hasta) : null} // Cambia 'null' por un valor predeterminado si lo deseas
           onChange={(e) => onChange(e, "Hasta")}
           required
           onInvalidText={"El campo no puede estar vacio"}
         />
-        {periodoInput.id != 0 ? (
+        {periodoInput.Id != 0 ? (
           <div className="d-grid gap-2">
             <CustomButtonPrimary
               label="Actualizar"
@@ -178,7 +181,7 @@ const MisPeriodosControl = () => {
         )}
       </Form>
     </Container>
-  );*/
+  );
 };
 
 export default MisPeriodosControl;

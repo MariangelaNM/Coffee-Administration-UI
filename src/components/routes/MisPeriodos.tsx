@@ -1,4 +1,4 @@
-import  { ChangeEvent, useState, useEffect, useMemo } from "react";
+import { ChangeEvent, useState, useEffect, useMemo } from "react";
 import { Container } from "react-bootstrap";
 import createApiClient from "../../api/api-client-factory";
 import { Zona } from "../../models/Zona";
@@ -15,42 +15,28 @@ const MisPeriodos = () => {
   const location = useLocation();
   const [zonaInput, setZonaInput] = useState<Zona>();
   const [searchInput, setSearchInput] = useState("");
+  const [periodoData, setperiodoData] = useState<Periodo[]>([]);
   let zonaId: number;
-  //TODO Esto es un ejemplo
-  const periodosList: Periodo[] = [
-    {
-      id: 1,
-      TipoRecoleccionID: 1,
-      Desde: new Date(),
-      Hasta: new Date(),
-      Value: 2,
-    },
-    {
-      id: 2,
-      TipoRecoleccionID: 2,
-      Desde: new Date(),
-      Hasta: new Date(),
-      Value: 5,
-    },
-    {
-      id: 3,
-      TipoRecoleccionID: 3,
-      Desde: new Date(),
-      Hasta: new Date(),
-      Value: 3,
-    },
-  ];
 
   useEffect(() => {
-    callData()
+    callDataZona();
+    callDataPeriodo();
   }, [])
 
-  async function callData() {
+  async function callDataZona() {
     try {
-
       const response = await createApiClient().makeApiRequest("GET", "/zonas/" + zonaId, null, zonaInput);
       setZonaInput(response);
-
+      
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    }
+  }
+  async function callDataPeriodo() {
+    try {
+      //corregir id caficultor
+      const response = await createApiClient().makeApiRequest("GET", "/periodos/" + 1, null, periodoData);
+      setperiodoData(response);
     } catch (error) {
       console.error('Error fetching data:', error);
     }
@@ -78,7 +64,7 @@ const MisPeriodos = () => {
 
   async function CreatePeriodo() {
     console.log("CreatePeriodo");
-    const emptyPeriodoInput: Partial<Periodo> = {
+   /* const emptyPeriodoInput: Partial<Periodo> = {
       id: 0,
       TipoRecoleccionID: 0,
       Desde: new Date(),
@@ -88,7 +74,7 @@ const MisPeriodos = () => {
     const newPeriodoString = JSON.stringify(emptyPeriodoInput);
     history.push(
       `/MisPeriodos/Create?periodo=${encodeURIComponent(newPeriodoString)}`
-    );
+    );*/
   }
   async function getDetallePeriodo() {
     console.log("DetalleZona");
@@ -112,7 +98,7 @@ const MisPeriodos = () => {
       <Container>
         <CustomPeriodoList
           filterTxt={searchInput}
-          periodoList={periodosList}
+          periodoList={periodoData}
           onClick={getDetallePeriodo}
         />
       </Container>

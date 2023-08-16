@@ -59,10 +59,10 @@ const Zonas = () => {
     history.push(`/MisPeriodos?zona=${encodeURIComponent(id)}`);
   }
 
-  function onChangeFilterTxt(e: React.ChangeEvent<HTMLInputElement>): void {
-    throw new Error("Function not implemented.");
+  function onChangeFilterTxt(e: ChangeEvent<HTMLInputElement>) {
+    setSearchInput(e.target.value);
   }
-
+  
   return (
     <Container className="col-lg-6 col-xxl-4 my-5 mx-auto">
       <CustomTitles txt={"Mis zonas"} />

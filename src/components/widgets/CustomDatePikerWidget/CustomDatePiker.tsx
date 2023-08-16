@@ -6,7 +6,7 @@ import "./customDatePicker.scss"
 interface CustomDatepickerProps {
   label: string;
   placeholder: string;
-  valuedate: Date;
+  valuedate: Date | null; // Permitiendo 'null'
   onChange: (e: ChangeEvent<HTMLInputElement>) => void;
   required?: boolean;
 
@@ -22,7 +22,7 @@ const CustomDatepicker: React.FC<CustomDatepickerProps> = ({
   onInvalidText,
 }) => {
   // si la fecha no es valida o es "" utiliza la fecha del dia 
-if(isNaN(valuedate.getTime())){
+if(valuedate!=null&&isNaN(valuedate.getTime())){
  valuedate = new Date();
 }
   const formattedDate = valuedate?.toISOString().slice(0, 10) || '';

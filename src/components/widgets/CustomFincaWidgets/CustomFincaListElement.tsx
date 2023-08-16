@@ -15,7 +15,7 @@ interface CustomFincaListElementProps {
 }
 
 const CustomFincaListElement: React.FC<CustomFincaListElementProps> = ({
-    finca,
+  finca,
   count,
   onClick,
 }) => {
@@ -25,13 +25,10 @@ const CustomFincaListElement: React.FC<CustomFincaListElementProps> = ({
         <Col className="d-flex flex-column justify-content-center">
           <Title className="text-selection-disable">{finca.Nombre}</Title>
           <Description className="text-selection-disable">
-          {finca.Ubicacion}
+            {finca.Ubicacion}
           </Description>
           <Description className="text-selection-disable">
             {finca.Descripcion}
-          </Description>
-          <Description className="text-selection-disable">
-            {count + " zonas"}
           </Description>
         </Col>
         <Col
