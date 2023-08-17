@@ -1,0 +1,64 @@
+name: Reporte de bugs
+description: Añade un reporte de bug.
+title: "[Bug]: "
+labels: ["kind/bug", "priority/normal"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Gracias por rellenar esta solicitud de reporte de bug. Por favor, rellena este formulario para mejorar el proyecto.
+  - type: checkboxes
+    attributes:
+      label: ¿Existe alguna *issue* existente para esto?
+      description: Por favor, comprueba en el repositorio que no existe bugs similares al que vas a reportar.
+      options:
+        - label: He buscado *issues* existentes
+          required: true
+  - type: textarea
+    attributes:
+      label: Comportamiento actual
+      description: Descripción concisa de lo que estás experimentando.
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: Comportamiento esperado
+      description: Descripción concisa de lo que esperas que ocurra.
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: Pasos para reproducirlo
+      description: Pasos para reproducir el bug
+      placeholder: |
+        1. En este entorno...
+        2. Con esta configuración...
+        3. Ejecuta '...'
+        4. Mira el error...
+  - type: textarea
+    id: workaround
+    attributes:
+      label: Alternativas (si hay)
+      description: Cualquier paso manual que permita solventar la *issue*
+      placeholder: Describe los pasos que has seguido para resolver el problema
+    validations:
+      required: false
+  - type: dropdown
+    id: browsers
+    attributes:
+      label: ¿En que navegadores estás viendo el problema?
+      multiple: true
+      options:
+        - Firefox
+        - Chrome
+        - Safari
+        - Microsoft Edge
+    validations:
+      required: false
+  - type: textarea
+    id: anything-else
+    attributes:
+      label: ¿Alguna cosa más?
+      description: Añade información adicional que quieras compartir
+    validations:
+      required: false
