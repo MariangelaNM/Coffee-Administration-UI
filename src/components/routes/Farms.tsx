@@ -20,7 +20,7 @@ const Farms = () => {
   async function callDataFinca() {
     try {
       const data = { CaficultorID: 1 };//corregir
-      const response = await createApiClient().makeApiRequest("PUT", "/fincas", JSON.stringify(data), fincasData);
+      const response = await createApiClient().makeApiRequest("PUT", "/fincas", data);
       setFincasData(response);
     } catch (error) {
       console.error('Error fetching data:', error);

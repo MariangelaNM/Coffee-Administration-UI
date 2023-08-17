@@ -27,11 +27,11 @@ const ZonasControl = () => {
   const location = useLocation();
   let fincaID: Number;
   let zonaID: Number;
-  
+
   useEffect(() => {
     getData()
   }, [])
-  
+
   useEffect(() => {
     CallIds();
   }, [history, location.search, status, emptyZonaInput]);
@@ -65,7 +65,7 @@ const ZonasControl = () => {
 
   async function postZona() {
     try {
-      const response = await createApiClient().makeApiRequest("POST", "/Zonas", JSON.stringify(zonaInput), zonaData);
+      const response = await createApiClient().makeApiRequest("POST", "/Zonas", zonaInput);
       if (response.hasOwnProperty("error")) {
         setShowSuccessMessageError(true);
       }
@@ -88,7 +88,7 @@ const ZonasControl = () => {
   }
   async function updateZona() {
     try {
-      const response = await createApiClient().makeApiRequest("PATCH", "/zonas/" + zonaID, JSON.stringify(zonaInput), zonaData);
+      const response = await createApiClient().makeApiRequest("PATCH", "/zonas/" + zonaID, zonaInput);
       if (response.hasOwnProperty("error")) {
         setShowSuccessMessageError(true);
       }
@@ -110,7 +110,7 @@ const ZonasControl = () => {
     }
   }
   async function getData() {
-    const response = await createApiClient().makeApiRequest("GET", "/zonas/" + zonaID, null, zonaData);
+    const response = await createApiClient().makeApiRequest("GET", "/zonas/" + zonaID, null);
     setZonaInput(response);
 
   }

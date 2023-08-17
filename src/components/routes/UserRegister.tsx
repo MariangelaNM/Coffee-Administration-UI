@@ -6,15 +6,15 @@ import { Register } from "../../models/Register";
 import { useCreate } from "../../hooks/useCreateUser";
 
 import CustomTitles from "../widgets/CustomTitles";
-import CustomInput from "../widgets/CustomInputWidget/CustomInput"; 
-import CustomPasswordInput from "../widgets/CustomInputWidget/CustomPasswordInput"; 
+import CustomInput from "../widgets/CustomInputWidget/CustomInput";
+import CustomPasswordInput from "../widgets/CustomInputWidget/CustomPasswordInput";
 import CustomAlert from "../widgets/CustomAlert";
 
 //import { useNavigate } from 'react-router';
 import { useHistory } from "react-router-dom";
 import { User } from "../../models/User";
 
-const UserRegister =  () => {
+const UserRegister = () => {
   const emptyRegisterInput: Partial<Register> = {
     username: "",
     lastName: "",
@@ -26,7 +26,7 @@ const UserRegister =  () => {
   const [registerInput, setRegisterInput] =
     useState<Partial<Register>>(emptyRegisterInput);
   const history = useHistory();
-  
+
   const [passwordValidate, setPasswordValidate] = useState(false);
   const [confirmPassValidate, setConfirmPassValidate] = useState(false);
 
@@ -36,7 +36,7 @@ const UserRegister =  () => {
   const apiClient = useMemo(() => createApiClient(), []);
   //const { create, status, error } = useCreate(apiClient.postUser);
   //const user: User = /* crea el objeto de usuario */;
- // const userResponse = await apiClient.post("POST", "/users", user);
+  // const userResponse = await apiClient.post("POST", "/users", user);
 
   useEffect(() => {
     if (status === "success") {
@@ -44,11 +44,11 @@ const UserRegister =  () => {
       onReset();
       //TODO navega a la pantalla de para hacer loging o se hace loging automatico para ir a pantalla principal
       history.push('/login')
-      
+
     } else {
       //console.log(error);
     }
-    return () => {};
+    return () => { };
   }, [status]);
   //TODO   }, [status,navigate]);
 
@@ -97,34 +97,34 @@ const UserRegister =  () => {
   const toggleConfirmPassVisibility = () => {
     setShowConfirmPass(!showConfirmPass);
   };
-/*
-  function displayErrorMessage() {
-    if (error) {
-      return <CustomAlert success={false} label={error.message} />;
+  
+    function displayErrorMessage() {
+      if (error) {
+        return <CustomAlert success={false} label={error.message} />;
+      }
+      return null;
     }
-    return null;
-  }
-  function displaySuccessMessage() {
-    if (status === "success") {
-      return <CustomAlert success={true} label="Cuenta creada exitosamente" />;
+    function displaySuccessMessage() {
+      if (status === "success") {
+        return <CustomAlert success={true} label="Cuenta creada exitosamente" />;
+      }
+      return null;
     }
-    return null;
-  }
-  async function postUser() {
-    const errorMessage = !readyToSubmit
-      ? "Uno o más datos son incorrectos"
-      : undefined;
-    const newRegister = {
-      Correo: registerInput.mail,
-      Contrasena: registerInput.password,
-      Nombres: registerInput.username,
-      Apellidos: registerInput.lastName,
-      Role: 1,
-    };
-    console.log(newRegister);
-    
-    create(newRegister as User, errorMessage);
-  }*/
+    async function postUser() {
+      const errorMessage = !readyToSubmit
+        ? "Uno o más datos son incorrectos"
+        : undefined;
+      const newRegister = {
+        Correo: registerInput.mail,
+        Contrasena: registerInput.password,
+        Nombres: registerInput.username,
+        Apellidos: registerInput.lastName,
+        Role: 1,
+      };
+      console.log(newRegister);
+      
+     // create(newRegister as User, errorMessage);
+    }
 
   return (
     <Container className="col-lg-6 col-xxl-4 my-5 mx-auto">
@@ -182,10 +182,10 @@ const UserRegister =  () => {
           showPassword={showConfirmPass}
           onInvalidText={"Las contraseñas no coinciden"}
         />
-
+        <Button variant="primary" className="custombtn-primary no-active-style" onClick={() => postUser()}>
+          Registrar
+        </Button>
         <div className="d-grid gap-2">
-
-
           <Button variant="primary" className="custombtn-secondary">
             Cancelar
           </Button>
