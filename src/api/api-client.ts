@@ -2,72 +2,66 @@ export interface ApiError {
   description?: string;
 }
 
-export class BadRequest implements ApiError {}
-
-export class GenericError implements ApiError {
-  constructor(httpCode: number, description: string) {
-    this.httpCode = httpCode;
-    this.description = description;
-  }
-  httpCode: number;
-  description: string;
-}
-
-export class Timeout implements ApiError {}
-export class Forbidden implements ApiError {}
-export class Unauthorized implements ApiError {}
-export class NotFound implements ApiError {}
-export class UnprocessableEntity implements ApiError {
+export class ApiErrorBase implements ApiError {
   constructor(public description?: string) {}
 }
-export class PreconditionFailed implements ApiError {}
-export class PreconditionRequired implements ApiError {}
+
+export class BadRequest extends ApiErrorBase {}
+export class Unauthorized extends ApiErrorBase {}
+export class Forbidden extends ApiErrorBase {}
+export class NotFound extends ApiErrorBase {}
+export class PreconditionFailed extends ApiErrorBase {}
+export class PreconditionRequired extends ApiErrorBase {}
+export class UnprocessableEntity extends ApiErrorBase {}
+
+export class GenericError extends ApiErrorBase {
+  constructor(public httpCode: number, description: string) {
+    super(description);
+  }
+}
 
 export interface ApiResponse<T> {
+  Nombre: string;
+  Id: number | undefined;
   data: T;
 }
+
+const errorDescriptions: Record<number, string> = {
+  400: "Bad Request",
+  401: "Unauthorized",
+  403: "Forbidden",
+  404: "Not Found",
+  412: "Precondition Failed",
+  409: "Conflict",
+  422: "Unprocessable Entity",
+  428: "Precondition Required",
+};
 
 export async function createApiError(
   response: Response | XMLHttpRequest
 ): Promise<ApiError> {
-  
-  switch (response.status) {
-    case 400:
-      return new BadRequest();
-    case 401:
-      return new Unauthorized();
-    case 403:
-      return new Forbidden();
-    case 404:
-      return new NotFound();
-    case 412:
-      return new PreconditionFailed();
-    case 409:
-      try {
-        const detail =
-          "json" in response
-            ? (await response.json()).message
-            : response.responseText;
-        return new UnprocessableEntity(detail);
-      } catch {
-        return new UnprocessableEntity();
-      }
-    case 422:
-      try {
-        const detail =
-          "json" in response
-            ? (await response.json()).detail
-            : response.responseText;
-        return new UnprocessableEntity(detail);
-      } catch (e) {
-        return new UnprocessableEntity();
-      }
-    case 428:
-      return new PreconditionRequired();
-  }
-  return new GenericError(
-    response.status,
-    "text" in response ? await response.text() : response.responseText
-  );
-}
+  const status = response.status;
+  const description =
+    errorDescriptions[status] ||
+    ("text" in response ? await response.text() : "Unknown Error");
 
+  switch (status) {
+    case 400:
+      return new BadRequest(description);
+    case 401:
+      return new Unauthorized(description);
+    case 403:
+      return new Forbidden(description);
+    case 404:
+      return new NotFound(description);
+    case 412:
+      return new PreconditionFailed(description);
+    case 409:
+    case 422:
+      return new UnprocessableEntity(description);
+    case 428:
+      return new PreconditionRequired(description);
+    default:
+      return new GenericError(status, description);
+  }
+}

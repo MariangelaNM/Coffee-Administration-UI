@@ -25,7 +25,7 @@ const MisPeriodos = () => {
 
   async function callDataZona() {
     try {
-      const response = await createApiClient().makeApiRequest("GET", "/zonas/" + zonaId, null, zonaInput);
+      const response = await createApiClient().makeApiRequest("GET", "/zonas/" + zonaId, null);
       setZonaInput(response);
       
     } catch (error) {
@@ -35,7 +35,7 @@ const MisPeriodos = () => {
   async function callDataPeriodo() {
     try {
       //corregir id caficultor
-      const response = await createApiClient().makeApiRequest("GET", "/periodos/" + 1, null, periodoData);
+      const response = await createApiClient().makeApiRequest("GET", "/periodos/" + 1, null);
       setperiodoData(response);
     } catch (error) {
       console.error('Error fetching data:', error);

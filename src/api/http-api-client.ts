@@ -1,10 +1,7 @@
-import { NULL } from "sass";
-import {  ApiResponse, createApiError } from "./api-client";
+import { ApiResponse, createApiError } from "./api-client";
 
 export default class HttpApiClient {
-  baseUrl: string;
-
-  apiKey = "4d4ee570-87bd-42bf-9bda-173f22622871";
+  private baseUrl: string;
 
   constructor(baseUrl: string) {
     this.baseUrl = baseUrl;
@@ -13,33 +10,32 @@ export default class HttpApiClient {
   async makeApiRequest<T>(
     method: string,
     endpoint: string,
-    body: string,
-    expectedType: T
+    body: Record<string, any> | null = null
   ): Promise<ApiResponse<T>> {
     const url = `${this.baseUrl}${endpoint}`;
     const headers = {
       "Content-Type": "application/json",
-      "coffee-key": this.apiKey,
+      "coffee-key": "4d4ee570-87bd-42bf-9bda-173f22622871",
     };
   
     try {
       const response = await fetch(url, {
         method,
         headers,
-        body: body,
+        body: body ? JSON.stringify(body) : undefined,
       });
-  
+
       if (!response.ok) {
-        createApiError(response);
+        throw await createApiError(response);
       }
-  
-      const responseData = await response.json();
-      console.log(responseData)
-      return responseData as ApiResponse<T>;
+
+      const responseData: ApiResponse<T> = await response.json();
+      return responseData;
     } catch (error) {
-      
-      return { error: "API request failed" };
-    
+      console.error("API request failed:", error);
+
+      // You can return an error object with details
+      return { success: false, error: "API request failed" };
     }
   }
-}  
+}

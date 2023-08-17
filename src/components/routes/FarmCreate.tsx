@@ -16,11 +16,10 @@ const FarmCreate = () => {
   const [showSuccessMessage, setShowSuccessMessage] = useState(false);
   const [showSuccessMessageError, setShowSuccessMessageError] = useState(false);
   const [fincaId, setFincaId] = useState("");
-  const [fincasData, setFincasData] = useState<Finca[]>([]);
   let id: string;
   const [finca, setFinca] = useState<Finca>({
     Id: undefined,
-    CaficultorID: 1,//corregir
+    CaficultorID: 0,//corregir
     Nombre: "",
     Ubicacion: "",
     Descripcion: ""
@@ -33,26 +32,32 @@ const FarmCreate = () => {
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setShowSuccessMessageError(false);
-
-    if (e.currentTarget.checkValidity() === false) {
+    if (!e.currentTarget.checkValidity()) {
       e.stopPropagation();
       setValidated(true);
     } else {
       try {
-        if (fincaId != "") {
-          await createApiClient().makeApiRequest("PATCH", "/fincas/" + fincaId, JSON.stringify(finca), fincasData);
+
+        const apiClient = createApiClient();
+        const apiPath = fincaId ? `/fincas/${fincaId}` : "/fincas";
+        const response = await apiClient.makeApiRequest(
+          fincaId ? "PATCH" : "POST",
+          apiPath,
+          finca
+        );
+
+        if ("success" in response) {
+          setShowSuccessMessageError(true);
+          e.stopPropagation();
+          setValidated(true);
+          setErrorMsg("Error en la respuesta de la API");
         } else {
-          await createApiClient().makeApiRequest("POST", "/fincas", JSON.stringify(finca), fincasData);
+          setShowSuccessMessage(true);
+          setTimeout(() => {
+            setShowSuccessMessage(false);
+            history.push("/Fincas");
+          }, 2000);
         }
-        setShowSuccessMessage(true);
-
-        setTimeout(() => {
-          setShowSuccessMessage(false);
-          history.push(
-            `/Fincas`
-          );
-        }, 2000);
-
       } catch (error) {
         setShowSuccessMessageError(true);
         e.stopPropagation();
@@ -77,8 +82,15 @@ const FarmCreate = () => {
   }
   async function fincaData() {
     if (id != undefined) {
-      const response = await createApiClient().makeApiRequest("GET", "/fincas/" + id, null, fincasData);
-      setFinca(response);
+      try {
+        const response = await createApiClient().makeApiRequest("GET", "/fincas/" + id, null);
+        setFinca(response);
+      }
+      catch {
+        history.push(
+          `/error`
+        );
+      }
     }
   }
 

@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useState, useEffect } from "react";
+import { ChangeEvent, useState, useEffect } from "react";
 import { Container } from "react-bootstrap";
 import createApiClient from "../../api/api-client-factory";
 import { Finca } from "../../models/Finca";
@@ -27,19 +27,19 @@ const Zonas = () => {
   async function callData() {
     try {
       const data = { FincaID: id };
-      const response = await createApiClient().makeApiRequest("PUT", "/zonas", JSON.stringify(data), zonaList);
+      const response = await createApiClient().makeApiRequest("PUT", "/zonas", data);
       setZonaList(response);
-      const responseFinca = await createApiClient().makeApiRequest("GET", "/fincas/" + id, null, fincasData);
+      const responseFinca = await createApiClient().makeApiRequest("GET", "/fincas/" + id, null);
       setFincasData(responseFinca);
-
     } catch (error) {
-      console.error('Error fetching data:', error);
+      history.push("/error");
     }
   }
 
   async function updateFinca() {
     CallIds();
     history.push(`/Fincas/Edit?farm=${encodeURIComponent(fincaInput)}`);
+  
   }
 
   function CallIds() {
@@ -62,7 +62,7 @@ const Zonas = () => {
   function onChangeFilterTxt(e: ChangeEvent<HTMLInputElement>) {
     setSearchInput(e.target.value);
   }
-  
+
   return (
     <Container className="col-lg-6 col-xxl-4 my-5 mx-auto">
       <CustomTitles txt={"Mis zonas"} />
