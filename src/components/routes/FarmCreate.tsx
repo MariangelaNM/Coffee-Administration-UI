@@ -45,15 +45,14 @@ const FarmCreate = () => {
           await createApiClient().makeApiRequest("POST", "/fincas", JSON.stringify(finca), fincasData);
         }
         setShowSuccessMessage(true);
-        setFinca({
-          ...finca,
-          Nombre: "",
-          Ubicacion: "",
-          Descripcion: ""
-        });
+
         setTimeout(() => {
           setShowSuccessMessage(false);
-        }, 3000);
+          history.push(
+            `/Fincas`
+          );
+        }, 2000);
+
       } catch (error) {
         setShowSuccessMessageError(true);
         e.stopPropagation();
@@ -77,8 +76,10 @@ const FarmCreate = () => {
     }
   }
   async function fincaData() {
-    const response = await createApiClient().makeApiRequest("GET", "/fincas/" + id, null, fincasData);
-    setFinca(response);
+    if (id != undefined) {
+      const response = await createApiClient().makeApiRequest("GET", "/fincas/" + id, null, fincasData);
+      setFinca(response);
+    }
   }
 
   async function Cancelar() {
@@ -86,7 +87,7 @@ const FarmCreate = () => {
       `/Fincas`
     );
   }
-  
+
   return (
     <Container className="col-lg-6 col-xxl-4 my-5 mx-auto">
       <Title>{fincaId != "" ? "Editar Finca" : "Crear una Nueva Finca"}</Title>
@@ -151,7 +152,7 @@ const FarmCreate = () => {
             className="custombtn-primary no-active-style"
             type="submit"
           >
-           {fincaId != "" ? "Editar Finca" : "Crear Finca"} 
+            {fincaId != "" ? "Editar Finca" : "Crear Finca"}
           </Button>
 
           <Button
