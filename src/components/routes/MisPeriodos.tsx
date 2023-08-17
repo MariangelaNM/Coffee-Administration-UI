@@ -16,16 +16,26 @@ const MisPeriodos = () => {
   const [zonaInput, setZonaInput] = useState<Zona>();
   const [searchInput, setSearchInput] = useState("");
   const [periodoData, setperiodoData] = useState<Periodo[]>([]);
-  let zonaId: number;
+  let id: string;
 
+  const [fincaInput, setFincaInput] = useState("");
   useEffect(() => {
+    CallIds() 
     callDataZona();
     callDataPeriodo();
   }, [])
 
+  function CallIds() {
+    const queryParams = new URLSearchParams(location.search);
+    const fincaString = queryParams.get("zona");
+    if (fincaString) {
+      id = (fincaString);
+      setFincaInput((decodeURIComponent(fincaString)));
+    }
+  }
   async function callDataZona() {
     try {
-      const response = await createApiClient().makeApiRequest("GET", "/zonas/" + zonaId, null);
+      const response = await createApiClient().makeApiRequest("GET", "/zonas/" + id, null);
       setZonaInput(response);
       
     } catch (error) {
@@ -42,24 +52,15 @@ const MisPeriodos = () => {
     }
   }
 
-  useEffect(() => {
-    const queryParams = new URLSearchParams(location.search);
-    const zonaString = queryParams.get("zona");
-    if (zonaString) {
-      zonaId = parseInt(zonaString);
-    } else {
-      // Redireccionar a otra página si el parámetro no está presente
-      history.push("/error");
-    }
-  }, [history, location.search]);
+
 
   function onChangeFilterTxt(e: ChangeEvent<HTMLInputElement>) {
     setSearchInput(e.target.value);
   }
 
   async function updateZona() {
-    console.log("updateZona");
-    history.push(`/Zonas/Edit?zona=${zonaId}`);
+    CallIds() 
+    history.push(`/Zonas/Edit?zona=${id}`);
   }
 
   async function CreatePeriodo() {

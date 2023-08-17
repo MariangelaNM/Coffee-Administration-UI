@@ -25,8 +25,8 @@ const ZonasControl = () => {
   const [showSuccessMessage, setShowSuccessMessage] = useState(false);
   const history = useHistory();
   const location = useLocation();
-  let fincaID: Number;
-  let zonaID: Number;
+  let fincaID: Number=0;
+  let zonaID: Number=0;
 
   useEffect(() => {
     getData()
@@ -66,7 +66,7 @@ const ZonasControl = () => {
   async function postZona() {
     try {
       const response = await createApiClient().makeApiRequest("POST", "/Zonas", zonaInput);
-      if (response.hasOwnProperty("error")) {
+      if ("success" in response) {
         setShowSuccessMessageError(true);
       }
       if (response.toString() == "201") {
@@ -88,6 +88,7 @@ const ZonasControl = () => {
   }
   async function updateZona() {
     try {
+      debugger;
       const response = await createApiClient().makeApiRequest("PATCH", "/zonas/" + zonaID, zonaInput);
       if (response.hasOwnProperty("error")) {
         setShowSuccessMessageError(true);
@@ -112,7 +113,6 @@ const ZonasControl = () => {
   async function getData() {
     const response = await createApiClient().makeApiRequest("GET", "/zonas/" + zonaID, null);
     setZonaInput(response);
-
   }
   const readyToSubmit = zonaInput.Nombre !== "" && zonaInput.Descripcion !== "";
 
@@ -151,7 +151,7 @@ const ZonasControl = () => {
           required
           onInvalidText={"El campo no puede estar vacio"}
         />
-        {zonaInput.Id != undefined ? (
+        {zonaID == 0 ? (
           <div className="d-grid gap-2">
             <CustomButtonPrimary
               label="Actualizar"
