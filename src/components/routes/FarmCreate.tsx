@@ -19,7 +19,7 @@ const FarmCreate = () => {
   let id: string;
   const [finca, setFinca] = useState<Finca>({
     Id: undefined,
-    CaficultorID: 0,//corregir
+    CaficultorID: 1,//corregir
     Nombre: "",
     Ubicacion: "",
     Descripcion: ""
@@ -47,6 +47,7 @@ const FarmCreate = () => {
         );
 
         if ("success" in response) {
+          console.log(response);
           setShowSuccessMessageError(true);
           e.stopPropagation();
           setValidated(true);

@@ -1,25 +1,24 @@
 
 import { ChangeEvent, FormEvent, useState } from "react";
-
 import { Container, Form } from "react-bootstrap";
-
 import CustomTitles from "../widgets/CustomTitles";
 import CustomInput from "../widgets/CustomInputWidget/CustomInput";
 import CustomPasswordInput from "../widgets/CustomInputWidget/CustomPasswordInput";
 import CustomButtonPrimary from "../widgets/CustomBtnPrimaryWidget/CustomBtnPrimary";
 import CustomButtonSecondary from "../widgets/CustomButtonSecondaryWidget/CustomButtonSecondary";
-//import CustomAlert from "../widgets/CustomAlert";
-
+import createApiClient from "../../api/api-client-factory";
+import Alert from "@mui/material/Alert";
+import { useHistory } from "react-router-dom";
 const Login = () => {
-  //const [errorMsg, setErrorMsg] = useState("");
+  const history = useHistory();
   const [mail, setMail] = useState("");
   const [password, setPassword] = useState("");
-
   const [validated, setValidated] = useState(false);
-
   const [showPassword, setShowPassword] = useState(false);
-
   const readyToSubmit = mail !== "" && password !== "";
+  const [showSuccessMessage, setShowSuccessMessage] = useState(false);
+  const [showSuccessMessageError, setShowSuccessMessageError] = useState(false);
+
   function onReset() {
     setMail("");
     setPassword("");
@@ -52,23 +51,47 @@ const Login = () => {
     setPassword(e.target.value);
     onChangeAnyInput();
   }
+  async function callLoggin() {
+    try {
+      const body = {
+        "email": mail,
+        "contrasena": password
+      }
 
-  // function displayErrorMessage() {
-  //  if (error) {
-  //     return <CustomAlert success={false} label={error.message} />;
-  //    }
-  //    return null;
-  // }
-  // function displaySuccessMessage() {
-  //   if (status === "success") {
-  //     return <CustomAlert success={true} label="Cuenta creada exitosamente" />;
-  //   }
-  //   return null;
-  // }
+      const response = await createApiClient().makeApiRequest("POST", "/authentication/login", body);
+      console.log(response);
+      if ("success" in response) {
+        console.log(response);
+        setShowSuccessMessageError(true);
+
+      } else {
+        setShowSuccessMessageError(false);
+        setShowSuccessMessage(true);
+        setTimeout(() => {
+          setShowSuccessMessage(false);
+          history.push("");
+        }, 2000);
+      }
+    } catch (error) {
+      setShowSuccessMessageError(true);
+      console.error('Error fetching data:', error);
+    }
+  }
+
 
   return (
     <Container className="col-lg-6 col-xxl-4 my-5 mx-auto">
       <CustomTitles txt={"Ingresar"} />
+      {showSuccessMessageError && (
+        <Alert severity="error" style={{ marginBottom: "10px" }}>
+          Error con su Correo y Contraseña
+        </Alert>
+      )}
+      {showSuccessMessage && (
+        <Alert severity="success" style={{ marginBottom: "10px" }}>
+          ¡Bienbenid@!
+        </Alert>
+      )}
       <Form noValidate validated={validated} onSubmit={handleSubmit}>
         <CustomInput
           label="Nombre"
@@ -95,6 +118,7 @@ const Login = () => {
             label="Registrar"
             onClick={() => {
               console.log("Login");
+              callLoggin();
             }}
             disabled={!readyToSubmit} //status === "loading" ||
           />

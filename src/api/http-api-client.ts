@@ -26,7 +26,8 @@ export default class HttpApiClient {
       });
 
       if (!response.ok) {
-        throw await createApiError(response);
+        const responseData: ApiResponse<T> = await response.json();
+        return responseData;
       }
 
       const responseData: ApiResponse<T> = await response.json();

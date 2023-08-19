@@ -52,8 +52,6 @@ const MisPeriodos = () => {
     }
   }
 
-
-
   function onChangeFilterTxt(e: ChangeEvent<HTMLInputElement>) {
     setSearchInput(e.target.value);
   }
@@ -65,7 +63,7 @@ const MisPeriodos = () => {
 
   async function CreatePeriodo() {
     console.log("CreatePeriodo");
-   /* const emptyPeriodoInput: Partial<Periodo> = {
+   const emptyPeriodoInput: Partial<Periodo> = {
       id: 0,
       TipoRecoleccionID: 0,
       Desde: new Date(),
@@ -75,7 +73,7 @@ const MisPeriodos = () => {
     const newPeriodoString = JSON.stringify(emptyPeriodoInput);
     history.push(
       `/MisPeriodos/Create?periodo=${encodeURIComponent(newPeriodoString)}`
-    );*/
+    );
   }
   async function getDetallePeriodo() {
     console.log("DetalleZona");
