@@ -38,18 +38,12 @@ const Login = () => {
     setValidated(true);
   };
 
-  function onChangeAnyInput() {
-    //setErrorMsg("");
-  }
-
   function onChangeMail(e: ChangeEvent<HTMLInputElement>) {
     setMail(e.target.value);
-    onChangeAnyInput();
   }
 
   function onChangePassword(e: ChangeEvent<HTMLInputElement>) {
     setPassword(e.target.value);
-    onChangeAnyInput();
   }
   async function callLoggin() {
     try {
@@ -59,11 +53,9 @@ const Login = () => {
       }
 
       const response = await createApiClient().makeApiRequest("POST", "/authentication/login", body);
-      console.log(response);
-      if ("success" in response) {
-        console.log(response);
-        setShowSuccessMessageError(true);
 
+      if ("message" in response) {
+        setShowSuccessMessageError(true);
       } else {
         setShowSuccessMessageError(false);
         setShowSuccessMessage(true);
@@ -74,7 +66,6 @@ const Login = () => {
       }
     } catch (error) {
       setShowSuccessMessageError(true);
-      console.error('Error fetching data:', error);
     }
   }
 
