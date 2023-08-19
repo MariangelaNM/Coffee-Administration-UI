@@ -1,6 +1,6 @@
 # Coffee Administration - UI
 
-![Logo](./docs/logo.png)
+![Logo](./docs/resources/logo.png)
 
 ## Documentación
 
