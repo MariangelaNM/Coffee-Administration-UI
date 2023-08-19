@@ -8,4 +8,4 @@ Puedes encontrar la documentación de este proyecto en [este enlace](https://doc
 
 ## Setup
 
-Para poner en marcha el proyecto tenemos que seguir los pasos detallados en el [CONTRIBUTING.md](CONTRIBUTING.MD).
+Para poner en marcha el proyecto tenemos que seguir los pasos detallados en el [CONTRIBUTING.md](./CONTRIBUTING.md).
