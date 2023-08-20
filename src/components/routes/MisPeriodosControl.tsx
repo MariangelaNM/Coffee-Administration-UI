@@ -1,11 +1,7 @@
-import React, { ChangeEvent, useState, useEffect, useMemo } from "react";
+import { ChangeEvent, useState, useEffect, useMemo } from "react";
 import { Container, Form } from "react-bootstrap";
-
 import createApiClient from "../../api/api-client-factory";
-import { Zona } from "../../models/Zona";
 import { Periodo } from "../../models/Periodo";
-import { useCreate } from "../../hooks/useCreateUser";
-
 import CustomTitles from "../widgets/CustomTitles";
 import CustomInput from "../widgets/CustomInputWidget/CustomInput";
 import CustomButtonPrimary from "../widgets/CustomBtnPrimaryWidget/CustomBtnPrimary";
@@ -19,11 +15,13 @@ import { TipoRecoleccion } from "../../models/TipoRecoleccion";
 
 const MisPeriodosControl = () => {
   const emptyPeriodoInput: Partial<Periodo> = {
-    id: 0,
+    Id: 0,
     TipoRecoleccionID: 0,
     Desde: new Date(),
     Hasta: new Date(),
-    Value: 0,
+    PrecioCajuela: 0,
+    CaficultorID:0,
+
   };
   const options = [
     { value: TipoRecoleccion.SinSeleccion, label: "Sin Selección" },

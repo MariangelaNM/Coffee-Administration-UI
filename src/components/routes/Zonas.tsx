@@ -11,11 +11,11 @@ import CustomZonaList from "../widgets/CustomZonasWidgets/CustomZonaList";
 import { useHistory, useLocation } from "react-router-dom";
 
 const Zonas = () => {
+  let id: string;
   const history = useHistory();
   const location = useLocation();
   const [fincaInput, setFincaInput] = useState("");
   const [searchInput, setSearchInput] = useState("");
-  let id: string;
   const [zonaList, setZonaList] = useState<Zona[]>([]);
   const [fincasData, setFincasData] = useState<Finca>();
 
@@ -28,9 +28,9 @@ const Zonas = () => {
     try {
       const data = { FincaID: id };
       const response = await createApiClient().makeApiRequest("PUT", "/zonas", data);
-      setZonaList(response);
+      setZonaList(response as unknown as Zona[]);
       const responseFinca = await createApiClient().makeApiRequest("GET", "/fincas/" + id, null);
-      setFincasData(responseFinca);
+      setFincasData(responseFinca as unknown as Finca);
     } catch (error) {
       history.push("/error");
     }

@@ -1,4 +1,4 @@
-import { ApiResponse, createApiError } from "./api-client";
+import { ApiResponse } from "./api-client-factory";
 
 export default class HttpApiClient {
   private baseUrl: string;
@@ -26,7 +26,8 @@ export default class HttpApiClient {
       });
 
       if (!response.ok) {
-        throw await createApiError(response);
+        const responseData: ApiResponse<T> = await response.json();
+        return responseData;
       }
 
       const responseData: ApiResponse<T> = await response.json();
@@ -35,7 +36,7 @@ export default class HttpApiClient {
       console.error("API request failed:", error);
 
       // You can return an error object with details
-      return { success: false, error: "API request failed" };
+      return {  message: "API request failed" };
     }
   }
 }

@@ -25,15 +25,13 @@ const ZonasControl = () => {
   const [showSuccessMessage, setShowSuccessMessage] = useState(false);
   const history = useHistory();
   const location = useLocation();
-  let fincaID: Number;
-  let zonaID: Number;
+  let fincaID: Number = 0;
+  let zonaID: Number = 0;
 
-  useEffect(() => {
-    getData()
-  }, [])
 
   useEffect(() => {
     CallIds();
+    getData()
   }, [history, location.search, status, emptyZonaInput]);
 
   function CallIds() {
@@ -60,26 +58,24 @@ const ZonasControl = () => {
 
   function onReset() {
     setZonaInput(emptyZonaInput);
-    history.push("/MisPeriodos?zona=" + zonaID);
+    history.push("/MisPeriodos?zona=" + zonaId);
   }
 
   async function postZona() {
     try {
       const response = await createApiClient().makeApiRequest("POST", "/Zonas", zonaInput);
-      if (response.hasOwnProperty("error")) {
+      if ("message" in response) {
+        setErrorMsg(response.message || "");
         setShowSuccessMessageError(true);
       }
-      if (response.toString() == "201") {
-        setShowSuccessMessageError(false);
+      else {
         setShowSuccessMessage(true);
-        history.push("/Zonas?farm=" + fincaID);
-      } else {
         setTimeout(() => {
-          setShowSuccessMessageError(false);
+          setShowSuccessMessage(false);
         }, 3000);
+        history.push("/");
       }
     }
-
     catch {
       setTimeout(() => {
         setShowSuccessMessageError(false);
@@ -88,18 +84,17 @@ const ZonasControl = () => {
   }
   async function updateZona() {
     try {
-      const response = await createApiClient().makeApiRequest("PATCH", "/zonas/" + zonaID, zonaInput);
-      if (response.hasOwnProperty("error")) {
+      const response = await createApiClient().makeApiRequest("PATCH", "/zonas/" + zonaId, zonaInput);
+      if ('message' in response) {
         setShowSuccessMessageError(true);
+
       }
-      if (response.toString() == "201") {
-        setShowSuccessMessageError(false);
+      else {
         setShowSuccessMessage(true);
-        history.push("/Zonas?farm=" + fincaID);
-      } else {
         setTimeout(() => {
-          setShowSuccessMessageError(false);
+          setShowSuccessMessage(false);
         }, 3000);
+        history.push("/");
       }
     }
 
@@ -112,7 +107,6 @@ const ZonasControl = () => {
   async function getData() {
     const response = await createApiClient().makeApiRequest("GET", "/zonas/" + zonaID, null);
     setZonaInput(response);
-
   }
   const readyToSubmit = zonaInput.Nombre !== "" && zonaInput.Descripcion !== "";
 
@@ -151,7 +145,7 @@ const ZonasControl = () => {
           required
           onInvalidText={"El campo no puede estar vacio"}
         />
-        {zonaInput.Id != undefined ? (
+        {zonaID == 0 ? (
           <div className="d-grid gap-2">
             <CustomButtonPrimary
               label="Actualizar"
