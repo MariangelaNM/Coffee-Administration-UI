@@ -1,20 +1,14 @@
-import React, { ChangeEvent, useState, useEffect, useMemo } from "react";
+import { ChangeEvent, useState } from "react";
 import { Button, Container, Form } from "react-bootstrap";
-
 import createApiClient from "../../api/api-client-factory";
 import { Register } from "../../models/Register";
-import { useCreate } from "../../hooks/useCreateUser";
-
+import Alert from "@mui/material/Alert";
 import CustomTitles from "../widgets/CustomTitles";
-import CustomInput from "../widgets/CustomInputWidget/CustomInput"; 
-import CustomPasswordInput from "../widgets/CustomInputWidget/CustomPasswordInput"; 
-import CustomAlert from "../widgets/CustomAlert";
-
-//import { useNavigate } from 'react-router';
+import CustomInput from "../widgets/CustomInputWidget/CustomInput";
+import CustomPasswordInput from "../widgets/CustomInputWidget/CustomPasswordInput";
 import { useHistory } from "react-router-dom";
-import { User } from "../../models/User";
 
-const UserRegister =  () => {
+const UserRegister = () => {
   const emptyRegisterInput: Partial<Register> = {
     username: "",
     lastName: "",
@@ -26,31 +20,14 @@ const UserRegister =  () => {
   const [registerInput, setRegisterInput] =
     useState<Partial<Register>>(emptyRegisterInput);
   const history = useHistory();
-  
   const [passwordValidate, setPasswordValidate] = useState(false);
   const [confirmPassValidate, setConfirmPassValidate] = useState(false);
-
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPass, setShowConfirmPass] = useState(false);
+  const [showSuccessMessage, setShowSuccessMessage] = useState(false);
+  const [showSuccessMessageError, setShowSuccessMessageError] = useState(false);
+  const [errorMsg, setErrorMsg] = useState("");
 
-  const apiClient = useMemo(() => createApiClient(), []);
-  //const { create, status, error } = useCreate(apiClient.postUser);
-  //const user: User = /* crea el objeto de usuario */;
- // const userResponse = await apiClient.post("POST", "/users", user);
-
-  useEffect(() => {
-    if (status === "success") {
-      console.log("Creacion exitosa");
-      onReset();
-      //TODO navega a la pantalla de para hacer loging o se hace loging automatico para ir a pantalla principal
-      history.push('/login')
-      
-    } else {
-      //console.log(error);
-    }
-    return () => {};
-  }, [status]);
-  //TODO   }, [status,navigate]);
 
   function onChange(
     e: ChangeEvent<HTMLInputElement>,
@@ -77,10 +54,6 @@ const UserRegister =  () => {
     }
   }
 
-  function onReset() {
-    setRegisterInput(emptyRegisterInput);
-  }
-
   const readyToSubmit =
     registerInput.username !== "" &&
     registerInput.lastName !== "" &&
@@ -97,19 +70,7 @@ const UserRegister =  () => {
   const toggleConfirmPassVisibility = () => {
     setShowConfirmPass(!showConfirmPass);
   };
-/*
-  function displayErrorMessage() {
-    if (error) {
-      return <CustomAlert success={false} label={error.message} />;
-    }
-    return null;
-  }
-  function displaySuccessMessage() {
-    if (status === "success") {
-      return <CustomAlert success={true} label="Cuenta creada exitosamente" />;
-    }
-    return null;
-  }
+
   async function postUser() {
     const errorMessage = !readyToSubmit
       ? "Uno o más datos son incorrectos"
@@ -117,19 +78,49 @@ const UserRegister =  () => {
     const newRegister = {
       Correo: registerInput.mail,
       Contrasena: registerInput.password,
-      Nombres: registerInput.username,
+      Nombre: registerInput.username,
       Apellidos: registerInput.lastName,
       Role: 1,
     };
-    console.log(newRegister);
-    
-    create(newRegister as User, errorMessage);
-  }*/
+    if (errorMessage == undefined) {
+      try {
+        const response = await createApiClient().makeApiRequest("POST", "/caficultores", newRegister);
+        if ("message" in response) {
+          setShowSuccessMessageError(true);
+          setErrorMsg(response.message||"");
+        }
+        else {
+          setTimeout(() => {
+            setShowSuccessMessage(false);
+            history.push("/Fincas");
+          }, 2000);
+        }
+      }
+      catch {
+        setShowSuccessMessageError(true);
+        setErrorMsg("Uno o más datos son incorrectos");
+
+      }
+    } else {
+      setShowSuccessMessageError(true);
+      setErrorMsg("Uno o más datos son incorrectos");
+
+    }
+  }
 
   return (
     <Container className="col-lg-6 col-xxl-4 my-5 mx-auto">
       <CustomTitles txt={"Crea una nueva cuenta"} />
-
+      {showSuccessMessageError && (
+        <Alert severity="error" style={{ marginBottom: "10px" }}>
+          {errorMsg}
+        </Alert>
+      )}
+      {showSuccessMessage && (
+        <Alert severity="success" style={{ marginBottom: "10px" }}>
+          ¡El usuario ha sido registrada exitosamente!
+        </Alert>
+      )}
       <Form noValidate validated={readyToSubmit}>
         <CustomInput
           label="Nombre"
@@ -182,10 +173,13 @@ const UserRegister =  () => {
           showPassword={showConfirmPass}
           onInvalidText={"Las contraseñas no coinciden"}
         />
-
+        <Button variant="primary" className="custombtn-primary no-active-style" onClick={() => postUser()}>
+          Registrar
+        </Button>
         <div className="d-grid gap-2">
-
-
+          <Button variant="primary gap-2" className="custombtn-primary no-active-style" onClick={() => postUser()}>
+            Registrar
+          </Button>
           <Button variant="primary" className="custombtn-secondary">
             Cancelar
           </Button>

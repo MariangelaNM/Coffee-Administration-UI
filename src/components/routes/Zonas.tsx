@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useState, useEffect } from "react";
+import { ChangeEvent, useState, useEffect } from "react";
 import { Container } from "react-bootstrap";
 import createApiClient from "../../api/api-client-factory";
 import { Finca } from "../../models/Finca";
@@ -11,11 +11,11 @@ import CustomZonaList from "../widgets/CustomZonasWidgets/CustomZonaList";
 import { useHistory, useLocation } from "react-router-dom";
 
 const Zonas = () => {
+  let id: string;
   const history = useHistory();
   const location = useLocation();
   const [fincaInput, setFincaInput] = useState("");
   const [searchInput, setSearchInput] = useState("");
-  let id: string;
   const [zonaList, setZonaList] = useState<Zona[]>([]);
   const [fincasData, setFincasData] = useState<Finca>();
 
@@ -27,19 +27,19 @@ const Zonas = () => {
   async function callData() {
     try {
       const data = { FincaID: id };
-      const response = await createApiClient().makeApiRequest("PUT", "/zonas", JSON.stringify(data), zonaList);
-      setZonaList(response);
-      const responseFinca = await createApiClient().makeApiRequest("GET", "/fincas/" + id, null, fincasData);
-      setFincasData(responseFinca);
-
+      const response = await createApiClient().makeApiRequest("PUT", "/zonas", data);
+      setZonaList(response as unknown as Zona[]);
+      const responseFinca = await createApiClient().makeApiRequest("GET", "/fincas/" + id, null);
+      setFincasData(responseFinca as unknown as Finca);
     } catch (error) {
-      console.error('Error fetching data:', error);
+      history.push("/error");
     }
   }
 
   async function updateFinca() {
     CallIds();
     history.push(`/Fincas/Edit?farm=${encodeURIComponent(fincaInput)}`);
+  
   }
 
   function CallIds() {
@@ -62,7 +62,7 @@ const Zonas = () => {
   function onChangeFilterTxt(e: ChangeEvent<HTMLInputElement>) {
     setSearchInput(e.target.value);
   }
-  
+
   return (
     <Container className="col-lg-6 col-xxl-4 my-5 mx-auto">
       <CustomTitles txt={"Mis zonas"} />

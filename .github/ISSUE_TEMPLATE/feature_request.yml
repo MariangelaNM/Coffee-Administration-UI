@@ -1,0 +1,32 @@
+name: Solicitud de funcionalidad
+description: Sugiere una nueva idea para el proyecto.
+title: "[Feature Request]: "
+labels: ["kind/enhancement", "priority/normal"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Gracias por rellenar esta solicitud de nueva funcionalidad. Por favor, rellena este formulario para mejorar el proyecto.
+  - type: textarea
+    id: description
+    attributes:
+      label: Descripción de la funcionalidad
+      description: Una descripción clara y concisa de la propuesta.
+    validations:
+      required: true
+  - type: textarea
+    id: describe-alternatives
+    attributes:
+      label: Describe alternativas que hayas considerado
+      description: Una descripción clara y concisa de otras soluciones que hayas considerado.
+      placeholder: Cuéntanos otras alternativas que hayas considerado...
+    validations:
+      required: false
+  - type: textarea
+    attributes:
+      label: ¿Alguna otra cosa?
+      description: |
+        Links? Referencias? Añade más contexto o capturas de pantalla acerca de la funcionalidad.
+
+    validations:
+      required: false

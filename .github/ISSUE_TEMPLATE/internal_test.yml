@@ -1,0 +1,51 @@
+name: Plantilla Test
+description: Plantilla para añadir issues que ayuden con el test coverage.
+title: "[Test]: "
+labels: ["priority/normal", "kind/quality"]
+body:
+  - type: input
+    id: description
+    attributes:
+      label: Descripción
+      description: Objetivo global del test.
+      placeholder: Testea la <funcionalidad> de la página...
+    validations:
+      required: true
+  - type: dropdown
+    id: type
+    attributes:
+      label: Qué tipo de test es?
+      multiple: false
+      options:
+        - e2e (user flow, server data test)
+        - integration (test data, UI rendering)
+        - unit (functional test)
+    validations:
+      required: true
+  - type: textarea
+    id: objectives
+    attributes:
+      label: Objetivos del test
+      description: |
+        Describe los objetivos del test.
+
+        Ej. qué test se esperan / cual es el flujo del test / qué funcionalidad está cubriendo...
+      placeholder: |
+        * Testeo de la página xy<
+        * etc...
+    validations:
+      required: true
+  - type: textarea
+    id: dependencies
+    attributes:
+      label: Test relacionados
+      description: |
+        Lista de otras issues relacionadas con este test.
+
+        Consejo: Usar una lista de bullets para mostrar los links a otras issues desplegando el nombre y el estado de la issue.
+      placeholder: |
+        * #xxxx1
+        * #xxxx2
+      value: No hay tests relacionados
+    validations:
+      required: false

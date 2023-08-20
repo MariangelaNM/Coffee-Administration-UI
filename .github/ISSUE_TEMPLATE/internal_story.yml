@@ -1,0 +1,58 @@
+name: Plantilla Historia de Usuario
+description: La intención es ayudar con una plantilla para desglosar esfuerzos más grandes.
+title: "[Story]: "
+labels: ["kind/story", "priority/high"]
+body:
+  - type: input
+    id: goal
+    attributes:
+      label: Objetivo
+      description: Objetivo de alto nivel para esta *Story*
+      placeholder: Implementa el formulario global para la <funcionalidad>...
+    validations:
+      required: true
+  - type: textarea
+    id: dependencies
+    attributes:
+      label: Dependencias
+      description: |
+        Links a las story/historias que preceden este ticket.
+
+        Tip: Usa una lista con puntos enlazando los otros tickets.
+      placeholder: |
+        * #xxxx1
+        * #xxxx2
+      value: No hay dependencias
+    validations:
+      required: false
+  - type: textarea
+    id: describe-feature
+    attributes:
+      label: Objetivos desgranados
+      description: Los puntos generales que quieres cubrir.
+      placeholder: |
+        * Añade el formulario con los titulos.
+        * Añadir la validación del formulario.
+        * Añadir botones para la cancelación/aceptación del formulario
+    validations:
+      required: true
+  - type: textarea
+    id: follow-up-work
+    attributes:
+      label: Aspectos continuados.
+      description: |
+        Sección para añadir otros tickets que continúen el trabajo de este ticket.
+
+        Tip: Usa una lista con puntos enlazando los otros tickets.
+      placeholder: |
+        * Añadir la opción de editar formulario -- Ticket TBD
+        * Añadir valores requeridos -- #xxxx
+    validations:
+      required: false
+  - type: textarea
+    attributes:
+      label: Mocks
+      description: Link a los mocks o las capturas de pantalla de los mocks.
+      value: No hay mocks
+    validations:
+      required: false
