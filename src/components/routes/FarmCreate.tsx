@@ -19,7 +19,7 @@ const FarmCreate = () => {
   let id: string;
   const [finca, setFinca] = useState<Finca>({
     Id: undefined,
-    CaficultorID: 1,//corregir
+    CaficultorID: 0,//corregir
     Nombre: "",
     Ubicacion: "",
     Descripcion: ""
