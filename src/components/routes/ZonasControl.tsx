@@ -25,15 +25,13 @@ const ZonasControl = () => {
   const [showSuccessMessage, setShowSuccessMessage] = useState(false);
   const history = useHistory();
   const location = useLocation();
-  let fincaID: Number=0;
-  let zonaID: Number=0;
+  let fincaID: Number = 0;
+  let zonaID: Number = 0;
 
-  useEffect(() => {
-    getData()
-  }, [])
 
   useEffect(() => {
     CallIds();
+    getData()
   }, [history, location.search, status, emptyZonaInput]);
 
   function CallIds() {
@@ -60,26 +58,24 @@ const ZonasControl = () => {
 
   function onReset() {
     setZonaInput(emptyZonaInput);
-    history.push("/MisPeriodos?zona=" + zonaID);
+    history.push("/MisPeriodos?zona=" + zonaId);
   }
 
   async function postZona() {
     try {
       const response = await createApiClient().makeApiRequest("POST", "/Zonas", zonaInput);
-      if ("success" in response) {
+      if ("message" in response) {
+        setErrorMsg(response.message || "");
         setShowSuccessMessageError(true);
       }
-      if (response.toString() == "201") {
-        setShowSuccessMessageError(false);
+      else {
         setShowSuccessMessage(true);
-        history.push("/Zonas?farm=" + fincaID);
-      } else {
         setTimeout(() => {
-          setShowSuccessMessageError(false);
+          setShowSuccessMessage(false);
         }, 3000);
+        history.push("/");
       }
     }
-
     catch {
       setTimeout(() => {
         setShowSuccessMessageError(false);
@@ -88,19 +84,17 @@ const ZonasControl = () => {
   }
   async function updateZona() {
     try {
-      debugger;
-      const response = await createApiClient().makeApiRequest("PATCH", "/zonas/" + zonaID, zonaInput);
-      if (response.hasOwnProperty("error")) {
+      const response = await createApiClient().makeApiRequest("PATCH", "/zonas/" + zonaId, zonaInput);
+      if ('message' in response) {
         setShowSuccessMessageError(true);
+
       }
-      if (response.toString() == "201") {
-        setShowSuccessMessageError(false);
+      else {
         setShowSuccessMessage(true);
-        history.push("/Zonas?farm=" + fincaID);
-      } else {
         setTimeout(() => {
-          setShowSuccessMessageError(false);
+          setShowSuccessMessage(false);
         }, 3000);
+        history.push("/");
       }
     }
 

@@ -21,7 +21,13 @@ const Farms = () => {
     try {
       const data = { CaficultorID: 1 };//corregir
       const response = await createApiClient().makeApiRequest("PUT", "/fincas", data);
-      setFincasData(response);
+
+      if ('message' in response) {
+        setFincasData([] as Finca[]);
+      }
+      else {
+        setFincasData(response as Finca[]);
+      }
     } catch (error) {
       console.error('Error fetching data:', error);
     }

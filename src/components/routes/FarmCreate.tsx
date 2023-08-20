@@ -46,8 +46,7 @@ const FarmCreate = () => {
           finca
         );
 
-        if ("success" in response) {
-          console.log(response);
+        if ("message" in response) {
           setShowSuccessMessageError(true);
           e.stopPropagation();
           setValidated(true);
@@ -85,7 +84,7 @@ const FarmCreate = () => {
     if (id != undefined) {
       try {
         const response = await createApiClient().makeApiRequest("GET", "/fincas/" + id, null);
-        setFinca(response);
+        setFinca(response as unknown  as Finca);
       }
       catch {
         history.push(

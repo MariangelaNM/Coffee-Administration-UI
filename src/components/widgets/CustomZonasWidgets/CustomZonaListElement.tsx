@@ -27,9 +27,6 @@ const CustomZonaListElement: React.FC<CustomZonaListElementProps> = ({
           <Description className="text-selection-disable">
             {zona.Descripcion}
           </Description>
-          <Description className="text-selection-disable">
-            {count + " periodos"}
-          </Description>
         </Col>
         <Col
           xs={2}

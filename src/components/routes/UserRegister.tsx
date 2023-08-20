@@ -87,7 +87,7 @@ const UserRegister = () => {
         const response = await createApiClient().makeApiRequest("POST", "/caficultores", newRegister);
         if ("message" in response) {
           setShowSuccessMessageError(true);
-          setErrorMsg(response.message);
+          setErrorMsg(response.message||"");
         }
         else {
           setTimeout(() => {
