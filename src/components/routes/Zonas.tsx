@@ -65,12 +65,12 @@ const Zonas = () => {
 
   return (
     <Container className="col-lg-6 col-xxl-4 my-5 mx-auto">
-      <CustomTitles txt={"Mis zonas"} />
       <CustomFincaInfoDetail
         nombre={fincasData?.Nombre ?? ""}
         descripcion={fincasData?.Descripcion ?? ""}
         onClick={updateFinca}
       />
+       <CustomTitles txt={"Mis zonas"} />
       <CustomAdd onClick={CreateZona} />
       <CustomSearch
         label="Buscar"
