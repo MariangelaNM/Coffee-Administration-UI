@@ -73,12 +73,12 @@ const MisPeriodos = () => {
   }
   return (
     <Container className="col-lg-6 col-xxl-4 my-5 mx-auto">
-      <CustomTitles txt={"Mis periodos"} />
       <CustomZonaInfoDetail
         nombre={zonaInput?.Nombre ?? ""}
         descripcion={zonaInput?.Descripcion ?? ""}
         onClick={updateZona}
       />
+       <CustomTitles txt={"Mis periodos"} />
       <CustomAdd onClick={CreatePeriodo} />
       <CustomSearch
         label="Buscar"
