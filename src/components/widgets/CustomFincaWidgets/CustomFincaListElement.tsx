@@ -77,16 +77,7 @@ const CustomFincaListElement: React.FC<CustomFincaListElementProps> = ({
               </Description>
             </div>
           </Col>
-          <Col className="d-flex mt-2">
-            <DescriptionTag className="text-selection-disable">
-              Zonas:
-            </DescriptionTag>
-            <div style={{ marginLeft: "5px" }}>
-              <Description className="text-selection-disable">
-                {count}
-              </Description>
-            </div>
-          </Col>
+         
           <Col
             xs={2}
             sm={1}

@@ -19,7 +19,7 @@ const ZonasControl = () => {
 
   const [errorMsg, setErrorMsg] = useState("Error al registrar la data");
   const [zonaInput, setZonaInput] = useState<Partial<Zona>>(emptyZonaInput);
-  const [zonaId, setZonaId] = useState("");
+  const [zonaId, setZonaId] = useState(0);
   const [zonaData, setzonaData] = useState<Zona[]>([]);
   const [showSuccessMessageError, setShowSuccessMessageError] = useState(false);
   const [showSuccessMessage, setShowSuccessMessage] = useState(false);
@@ -32,14 +32,16 @@ const ZonasControl = () => {
     const storedUserId = localStorage.getItem('id');
     if (storedUserId != null) {
       CallIds();
-      getData();
+      if (zonaID != 0) {
+        getData();
+      }
     }
     else {
       history.push(
         `/login`
       );
     }
-  }, [history, location.search, status, emptyZonaInput]);
+  }, []);
 
   function CallIds() {
     const queryParams = new URLSearchParams(location.search);
@@ -52,7 +54,7 @@ const ZonasControl = () => {
       fincaID = (emptyZonaInput.FincaID);
     } else if (zonaString) {
       emptyZonaInput.Id = (parseInt(zonaString));
-      zonaID = (emptyZonaInput.Id);
+      zonaID = (parseInt(zonaString));
 
     } else {
       history.push("/error");
@@ -71,7 +73,7 @@ const ZonasControl = () => {
   async function postZona() {
     try {
       const response = await createApiClient().makeApiRequest("POST", "/Zonas", zonaInput);
-      if (response.message!=undefined) {
+      if (response.message != undefined) {
         setErrorMsg(response.message || "");
         setShowSuccessMessageError(true);
       }
@@ -120,7 +122,7 @@ const ZonasControl = () => {
   return (
     <Container className="col-lg-6 col-xxl-4 my-5 mx-auto">
       <CustomTitles
-        txt={zonaId != undefined ? "Editar zona" : "Crea una nueva zona"}
+        txt={zonaId != 0 ? "Editar zona" : "Crea una nueva zona"}
       />
 
       <Form noValidate validated={readyToSubmit}>
@@ -152,7 +154,7 @@ const ZonasControl = () => {
           required
           onInvalidText={"El campo no puede estar vacio"}
         />
-        {zonaID == 0 ? (
+        {zonaId != 0 ? (
           <div className="d-grid gap-2">
             <CustomButtonPrimary
               label="Actualizar"

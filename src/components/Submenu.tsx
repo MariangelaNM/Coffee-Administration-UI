@@ -1,4 +1,4 @@
-import  { FC, useState } from 'react';
+import { FC, useState } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { SidebarItem } from '../models/SidebarItem';
@@ -43,7 +43,7 @@ const Submenu: FC<SidebarLinkProps> = ({ item }) => {
 
     return (
         <>
-    
+
             <SidebarLink to={item.path} onClick={showSubnav}>
                 <div>
                     {item.icon}
