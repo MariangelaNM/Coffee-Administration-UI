@@ -28,10 +28,17 @@ const ZonasControl = () => {
   let fincaID: Number = 0;
   let zonaID: Number = 0;
 
-
   useEffect(() => {
-    CallIds();
-    getData()
+    const storedUserId = localStorage.getItem('id');
+    if (storedUserId != null) {
+      CallIds();
+      getData();
+    }
+    else {
+      history.push(
+        `/login`
+      );
+    }
   }, [history, location.search, status, emptyZonaInput]);
 
   function CallIds() {
@@ -64,7 +71,7 @@ const ZonasControl = () => {
   async function postZona() {
     try {
       const response = await createApiClient().makeApiRequest("POST", "/Zonas", zonaInput);
-      if ("message" in response) {
+      if (response.message!=undefined) {
         setErrorMsg(response.message || "");
         setShowSuccessMessageError(true);
       }

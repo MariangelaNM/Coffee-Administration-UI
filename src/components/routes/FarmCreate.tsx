@@ -19,11 +19,24 @@ const FarmCreate = () => {
   let id: string;
   const [finca, setFinca] = useState<Finca>({
     Id: undefined,
-    CaficultorID: 0,//corregir
+    CaficultorID: localStorage.getItem('id')||0,//corregir
     Nombre: "",
     Ubicacion: "",
     Descripcion: ""
   });
+
+  useEffect(() => {
+    const storedUserId = localStorage.getItem('id');
+    if (storedUserId != null) {
+      CallIds();
+      fincaData();
+    }
+    else {
+      history.push(
+        `/login`
+      );
+    }
+  }, [])
 
   const handleInputChange = (field: string) => (e: { target: { value: any; }; }) => {
     setFinca((prev) => ({ ...prev, [field]: e.target.value }));
@@ -37,7 +50,6 @@ const FarmCreate = () => {
       setValidated(true);
     } else {
       try {
-
         const apiClient = createApiClient();
         const apiPath = fincaId ? `/fincas/${fincaId}` : "/fincas";
         const response = await apiClient.makeApiRequest(
@@ -46,7 +58,7 @@ const FarmCreate = () => {
           finca
         );
 
-        if ("message" in response) {
+        if (response.message!=undefined) {
           setShowSuccessMessageError(true);
           e.stopPropagation();
           setValidated(true);
@@ -67,10 +79,6 @@ const FarmCreate = () => {
     }
   };
 
-  useEffect(() => {
-    CallIds();
-    fincaData();
-  }, [])
 
   function CallIds() {
     const queryParams = new URLSearchParams(location.search);
@@ -84,7 +92,7 @@ const FarmCreate = () => {
     if (id != undefined) {
       try {
         const response = await createApiClient().makeApiRequest("GET", "/fincas/" + id, null);
-        setFinca(response as unknown  as Finca);
+        setFinca(response as unknown as Finca);
       }
       catch {
         history.push(

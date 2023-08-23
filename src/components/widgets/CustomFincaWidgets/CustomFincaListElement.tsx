@@ -31,8 +31,7 @@ const CustomFincaListElement: React.FC<CustomFincaListElementProps> = ({
   };
 
   const handleAgree = async () => {
-    const response = await createApiClient().makeApiRequest("DELETE", "/fincas/"+finca.Id, undefined);
-    console.log(response)
+     await createApiClient().makeApiRequest("DELETE", "/fincas/"+finca.Id, undefined);
     handleCloseDialog();
   };
 

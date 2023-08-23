@@ -14,12 +14,19 @@ const Farms = () => {
   const [fincasData, setFincasData] = useState<Finca[]>([]);
 
   useEffect(() => {
-    callDataFinca();
+    const storedUserId = localStorage.getItem('id');
+    if (storedUserId != null) {
+      callDataFinca();
+    }else{
+      history.push(
+        `/login`
+      );
+    }
   }, [])
 
   async function callDataFinca() {
     try {
-      const data = { CaficultorID: 1 };//corregir
+      const data = { CaficultorID: localStorage.getItem('id') };
       const response = await createApiClient().makeApiRequest("PUT", "/fincas", data);
 
       if ('message' in response) {

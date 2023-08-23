@@ -85,7 +85,7 @@ const UserRegister = () => {
     if (errorMessage == undefined) {
       try {
         const response = await createApiClient().makeApiRequest("POST", "/caficultores", newRegister);
-        if ("message" in response) {
+        if (response.message!=undefined) {
           setShowSuccessMessageError(true);
           setErrorMsg(response.message||"");
         }

@@ -20,10 +20,18 @@ const Zonas = () => {
   const [fincasData, setFincasData] = useState<Finca>();
 
   useEffect(() => {
-    CallIds();
-    callData();
+    const storedUserId = localStorage.getItem('id');
+    if (storedUserId != null) {
+      CallIds();
+      callData();
+    }
+    else {
+      history.push(
+        `/login`
+      );
+    }
   }, [])
-
+  
   async function callData() {
     try {
       const data = { FincaID: id };
