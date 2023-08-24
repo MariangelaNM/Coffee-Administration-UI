@@ -20,7 +20,6 @@ const ZonasControl = () => {
   const [errorMsg, setErrorMsg] = useState("Error al registrar la data");
   const [zonaInput, setZonaInput] = useState<Partial<Zona>>(emptyZonaInput);
   const [zonaId, setZonaId] = useState(0);
-  const [zonaData, setzonaData] = useState<Zona[]>([]);
   const [showSuccessMessageError, setShowSuccessMessageError] = useState(false);
   const [showSuccessMessage, setShowSuccessMessage] = useState(false);
   const history = useHistory();

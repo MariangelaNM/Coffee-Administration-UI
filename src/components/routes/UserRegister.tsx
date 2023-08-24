@@ -173,9 +173,6 @@ const UserRegister = () => {
           showPassword={showConfirmPass}
           onInvalidText={"Las contraseñas no coinciden"}
         />
-        <Button variant="primary" className="custombtn-primary no-active-style" onClick={() => postUser()}>
-          Registrar
-        </Button>
         <div className="d-grid gap-2">
           <Button variant="primary gap-2" className="custombtn-primary no-active-style" onClick={() => postUser()}>
             Registrar
