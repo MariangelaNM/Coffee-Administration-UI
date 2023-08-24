@@ -1,4 +1,4 @@
-import React from "react";
+import React,{useState} from "react";
 import { Row, Col, Container, Button } from "react-bootstrap";
 import styled from "styled-components";
 import { themes } from "../../../styles/ColorStyles";
@@ -7,6 +7,8 @@ import { FiArrowRight, FiEdit, FiTrash2 } from "react-icons/fi";
 import "../Customicon.scss";
 import "./TableStyle.scss";
 import { Zona } from "../../../models/Zona";
+import AlertDialog from "../AlertDialog";
+import createApiClient from "../../../api/api-client-factory";
 
 interface CustomZonaListElementProps {
   zona: Zona;
@@ -19,17 +21,33 @@ const CustomZonaListElement: React.FC<CustomZonaListElementProps> = ({
   count,
   onClick,
 }) => {
+
+  const [openDialog, setOpenDialog] = useState(false);
+  const [texto, setTexto] = useState("");
+  const handleCloseDialog = () => {
+    setOpenDialog(false);
+  };
+  const handleDisagree = () => {
+    handleCloseDialog();
+  };
+
+  const handleAgree = async () => {
+     await createApiClient().makeApiRequest("DELETE", "/zonas/"+zona.Id, undefined);
+    handleCloseDialog();
+  };
+
   const handleEditClick = (event: React.MouseEvent) => {
     event.stopPropagation();
-    // Lógica para editar
-    console.log("EDITAR");
+    window.location.href = '/zonas/Edit?zona='+zona.Id;
   };
 
   const handleDeleteClick = (event: React.MouseEvent) => {
     event.stopPropagation();
-    // Lógica para eliminar
+    setTexto(`Eliminar la Zona "${zona.Nombre}"`);
+    setOpenDialog(true);
     console.log("BORRAR");
   };
+
   return (
     <Container className="detail-card mb-3" onClick={() => onClick(zona.Id)}>
       <Row className="mt-2">
@@ -84,6 +102,13 @@ const CustomZonaListElement: React.FC<CustomZonaListElementProps> = ({
           </div>
         </Col>
       </Row>
+      <AlertDialog
+        open={openDialog}
+        texto={texto}
+        handleClose={handleCloseDialog}
+        handleDisagree={handleDisagree}
+        handleAgree={handleAgree}
+      />
     </Container>
   );
 };

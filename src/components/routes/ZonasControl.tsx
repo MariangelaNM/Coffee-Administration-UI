@@ -19,8 +19,7 @@ const ZonasControl = () => {
 
   const [errorMsg, setErrorMsg] = useState("Error al registrar la data");
   const [zonaInput, setZonaInput] = useState<Partial<Zona>>(emptyZonaInput);
-  const [zonaId, setZonaId] = useState("");
-  const [zonaData, setzonaData] = useState<Zona[]>([]);
+  const [zonaId, setZonaId] = useState(0);
   const [showSuccessMessageError, setShowSuccessMessageError] = useState(false);
   const [showSuccessMessage, setShowSuccessMessage] = useState(false);
   const history = useHistory();
@@ -28,11 +27,20 @@ const ZonasControl = () => {
   let fincaID: Number = 0;
   let zonaID: Number = 0;
 
-
   useEffect(() => {
-    CallIds();
-    getData()
-  }, [history, location.search, status, emptyZonaInput]);
+    const storedUserId = localStorage.getItem('id');
+    if (storedUserId != null) {
+      CallIds();
+      if (zonaID != 0) {
+        getData();
+      }
+    }
+    else {
+      history.push(
+        `/login`
+      );
+    }
+  }, []);
 
   function CallIds() {
     const queryParams = new URLSearchParams(location.search);
@@ -45,7 +53,7 @@ const ZonasControl = () => {
       fincaID = (emptyZonaInput.FincaID);
     } else if (zonaString) {
       emptyZonaInput.Id = (parseInt(zonaString));
-      zonaID = (emptyZonaInput.Id);
+      zonaID = (parseInt(zonaString));
 
     } else {
       history.push("/error");
@@ -64,7 +72,7 @@ const ZonasControl = () => {
   async function postZona() {
     try {
       const response = await createApiClient().makeApiRequest("POST", "/Zonas", zonaInput);
-      if ("message" in response) {
+      if (response.message != undefined) {
         setErrorMsg(response.message || "");
         setShowSuccessMessageError(true);
       }
@@ -113,7 +121,7 @@ const ZonasControl = () => {
   return (
     <Container className="col-lg-6 col-xxl-4 my-5 mx-auto">
       <CustomTitles
-        txt={zonaId != undefined ? "Editar zona" : "Crea una nueva zona"}
+        txt={zonaId != 0 ? "Editar zona" : "Crea una nueva zona"}
       />
 
       <Form noValidate validated={readyToSubmit}>
@@ -145,7 +153,7 @@ const ZonasControl = () => {
           required
           onInvalidText={"El campo no puede estar vacio"}
         />
-        {zonaID == 0 ? (
+        {zonaId != 0 ? (
           <div className="d-grid gap-2">
             <CustomButtonPrimary
               label="Actualizar"

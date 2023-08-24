@@ -65,8 +65,9 @@ const Sidebar: FC = () => {
           {SidebarData.map((item, index) => {
             return <Submenu item={item} key={index} />;
           })}
+      
         </SidebarNav>}
-
+        <>o</>
     </IconContext.Provider>
   );
 };

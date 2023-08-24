@@ -1,4 +1,4 @@
-import React from "react";
+import React,{useState} from "react";
 import { Row, Col, Container, Button } from "react-bootstrap";
 import styled from "styled-components";
 import { themes } from "../../../styles/ColorStyles";
@@ -7,7 +7,8 @@ import { FiArrowRight, FiEdit, FiTrash2 } from "react-icons/fi";
 import "../Customicon.scss";
 import "../CustomZonasWidgets/TableStyle.scss";
 import { Finca } from "../../../models/Finca";
-
+import AlertDialog from "../AlertDialog";
+import createApiClient from "../../../api/api-client-factory";
 interface CustomFincaListElementProps {
   finca: Finca;
   count: string;
@@ -19,15 +20,30 @@ const CustomFincaListElement: React.FC<CustomFincaListElementProps> = ({
   count,
   onClick,
 }) => {
+
+  const [openDialog, setOpenDialog] = useState(false);
+  const [texto, setTexto] = useState("");
+  const handleCloseDialog = () => {
+    setOpenDialog(false);
+  };
+  const handleDisagree = () => {
+    handleCloseDialog();
+  };
+
+  const handleAgree = async () => {
+     await createApiClient().makeApiRequest("DELETE", "/fincas/"+finca.Id, undefined);
+    handleCloseDialog();
+  };
+
   const handleEditClick = (event: React.MouseEvent) => {
     event.stopPropagation();
-    // Lógica para editar
-    console.log("EDITAR");
+    window.location.href = '/Fincas/Edit?farm='+finca.Id;
   };
 
   const handleDeleteClick = (event: React.MouseEvent) => {
     event.stopPropagation();
-    // Lógica para eliminar
+    setTexto(`Eliminar la Finca "${finca.Nombre}"`);
+    setOpenDialog(true);
     console.log("BORRAR");
   };
 
@@ -61,16 +77,7 @@ const CustomFincaListElement: React.FC<CustomFincaListElementProps> = ({
               </Description>
             </div>
           </Col>
-          <Col className="d-flex mt-2">
-            <DescriptionTag className="text-selection-disable">
-              Zonas:
-            </DescriptionTag>
-            <div style={{ marginLeft: "5px" }}>
-              <Description className="text-selection-disable">
-                {count}
-              </Description>
-            </div>
-          </Col>
+         
           <Col
             xs={2}
             sm={1}
@@ -94,6 +101,13 @@ const CustomFincaListElement: React.FC<CustomFincaListElementProps> = ({
           </div>
         </Col>
       </Row>
+      <AlertDialog
+        open={openDialog}
+        texto={texto}
+        handleClose={handleCloseDialog}
+        handleDisagree={handleDisagree}
+        handleAgree={handleAgree}
+      />
     </Container>
   );
 };

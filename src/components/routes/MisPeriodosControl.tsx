@@ -42,24 +42,19 @@ const MisPeriodosControl = () => {
   //const { create, status, error } = useCreate(apiClient.postUser);
 
   useEffect(() => {
-    const queryParams = new URLSearchParams(location.search);
-    const periodoString = queryParams.get("periodo");
-    if (periodoString) {
-      setPeriodoInput(JSON.parse(decodeURIComponent(periodoString)));
-      // Aquí puedes utilizar el objeto usuario como desees
-      console.log(periodoInput);
-   /* } else {
-      // Redireccionar a otra página si el parámetro no está presente
-      history.push("/error");*/
+    const storedUserId = localStorage.getItem('id');
+    if (storedUserId != null) {
+      const queryParams = new URLSearchParams(location.search);
+      const periodoString = queryParams.get("periodo");
+      if (periodoString) {
+        setPeriodoInput(JSON.parse(decodeURIComponent(periodoString)));
+      }
     }
-
-    if (status === "success") {
-      console.log("Creacion exitosa");
-      // history.push('/login')
-    } else {
-      //console.log(error);
+    else {
+      history.push(
+        `/login`
+      );
     }
-    // return () => {};
   }, [history, location.search, status]);
 
   function onChange(
