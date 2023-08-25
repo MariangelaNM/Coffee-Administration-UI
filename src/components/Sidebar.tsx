@@ -67,7 +67,7 @@ const Sidebar: FC = () => {
           })}
       
         </SidebarNav>}
-        <>o</>
+        
     </IconContext.Provider>
   );
 };
