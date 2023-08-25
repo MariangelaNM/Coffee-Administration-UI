@@ -82,7 +82,7 @@ const Login = () => {
       )}
       {showSuccessMessage && (
         <Alert severity="success" style={{ marginBottom: "10px" }}>
-          ¡Bienbenid@!
+          ¡Bienvenid@!
         </Alert>
       )}
       <Form noValidate validated={validated} onSubmit={handleSubmit}>
