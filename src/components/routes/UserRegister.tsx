@@ -8,6 +8,7 @@ import CustomInput from "../widgets/CustomInputWidget/CustomInput";
 import CustomPasswordInput from "../widgets/CustomInputWidget/CustomPasswordInput";
 import { useHistory } from "react-router-dom";
 
+
 const UserRegister = () => {
   const emptyRegisterInput: Partial<Register> = {
     username: "",
@@ -27,13 +28,19 @@ const UserRegister = () => {
   const [showSuccessMessage, setShowSuccessMessage] = useState(false);
   const [showSuccessMessageError, setShowSuccessMessageError] = useState(false);
   const [errorMsg, setErrorMsg] = useState("");
-
+ 
 
   function onChange(
     e: ChangeEvent<HTMLInputElement>,
     attribute: keyof Register
   ) {
+      // Restablecer el mensaje de error y ocultar el mensaje de error
+    setShowSuccessMessageError(false);
+   setErrorMsg("");
+
     setRegisterInput({ ...registerInput, [attribute]: e.target.value });
+    
+    
     if (attribute == "password") {
       const safePass =
         (e.target.value as string).length >= 8 &&
@@ -52,12 +59,14 @@ const UserRegister = () => {
       console.log("same pass = " + samePass);
       setConfirmPassValidate(samePass);
     }
+
+
   }
 
   const readyToSubmit =
-    registerInput.username !== "" &&
+  registerInput.mail !== "" &&
+  registerInput.username !== "" &&
     registerInput.lastName !== "" &&
-    registerInput.mail !== "" &&
     registerInput.password !== "" &&
     registerInput.confirmPass !== "" &&
     passwordValidate &&
@@ -107,7 +116,7 @@ const UserRegister = () => {
 
     }
   }
-
+    
   return (
     <Container className="col-lg-6 col-xxl-4 my-5 mx-auto">
       <CustomTitles txt={"Crea una nueva cuenta"} />
@@ -147,8 +156,10 @@ const UserRegister = () => {
           value={registerInput.mail as string}
           onChange={(e) => onChange(e, "mail")}
           required
-          onInvalidText={"El campo debe ser un correo valido"}
-        />
+          onInvalidText={"El campo debe ser un correo válido"}
+
+  />
+
         <CustomPasswordInput
           label="Contraseña"
           placeholder="Contraseña"
