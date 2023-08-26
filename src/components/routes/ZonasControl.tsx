@@ -81,7 +81,8 @@ const ZonasControl = () => {
         setTimeout(() => {
           setShowSuccessMessage(false);
         }, 3000);
-        history.push("/");
+        history.goBack(); // Esta función retrocede a la página anterior en el historial.
+ 
       }
     }
     catch {
@@ -102,7 +103,8 @@ const ZonasControl = () => {
         setTimeout(() => {
           setShowSuccessMessage(false);
         }, 3000);
-        history.push("/");
+        history.goBack(); // Esta función retrocede a la página anterior en el historial.
+ 
       }
     }
 
