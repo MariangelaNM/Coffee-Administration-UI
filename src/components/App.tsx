@@ -1,7 +1,7 @@
 import "bootstrap/dist/css/bootstrap.min.css";
 import "../App.scss";
 
-import { FC } from "react";
+import { FC, useState } from "react";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
 import Sidebar from "./Sidebar";
 import Login from "./routes/Login";
@@ -20,75 +20,87 @@ import Admin from "./routes/Admin";
 import Dashboard from "./routes/Dashboard";
 
 const App: FC = () => {
-  return (
-    <BrowserRouter>
-      <Sidebar />
-      <Switch>
-        <Route path="/Inicio">
-        <Admin/>
-        </Route>
-        <Route path="/login">
-          <Login />
-        </Route>
-        <Route path="/signup">
-          <UserRegister />
-        </Route>
-        <Route path="/Fincas/Create">
-          {" "}
-          <FarmCreate />
-        </Route>
-        <Route path="/Fincas/Edit">
-          <FarmCreate />
-        </Route>
-        <Route path="/Fincas">
-          <Farms/>
-        </Route>
-        <Route path="/Zonas/Create">
-          <ZonasControl />
-        </Route>
-        <Route path="/Zonas/Edit">
-          <ZonasControl />
-        </Route>
-        <Route path="/Zonas">
-          <Zonas />
-        </Route>
-        <Route path="/MisPeriodos/Create">
-        <MisPeriodosControl/>
-        </Route>
-        <Route path="/MisPeriodos/Edit">
-   
-        </Route>
-        <Route path="/MisPeriodos">
-          <MisPeriodos />
-        </Route>
-        <Route path="/Mis Recolectores/Create">
-          <RecolectorCreate />
-        </Route>
-        <Route path="/Mis Recolectores/Edit">
-          <RecolectorCreate />
-        </Route>
-        <Route path="/Mis Recolectores">
-         <Recolector/>
-        </Route>
-        <Route path="/Resumen Recolectores">
-          {/* Lógica y componentes para la ruta /Resumen Recolectores */}
-        </Route>
-        <Route path="/Recoleccion" > <RecoleccionCreate/></Route>
-        <Route path="/Resumen Fincas">
-          {/* Lógica y componentes para la ruta /Resumen Fincas */}
-        </Route>
 
-        <Route path="/collector">
-          {" "}
-          <RecolectorCreate />
-        </Route>
-        <Route path="/Recoleccion">
-          {" "}
-          <RecoleccionCreate />
-        </Route>
-      </Switch>
-    </BrowserRouter>
-  );
+  const [isLogged, setIsLogged] = useState(false);
+
+  if (!isLogged) {
+    return (
+      <BrowserRouter>
+        <Switch>
+          <Route path="/login">
+            <Login setIsLogged={setIsLogged} />
+          </Route>
+        </Switch>
+      </BrowserRouter>
+    );
+  } else {
+    return (
+      <BrowserRouter>
+        <Sidebar />
+        <Switch>
+          <Route path="/Inicio">
+            <Admin />
+          </Route>
+          <Route path="/signup">
+            <UserRegister />
+          </Route>
+          <Route path="/Fincas/Create">
+            {" "}
+            <FarmCreate />
+          </Route>
+          <Route path="/Fincas/Edit">
+            <FarmCreate />
+          </Route>
+          <Route path="/Fincas">
+            <Farms />
+          </Route>
+          <Route path="/Zonas/Create">
+            <ZonasControl />
+          </Route>
+          <Route path="/Zonas/Edit">
+            <ZonasControl />
+          </Route>
+          <Route path="/Zonas">
+            <Zonas />
+          </Route>
+          <Route path="/MisPeriodos/Create">
+            <MisPeriodosControl />
+          </Route>
+          <Route path="/MisPeriodos/Edit">
+
+          </Route>
+          <Route path="/MisPeriodos">
+            <MisPeriodos />
+          </Route>
+          <Route path="/Mis Recolectores/Create">
+            <RecolectorCreate />
+          </Route>
+          <Route path="/Mis Recolectores/Edit">
+            <RecolectorCreate />
+          </Route>
+          <Route path="/Mis Recolectores">
+            <Recolector />
+          </Route>
+          <Route path="/Resumen Recolectores">
+            {/* Lógica y componentes para la ruta /Resumen Recolectores */}
+          </Route>
+          <Route path="/Recoleccion" > <RecoleccionCreate /></Route>
+          <Route path="/Resumen Fincas">
+            {/* Lógica y componentes para la ruta /Resumen Fincas */}
+          </Route>
+
+          <Route path="/collector">
+            {" "}
+            <RecolectorCreate />
+          </Route>
+          <Route path="/Recoleccion">
+            {" "}
+            <RecoleccionCreate />
+          </Route>
+        </Switch>
+      </BrowserRouter>
+    );
+  }
 };
 
 export default App;
