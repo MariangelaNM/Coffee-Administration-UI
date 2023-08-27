@@ -87,8 +87,8 @@ const Login = () => {
       )}
       <Form noValidate validated={validated} onSubmit={handleSubmit}>
         <CustomInput
-          label="Nombre"
-          placeholder="Nombre"
+          label="Correo"
+          placeholder="Correo"
           typeForm="email"
           value={mail}
           onChange={onChangeMail}
@@ -108,7 +108,7 @@ const Login = () => {
         />
         <div className="d-grid gap-2">
           <CustomButtonPrimary
-            label="Registrar"
+            label="Ingresar"
             onClick={() => {
               console.log("Login");
               callLoggin();
