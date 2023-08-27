@@ -46,9 +46,13 @@ const CustomFincaListElement: React.FC<CustomFincaListElementProps> = ({
     setOpenDialog(true);
     console.log("BORRAR");
   };
+  const handleClick = (event: React.MouseEvent) => {
+    event.stopPropagation();
+    onClick(finca.Id);
+  };
 
   return (
-    <Container className="detail-card mb-3" onClick={() => onClick(finca.Id)}>
+    <Container className="detail-card mb-3">
       <Row className="mt-2">
         <Col className="d-flex flex-column justify-content-center">
           <Col className="d-flex mt-2">
@@ -97,7 +101,9 @@ const CustomFincaListElement: React.FC<CustomFincaListElementProps> = ({
           className="d-flex align-items-center justify-content-center"
         >
           <div className="center-icon">
+          <Button variant="link" onClick={handleClick}>
             <FiArrowRight className="custom-icon" />
+            </Button>
           </div>
         </Col>
       </Row>
