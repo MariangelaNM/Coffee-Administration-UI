@@ -9,7 +9,7 @@ import "./TableStyle.scss";
 import { Zona } from "../../../models/Zona";
 import AlertDialog from "../AlertDialog";
 import createApiClient from "../../../api/api-client-factory";
-
+import { useHistory } from 'react-router-dom';
 interface CustomZonaListElementProps {
   zona: Zona;
   count: string;
@@ -21,7 +21,7 @@ const CustomZonaListElement: React.FC<CustomZonaListElementProps> = ({
   count,
   onClick,
 }) => {
-
+  const history = useHistory();
   const [openDialog, setOpenDialog] = useState(false);
   const [texto, setTexto] = useState("");
   const handleCloseDialog = () => {
@@ -38,7 +38,7 @@ const CustomZonaListElement: React.FC<CustomZonaListElementProps> = ({
 
   const handleEditClick = (event: React.MouseEvent) => {
     event.stopPropagation();
-    window.location.href = '/zonas/Edit?zona='+zona.Id;
+    history.push( '/zonas/Edit?zona='+zona.Id);
   };
 
   const handleDeleteClick = (event: React.MouseEvent) => {

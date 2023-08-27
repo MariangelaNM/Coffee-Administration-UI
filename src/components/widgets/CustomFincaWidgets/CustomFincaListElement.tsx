@@ -9,6 +9,7 @@ import "../CustomZonasWidgets/TableStyle.scss";
 import { Finca } from "../../../models/Finca";
 import AlertDialog from "../AlertDialog";
 import createApiClient from "../../../api/api-client-factory";
+import { useHistory } from 'react-router-dom';
 interface CustomFincaListElementProps {
   finca: Finca;
   count: string;
@@ -20,7 +21,7 @@ const CustomFincaListElement: React.FC<CustomFincaListElementProps> = ({
   count,
   onClick,
 }) => {
-
+  const history = useHistory();
   const [openDialog, setOpenDialog] = useState(false);
   const [texto, setTexto] = useState("");
   const handleCloseDialog = () => {
@@ -31,13 +32,13 @@ const CustomFincaListElement: React.FC<CustomFincaListElementProps> = ({
   };
 
   const handleAgree = async () => {
-     await createApiClient().makeApiRequest("DELETE", "/fincas/"+finca.Id, undefined);
+    await createApiClient().makeApiRequest("DELETE", "/fincas/"+finca.Id, undefined);
     handleCloseDialog();
   };
 
   const handleEditClick = (event: React.MouseEvent) => {
     event.stopPropagation();
-    window.location.href = '/Fincas/Edit?farm='+finca.Id;
+    history.push('/Fincas/Edit?farm=' + finca.Id);
   };
 
   const handleDeleteClick = (event: React.MouseEvent) => {
