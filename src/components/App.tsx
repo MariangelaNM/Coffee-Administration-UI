@@ -18,12 +18,16 @@ import Recolector from "./routes/Recolector";
 import LandingPage from "./routes/LandingPage";
 import Admin from "./routes/Admin";
 import Dashboard from "./routes/Dashboard";
+import IndexPage from "./routes/IndexPage";
 
 const App: FC = () => {
   return (
     <BrowserRouter>
       <Sidebar />
       <Switch>
+      <Route path="/">
+          <IndexPage />
+        </Route>
         <Route path="/Inicio">
         <Admin/>
         </Route>
