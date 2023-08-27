@@ -15,9 +15,7 @@ import FarmCreate from "./routes/FarmCreate";
 import RecolectorCreate from "./routes/RecolectorCreate";
 import RecoleccionCreate from "./routes/RecoleccionCreate";
 import Recolector from "./routes/Recolector";
-import LandingPage from "./routes/LandingPage";
 import Admin from "./routes/Admin";
-import Dashboard from "./routes/Dashboard";
 import IndexPage from "./routes/IndexPage";
 
 const App: FC = () => {
@@ -25,11 +23,8 @@ const App: FC = () => {
     <BrowserRouter>
       <Sidebar />
       <Switch>
-      <Route path="/">
-          <IndexPage />
-        </Route>
         <Route path="/Inicio">
-        <Admin/>
+          <Admin />
         </Route>
         <Route path="/login">
           <Login />
@@ -45,7 +40,7 @@ const App: FC = () => {
           <FarmCreate />
         </Route>
         <Route path="/Fincas">
-          <Farms/>
+          <Farms />
         </Route>
         <Route path="/Zonas/Create">
           <ZonasControl />
@@ -57,10 +52,10 @@ const App: FC = () => {
           <Zonas />
         </Route>
         <Route path="/MisPeriodos/Create">
-        <MisPeriodosControl/>
+          <MisPeriodosControl />
         </Route>
         <Route path="/MisPeriodos/Edit">
-   
+
         </Route>
         <Route path="/MisPeriodos">
           <MisPeriodos />
@@ -72,16 +67,15 @@ const App: FC = () => {
           <RecolectorCreate />
         </Route>
         <Route path="/Mis Recolectores">
-         <Recolector/>
+          <Recolector />
         </Route>
         <Route path="/Resumen Recolectores">
           {/* Lógica y componentes para la ruta /Resumen Recolectores */}
         </Route>
-        <Route path="/Recoleccion" > <RecoleccionCreate/></Route>
+        <Route path="/Recoleccion" > <RecoleccionCreate /></Route>
         <Route path="/Resumen Fincas">
           {/* Lógica y componentes para la ruta /Resumen Fincas */}
         </Route>
-
         <Route path="/collector">
           {" "}
           <RecolectorCreate />
@@ -89,6 +83,9 @@ const App: FC = () => {
         <Route path="/Recoleccion">
           {" "}
           <RecoleccionCreate />
+        </Route>
+        <Route path="/">
+          <IndexPage />
         </Route>
       </Switch>
     </BrowserRouter>
