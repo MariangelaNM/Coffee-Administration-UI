@@ -31,6 +31,10 @@ const CustomPeriodoListElement: React.FC<CustomPeriodoListElementProps> = ({
     // Lógica para eliminar
     console.log("BORRAR");
   };
+  const handleClick = (event: React.MouseEvent) => {
+    event.stopPropagation();
+    onClick(periodo.Id);
+  };
 
   const desde = new Date(periodo.Desde).toLocaleDateString("es-ES", {
     year: "numeric",
@@ -43,7 +47,7 @@ const CustomPeriodoListElement: React.FC<CustomPeriodoListElementProps> = ({
     day: "numeric",
   });
   return (
-    <Container className="detail-card mb-3" onClick={() => onClick(periodo.Id)}>
+    <Container className="detail-card mb-3" >
       <Row className="mt-2">
         <Col className="d-flex flex-column justify-content-center">
           <Col className="d-flex mt-2">
@@ -87,7 +91,9 @@ const CustomPeriodoListElement: React.FC<CustomPeriodoListElementProps> = ({
           className="d-flex align-items-center justify-content-center"
         >
           <div className="center-icon">
+          <Button variant="link" onClick={handleClick}>
             <FiArrowRight className="custom-icon" />
+            </Button>
           </div>
         </Col>
       </Row>
