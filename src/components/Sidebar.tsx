@@ -50,12 +50,12 @@ const Sidebar: FC = () => {
     <IconContext.Provider value={{ color: "#6DB575" }}>
       <div className="Nav" style={{ width: "100%" }}>
         <NavIcon to="#" onClick={showSidebar} style={{ width: "100%" }}>
-          {path != '/signup' && path != '/login' && path != '/' && path != '/Inicio' &&
+          {path != '/signup' && path != '/login' && path != '/' && 
             <AiOutlineMenu />}
           <img src={logoCompleto} className="icon-navbar" />
         </NavIcon>
       </div>
-      {path != '/signup' && path != '/login' && path != '/' && path != '/Inicio' &&
+      {path != '/signup' && path != '/login' && path != '/'  &&
         <SidebarNav sidebar={sidebar}>
           <img src={logoCompleto_blanco} className="icon-sidebar" />
 
