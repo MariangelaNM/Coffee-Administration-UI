@@ -1,5 +1,5 @@
 import { FC, useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link,useLocation  } from "react-router-dom";
 import styled from "styled-components";
 import { IconContext } from "react-icons";
 import { AiOutlineMenu, AiOutlineClose } from "react-icons/ai";
@@ -35,16 +35,15 @@ const NavIconClose = styled(Link)`
   float: right;
   margin: 10px;
 `;
-
-
-
-
 const Sidebar: FC = () => {
   const [sidebar, setSidebar] = useState(false);
   const showSidebar = () => setSidebar(!sidebar);
-  const path = window.location.pathname;
+  let path = window.location.pathname;
+  const location = useLocation(); // Obtiene la ubicación actual desde React Router
 
-
+  useEffect(() => {
+    path = window.location.pathname;
+  }, [location]); // Se ejecutará el efecto cuando la ubicación (ruta) cambie
 
   return (
     <IconContext.Provider value={{ color: "#6DB575" }}>
