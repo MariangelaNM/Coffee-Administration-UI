@@ -19,6 +19,8 @@ const Login = () => {
   const [showSuccessMessage, setShowSuccessMessage] = useState(false);
   const [showSuccessMessageError, setShowSuccessMessageError] = useState(false);
 
+
+
   function onReset() {
     setMail("");
     setPassword("");
@@ -46,6 +48,7 @@ const Login = () => {
     setPassword(e.target.value);
   }
   async function callLoggin() {
+    localStorage.clear();
     try {
       const body = {
         "email": mail,

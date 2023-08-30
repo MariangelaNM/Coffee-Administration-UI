@@ -81,6 +81,7 @@ const UserRegister = () => {
   };
 
   async function postUser() {
+    localStorage.clear();
     const errorMessage = !readyToSubmit
       ? "Uno o más datos son incorrectos"
       : undefined;
