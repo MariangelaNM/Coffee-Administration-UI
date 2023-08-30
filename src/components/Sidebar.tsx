@@ -50,11 +50,12 @@ const Sidebar: FC = () => {
     <IconContext.Provider value={{ color: "#6DB575" }}>
       <div className="Nav" style={{ width: "100%" }}>
         <NavIcon to="#" onClick={showSidebar} style={{ width: "100%" }}>
-          {path != '/signup' && path != '/login' && <AiOutlineMenu />}
+          {path != '/signup' && path != '/login' && path != '/' && path != '/Inicio' &&
+            <AiOutlineMenu />}
           <img src={logoCompleto} className="icon-navbar" />
         </NavIcon>
       </div>
-      {path != '/signup' && path != '/login' &&
+      {path != '/signup' && path != '/login' && path != '/' && path != '/Inicio' &&
         <SidebarNav sidebar={sidebar}>
           <img src={logoCompleto_blanco} className="icon-sidebar" />
 
@@ -65,9 +66,9 @@ const Sidebar: FC = () => {
           {SidebarData.map((item, index) => {
             return <Submenu item={item} key={index} />;
           })}
-      
+
         </SidebarNav>}
-        
+
     </IconContext.Provider>
   );
 };

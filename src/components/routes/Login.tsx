@@ -63,7 +63,7 @@ const Login = () => {
         setShowSuccessMessage(true);
         setTimeout(() => {
           setShowSuccessMessage(false);
-          history.push("");
+          history.push("/Inicio");
         }, 2000);
       }
     } catch (error) {
