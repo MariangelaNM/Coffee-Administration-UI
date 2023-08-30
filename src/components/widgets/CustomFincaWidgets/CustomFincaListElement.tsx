@@ -33,6 +33,7 @@ const CustomFincaListElement: React.FC<CustomFincaListElementProps> = ({
   const handleAgree = async () => {
      await createApiClient().makeApiRequest("DELETE", "/fincas/"+finca.Id, undefined);
     handleCloseDialog();
+    window.location.reload();
   };
 
   const handleEditClick = (event: React.MouseEvent) => {

@@ -17,9 +17,10 @@ const FarmCreate = () => {
   const [showSuccessMessageError, setShowSuccessMessageError] = useState(false);
   const [fincaId, setFincaId] = useState("");
   let id: string;
+  const storedID = localStorage.getItem('id');
   const [finca, setFinca] = useState<Finca>({
     Id: undefined,
-    CaficultorID: localStorage.getItem('id')||0,//corregir
+    CaficultorID: storedID !== null ? parseInt(storedID, 10) : 0,
     Nombre: "",
     Ubicacion: "",
     Descripcion: ""
@@ -58,7 +59,7 @@ const FarmCreate = () => {
           finca
         );
 
-        if (response.message!=undefined) {
+        if (response.message != undefined) {
           setShowSuccessMessageError(true);
           e.stopPropagation();
           setValidated(true);

@@ -37,6 +37,7 @@ const CustomZonaListElement: React.FC<CustomZonaListElementProps> = ({
       undefined
     );
     handleCloseDialog();
+    window.location.reload();
   };
 
   const handleEditClick = (event: React.MouseEvent) => {
