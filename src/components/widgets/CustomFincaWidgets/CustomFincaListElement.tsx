@@ -103,7 +103,7 @@ const CustomFincaListElement: React.FC<CustomFincaListElementProps> = ({
         >
           <div className="center-icon">
           <Button variant="link" onClick={handleClick}>
-            <FiArrowRight className="custom-icon" />
+            <FiArrowRight className="custom-icon-big" />
             </Button>
           </div>
         </Col>

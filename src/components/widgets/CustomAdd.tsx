@@ -15,7 +15,7 @@ const CustomAdd: React.FC<CustomAddProps> = ({ onClick }) => {
         <Col className="flex-grow-1"></Col>
         <Col xs={2} sm={1}>
       
-            <FiPlus className="custom-icon" onClick={onClick} />
+            <FiPlus className="custom-icon-big" onClick={onClick} />
        
         </Col>
       </Row>
