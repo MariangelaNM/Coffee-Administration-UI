@@ -171,7 +171,7 @@ const UserRegister = () => {
           togglePasswordVisibility={togglePasswordVisibility}
           showPassword={showPassword}
           onInvalidText={
-            "La contraseña debe contener al menos 8 caracteres, 1 mayúscula y 1 número"
+            "La contraseña debe contener al menos 8 caracteres, 1 mayúscula, 1 minúscula y 1 número"
           }
         />
         <CustomPasswordInput
