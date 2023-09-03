@@ -127,16 +127,7 @@ const ZonasControl = () => {
       />
 
       <Form noValidate validated={readyToSubmit}>
-        {showSuccessMessageError && (
-          <Alert severity="error" style={{ marginBottom: "10px" }}>
-            Error: {errorMsg}
-          </Alert>
-        )}
-        {showSuccessMessage && (
-          <Alert severity="success" style={{ marginBottom: "10px" }}>
-            Zona guardada correctamente
-          </Alert>
-        )}
+        
         <CustomInput
           label="Nombre"
           placeholder="Nombre"
@@ -155,6 +146,16 @@ const ZonasControl = () => {
           required
           onInvalidText={"El campo no puede estar vacio"}
         />
+        {showSuccessMessageError && (
+          <Alert severity="error" style={{ marginBottom: "10px",marginTop:"10px" }}>
+            Error: {errorMsg}
+          </Alert>
+        )}
+        {showSuccessMessage && (
+          <Alert severity="success" style={{ marginBottom: "10px",marginTop:"10px" }}>
+            Zona guardada correctamente
+          </Alert>
+        )}
         {zonaId != 0 ? (
           <div className="d-grid gap-2">
             <CustomButtonPrimary

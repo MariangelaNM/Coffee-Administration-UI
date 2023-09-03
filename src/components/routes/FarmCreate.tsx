@@ -112,16 +112,7 @@ const FarmCreate = () => {
   return (
     <Container className="col-lg-6 col-xxl-4 my-5 mx-auto">
       <Title>{fincaId != "" ? "Editar Finca" : "Crear una Nueva Finca"}</Title>
-      {showSuccessMessageError && (
-        <Alert severity="error" style={{ marginBottom: "10px" }}>
-          Error: {errorMsg}
-        </Alert>
-      )}
-      {showSuccessMessage && (
-        <Alert severity="success" style={{ marginBottom: "10px" }}>
-          ¡La finca ha sido registrada exitosamente!
-        </Alert>
-      )}
+
 
       <Form noValidate validated={validated} onSubmit={handleSubmit}>
         <Form.Group className="mb-3 sm-1" controlId="formFarmName">
@@ -166,7 +157,16 @@ const FarmCreate = () => {
             El campo no puede estar vacío
           </Form.Control.Feedback>
         </Form.Group>
-
+        {showSuccessMessageError && (
+          <Alert severity="error" style={{ marginBottom: "10px",marginTop:"10px" }}>
+            Error: {errorMsg}
+          </Alert>
+        )}
+        {showSuccessMessage && (
+          <Alert severity="success" style={{ marginBottom: "10px",marginTop:"10px" }}>
+            ¡La finca ha sido registrada exitosamente!
+          </Alert>
+        )}
         <div className="d-grid gap-2">
           <Button
             variant="primary"
