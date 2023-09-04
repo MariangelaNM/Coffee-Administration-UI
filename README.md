@@ -9,3 +9,19 @@ Puedes encontrar la documentación de este proyecto en [este enlace](https://doc
 ## Setup
 
 Para poner en marcha el proyecto tenemos que seguir los pasos detallados en el [CONTRIBUTING.md](./CONTRIBUTING.md).
+
+
+## Installation
+
+```bash
+$ npm install
+```
+
+## Running the app
+
+```bash
+# development
+$ npm run start
+
+# watch mode
+$ npm run start
