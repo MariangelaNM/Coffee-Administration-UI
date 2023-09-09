@@ -60,13 +60,13 @@ const App: FC = () => {
         <Route path="/MisPeriodos">
           <MisPeriodos />
         </Route>
-        <Route path="/Mis Recolectores/Create">
+        <Route path="/Recolectores/Create">
           <RecolectorCreate />
         </Route>
-        <Route path="/Mis Recolectores/Edit">
+        <Route path="/Recolectores/Edit">
           <RecolectorCreate />
         </Route>
-        <Route path="/Mis Recolectores">
+        <Route path="/Recolectores">
           <Recolector />
         </Route>
         <Route path="/Resumen Recolectores">

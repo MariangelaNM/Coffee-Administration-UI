@@ -4,7 +4,7 @@ import styled from "styled-components";
 import { themes } from "../../styles/ColorStyles";
 import { H1 } from "../../styles/TextStyles";
 import "bootstrap/dist/css/bootstrap.min.css";
-import { Colector } from "../../models/Colector";
+import { Recolector } from "../../models/Recolector";
 import { useHistory, useLocation } from "react-router-dom";
 
 const RecolectorCreate = () => {
@@ -19,7 +19,7 @@ const RecolectorCreate = () => {
   const [validated, setValidated] = useState(false);
   const [showSuccessMessage, setShowSuccessMessage] = useState(false);
 
-  const emptyColectorInput: Partial<Colector> = {
+  const emptyColectorInput: Partial<Recolector> = {
     id: 0,
     nombre: "",
     apellido: "",
@@ -27,7 +27,7 @@ const RecolectorCreate = () => {
     telefono: 0,
   };
   const [colectorInput, setColectorInput] =
-    useState<Partial<Colector>>(emptyColectorInput);
+    useState<Partial<Recolector>>(emptyColectorInput);
 
   useEffect(() => {
     const queryParams = new URLSearchParams(location.search);
@@ -49,10 +49,7 @@ const RecolectorCreate = () => {
 
       // Aquí puedes utilizar el objeto usuario como desees
       console.log(colectorInput);
-    } else {
-      // Redireccionar a otra página si el parámetro no está presente
-      history.push("/error");
-    }
+      }
   }, [history, location.search]);
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
@@ -110,7 +107,7 @@ const RecolectorCreate = () => {
   return (
     <Container className="col-lg-6 col-xxl-4 my-5 mx-auto">
       <Title>
-        {colectorInput.id != 0
+        {colectorInput.Id != 0
           ? "Editar recolector"
           : "Crear un nuevo recolector"}
       </Title>
@@ -176,7 +173,7 @@ const RecolectorCreate = () => {
             El campo no puede estar vacío
           </Form.Control.Feedback>
         </Form.Group>
-        {colectorInput.id != 0 ? (
+        {colectorInput.Id != 0 ? (
           <div className="d-grid gap-2">
             <Button
               variant="primary"
