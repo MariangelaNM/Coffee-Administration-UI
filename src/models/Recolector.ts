@@ -9,7 +9,7 @@ export interface Recolector {
    * @type {number}
    * @memberof Recolector
    */
-  Id: number;
+  Id?: number;
 
   /**
    *
@@ -34,24 +34,24 @@ export interface Recolector {
    * @type {string}
    * @memberof Recolector
    */
-  Identificacion: string;
+  Identificacion?: string;
   /**
    *
    * @type {number}
    * @memberof Recolector
    */
-  Cel: number;
+  Cel?: number;
   /**
    *
    * @type {DataViewConstructor}
    * @memberof Recolector
    */
-  createdAt:Date
+  createdAt?:Date
 
     /**
    *
    * @type {DataViewConstructor}
    * @memberof Recolector
    */
-    updatedAt:Date
+    updatedAt?:Date
 }

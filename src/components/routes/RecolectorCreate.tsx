@@ -1,130 +1,121 @@
-import React, { ChangeEvent, FormEvent, useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Container, Form, Button } from "react-bootstrap";
+import Alert from "@mui/material/Alert";
 import styled from "styled-components";
 import { themes } from "../../styles/ColorStyles";
 import { H1 } from "../../styles/TextStyles";
 import "bootstrap/dist/css/bootstrap.min.css";
+import createApiClient from "../../api/api-client-factory";
 import { Recolector } from "../../models/Recolector";
 import { useHistory, useLocation } from "react-router-dom";
 
 const RecolectorCreate = () => {
   const history = useHistory();
   const location = useLocation();
-
   const [errorMsg, setErrorMsg] = useState("");
-  const [nombre, setNombre] = useState("");
-  const [apellido, setApellido] = useState("");
-  const [identificacion, setIdentificacion] = useState("");
-  const [telefono, setTelefono] = useState("");
   const [validated, setValidated] = useState(false);
   const [showSuccessMessage, setShowSuccessMessage] = useState(false);
+  const [showSuccessMessageError, setShowSuccessMessageError] = useState(false);
+  const [recolectorId, setRecolectorId] = useState<string | null>(null);
 
-  const emptyColectorInput: Partial<Recolector> = {
-    id: 0,
-    nombre: "",
-    apellido: "",
-    identificacion: "",
-    telefono: 0,
-  };
-  const [colectorInput, setColectorInput] =
-    useState<Partial<Recolector>>(emptyColectorInput);
+  const storedID = localStorage.getItem("id");
+  const [recolector, setRecolector] = useState<Recolector>({
+    Id: undefined,
+    CaficultorID: storedID !== null ? parseInt(storedID, 10) : 0,
+    Nombre: "",
+    Apellidos: "",
+    Identificacion: undefined,
+    Cel: undefined,
+    createdAt: undefined,
+    updatedAt: undefined,
+  });
 
   useEffect(() => {
-    const queryParams = new URLSearchParams(location.search);
-    const colectorString = queryParams.get("colector");
-    if (colectorString) {
-      setColectorInput(JSON.parse(decodeURIComponent(colectorString)));
-      setNombre(
-        JSON.parse(decodeURIComponent(colectorString)).nombre as string
-      );
-      setApellido(
-        JSON.parse(decodeURIComponent(colectorString)).apellido as string
-      );
-      setIdentificacion(
-        JSON.parse(decodeURIComponent(colectorString)).identificacion as string
-      );
-      setTelefono(
-        JSON.parse(decodeURIComponent(colectorString)).telefono as string
-      );
+    const storedUserId = localStorage.getItem("id");
+    if (storedUserId !== null) {
+      CallIds();
+      recolectorData();
+    } else {
+      history.push(`/login`);
+    }
+  }, []);
 
-      // Aquí puedes utilizar el objeto usuario como desees
-      console.log(colectorInput);
-      }
-  }, [history, location.search]);
+  const handleInputChange = (field: string) => (e: React.ChangeEvent<HTMLInputElement>) => {
+    setRecolector((prev) => ({ ...prev, [field]: e.target.value }));
+  };
 
-  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const form = e.currentTarget;
-
-    if (form.checkValidity() === false) {
+    setShowSuccessMessageError(false);
+    if (!e.currentTarget.checkValidity()) {
       e.stopPropagation();
       setValidated(true);
     } else {
-      // Save the data (you'll need to implement this part with your backend)
-      setShowSuccessMessage(true);
-      setNombre("");
-      setApellido("");
-      setIdentificacion("");
-      setTelefono("");
+      try {
+        const apiClient = createApiClient();
+        const apiPath = recolectorId ? `/recolectores/${recolectorId}` : "/recolectores";
+        const response = await apiClient.makeApiRequest(
+          recolectorId ? "PATCH" : "POST",
+          apiPath,
+          recolector
+        );
 
-      setTimeout(() => {
-        setShowSuccessMessage(false);
-      }, 3000);
+        if (response.message !== undefined) {
+          handleApiError();
+        } else {
+          setShowSuccessMessage(true);
+          setTimeout(() => {
+            setShowSuccessMessage(false);
+            history.push("/Recolectores");
+          }, 2000);
+        }
+      } catch (error) {
+        handleApiError();
+      }
     }
   };
 
-  function onChangeAnyInput() {
-    setErrorMsg("");
-  }
-
-  function onChangeNombre(e: ChangeEvent<HTMLInputElement>) {
-    setNombre(e.target.value);
-    onChangeAnyInput();
-  }
-
-  function onChangeApellido(e: ChangeEvent<HTMLInputElement>) {
-    setApellido(e.target.value);
-    onChangeAnyInput();
-  }
-
-  function onChangeIdentificacion(e: ChangeEvent<HTMLInputElement>) {
-    setIdentificacion(e.target.value);
-    onChangeAnyInput();
-  }
-
-  function onChangeTelefono(e: ChangeEvent<HTMLInputElement>) {
-    setTelefono(e.target.value);
-    onChangeAnyInput();
-  }
-
-  function displayErrorMessage() {
-    if (errorMsg) {
-      return <div>Error: {errorMsg}</div>;
+  const CallIds = () => {
+    const queryParams = new URLSearchParams(location.search);
+    const recolectorString = queryParams.get("recolector");
+    if (recolectorString) {
+      setRecolectorId(recolectorString);
     }
-    return null;
-  }
+  };
+
+  const recolectorData = async () => {
+    if (recolectorId !== null) {
+      try {
+        const response = await createApiClient().makeApiRequest("GET", `/recolectores/${recolectorId}/recolector`, null);
+        setRecolector(response);
+      } catch {
+        history.push(`/error`);
+      }
+    }
+  };
+
+  const handleApiError = () => {
+    setShowSuccessMessageError(true);
+    setValidated(true);
+    setErrorMsg("Error en la respuesta de la API");
+  };
+
+  const Cancelar = () => {
+    history.push(`/Recolectores`);
+  };
 
   return (
     <Container className="col-lg-6 col-xxl-4 my-5 mx-auto">
-      <Title>
-        {colectorInput.Id != 0
-          ? "Editar recolector"
-          : "Crear un nuevo recolector"}
-      </Title>
-      {displayErrorMessage()}
-      {showSuccessMessage && (
-        <div className="alert alert-success" role="alert">
-          ¡El recolector ha sido registrado exitosamente!
-        </div>
-      )}
+      <Title>{recolectorId != "" ? "Editar Recolector" : "Crear un Nueva Recolector"}</Title>
+
       <Form noValidate validated={validated} onSubmit={handleSubmit}>
         <Form.Group className="mb-3 sm-1" controlId="formNombre">
           <Form.Label>Nombre</Form.Label>
           <Form.Control
             type="text"
-            placeholder="Nombre del recolector"
-            value={nombre}
-            onChange={onChangeNombre}
+            placeholder="Nombre"
+            value={recolector.Nombre}
+            onChange={handleInputChange("Nombre")}
             required
           />
           <Form.Control.Feedback type="invalid">
@@ -132,13 +123,13 @@ const RecolectorCreate = () => {
           </Form.Control.Feedback>
         </Form.Group>
 
-        <Form.Group className="mb-3 sm-1" controlId="formApellido">
-          <Form.Label>Apellido</Form.Label>
+          <Form.Group className="mb-3" controlId="formApellidos">
+          <Form.Label>Apellidos</Form.Label>
           <Form.Control
             type="text"
-            placeholder="Apellido del recolector"
-            value={apellido}
-            onChange={onChangeApellido}
+            placeholder="Apellidos del Recolector"
+            value={recolector.Apellidos}
+            onChange={handleInputChange("Apellidos")}
             required
           />
           <Form.Control.Feedback type="invalid">
@@ -150,9 +141,9 @@ const RecolectorCreate = () => {
           <Form.Label>Identificación</Form.Label>
           <Form.Control
             type="text"
-            placeholder="Número de identificación del recolector"
-            value={identificacion}
-            onChange={onChangeIdentificacion}
+            placeholder="Identificación del Recolector"
+            value={recolector.Identificacion}
+            onChange={handleInputChange("Identificacion")}
             required
           />
           <Form.Control.Feedback type="invalid">
@@ -163,53 +154,44 @@ const RecolectorCreate = () => {
         <Form.Group className="mb-3" controlId="formTelefono">
           <Form.Label>Teléfono</Form.Label>
           <Form.Control
-            type="text"
-            placeholder="Número de teléfono del recolector"
-            value={telefono}
-            onChange={onChangeTelefono}
+            type="number"
+            placeholder="Número de Teléfono del Recolector"
+            value={recolector.Cel}
+            onChange={handleInputChange("Cel")}
             required
           />
           <Form.Control.Feedback type="invalid">
             El campo no puede estar vacío
           </Form.Control.Feedback>
         </Form.Group>
-        {colectorInput.Id != 0 ? (
-          <div className="d-grid gap-2">
-            <Button
-              variant="primary"
-              className="custombtn-primary no-active-style"
-              type="submit"
-            >
-              Editar Recolector
-            </Button>
-
-            <Button
-              variant="primary"
-              className="custombtn-secondary"
-              type="button"
-            >
-              Cancelar
-            </Button>
-          </div>
-        ) : (
-          <div className="d-grid gap-2">
-            <Button
-              variant="primary"
-              className="custombtn-primary no-active-style"
-              type="submit"
-            >
-              Crear Recolector
-            </Button>
-
-            <Button
-              variant="primary"
-              className="custombtn-secondary"
-              type="button"
-            >
-              Cancelar
-            </Button>
-          </div>
+        {showSuccessMessageError && (
+          <Alert severity="error" style={{ marginBottom: "10px", marginTop: "10px" }}>
+            Error: {errorMsg}
+          </Alert>
         )}
+        {showSuccessMessage && (
+          <Alert severity="success" style={{ marginBottom: "10px", marginTop: "10px" }}>
+            ¡El recolector se registro exitosamente!
+          </Alert>
+        )}
+        <div className="d-grid gap-2">
+          <Button
+            variant="primary"
+            className="custombtn-primary no-active-style"
+            type="submit"
+          >
+            {recolectorId != "" ? "Editar Recolector" : "Crear Recolector"}
+          </Button>
+
+          <Button
+            variant="primary"
+            className="custombtn-secondary"
+            type="button"
+            onClick={() => Cancelar()}
+          >
+            Cancelar
+          </Button>
+        </div>
       </Form>
     </Container>
   );

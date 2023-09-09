@@ -1,5 +1,5 @@
-import React, { ChangeEvent, useState, useEffect, useMemo } from "react";
-import { Container, Form } from "react-bootstrap";
+import  { ChangeEvent, useState, useEffect } from "react";
+import { Container } from "react-bootstrap";
 import createApiClient from "../../api/api-client-factory";
 import { Recolector } from "../../models/Recolector";
 import CustomTitles from "../widgets/CustomTitles";
@@ -17,7 +17,7 @@ const Recolectores = () => {
     const storedUserId = localStorage.getItem('id');
     if (storedUserId != null) {
       callDataRecolector();
-    }else{
+    } else {
       history.push(
         `/login`
       );
@@ -26,9 +26,7 @@ const Recolectores = () => {
 
   async function callDataRecolector() {
     try {
-      
       const response = await createApiClient().makeApiRequest("GET", `/recolectores/${localStorage.getItem('id')}/caficultor`, null);
-
       if ('message' in response) {
         setRecolectoresData([] as Recolector[]);
       }
@@ -45,18 +43,14 @@ const Recolectores = () => {
   }
 
   async function CreateColector() {
-
     history.push(
-      `/Mis Recolectores/Create`
+      `/Recolectores/Create`
     );
   }
+
   async function EditColector(id: number) {
     console.log("EditColector");
-    console.log(id);
-    const selectedColector = recolectoresData.find((colector) => colector.Id === id);
-
-    const selectedColectorString = JSON.stringify(selectedColector);
-    history.push(`/Mis Recolectores/Edit?colector=${encodeURIComponent(selectedColectorString)}`);
+    history.push(`/Recolectores/Edit?recolector=` + id);
   }
   return (
     <Container className="col-lg-6 col-xxl-4 my-5 mx-auto">
