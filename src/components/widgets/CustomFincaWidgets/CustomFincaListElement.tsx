@@ -22,6 +22,7 @@ const CustomFincaListElement: React.FC<CustomFincaListElementProps> = ({
   count,
   onClick,
 }) => {
+  const [showSuccessMessageError, setShowSuccessMessageError] = useState(false);
   const history = useHistory();
   const [openDialog, setOpenDialog] = useState(false);
   const [texto, setTexto] = useState("");
@@ -33,7 +34,7 @@ const CustomFincaListElement: React.FC<CustomFincaListElementProps> = ({
   };
 
   const handleAgree = async () => {
-    await createApiClient().makeApiRequest("DELETE", "/fincas/"+finca.Id, undefined);
+    const response = await createApiClient().makeApiRequest("DELETE", "/fincas/"+finca.Id, undefined);
     handleCloseDialog();
     if (response.message != undefined) {
       setShowSuccessMessageError(true);

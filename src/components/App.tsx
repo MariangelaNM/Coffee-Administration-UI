@@ -20,25 +20,16 @@ import IndexPage from "./routes/IndexPage";
 
 const App: FC = () => {
 
-  const [isLogged, setIsLogged] = useState(false);
 
-  if (!isLogged) {
-    return (
-      <BrowserRouter>
-        <Switch>
-          <Route path="/login">
-            <Login setIsLogged={setIsLogged} />
-          </Route>
-        </Switch>
-      </BrowserRouter>
-    );
-  } else {
     return (
       <BrowserRouter>
         <Sidebar />
         <Switch>
           <Route path="/Inicio">
             <Admin />
+          </Route>
+          <Route path="/login">
+            <Login  />
           </Route>
           <Route path="/signup">
             <UserRegister />
@@ -71,13 +62,13 @@ const App: FC = () => {
           <Route path="/MisPeriodos">
             <MisPeriodos />
           </Route>
-          <Route path="/Mis Recolectores/Create">
+          <Route path="/Recolectores/Create">
             <RecolectorCreate />
           </Route>
-          <Route path="/Mis Recolectores/Edit">
+          <Route path="/Recolectores/Edit">
             <RecolectorCreate />
           </Route>
-          <Route path="/Mis Recolectores">
+          <Route path="/Recolectores">
             <Recolector />
           </Route>
           <Route path="/Resumen Recolectores">
@@ -96,10 +87,14 @@ const App: FC = () => {
             {" "}
             <RecoleccionCreate />
           </Route>
+          <Route path="/">
+            {" "}
+            <IndexPage />
+          </Route>
         </Switch>
       </BrowserRouter>
     );
-  }
+ 
 };
 
 export default App;
