@@ -9,7 +9,9 @@ import CustomButtonSecondary from "../widgets/CustomButtonSecondaryWidget/Custom
 import createApiClient from "../../api/api-client-factory";
 import Alert from "@mui/material/Alert";
 import { useHistory } from "react-router-dom";
-const Login = () => {
+
+const Login = ({ setIsLogged }) => {
+
   const history = useHistory();
   const [mail, setMail] = useState("");
   const [password, setPassword] = useState("");
@@ -60,6 +62,7 @@ const Login = () => {
       if ("message" in response) {
         setShowSuccessMessageError(true);
       } else {
+        setIsLogged(true);
         setShowSuccessMessageError(false);
         localStorage.setItem('token', response?.token); // Guarda el userId en el local storage
         localStorage.setItem('id', response?.id); // Guarda el userId en el local storage

@@ -9,6 +9,7 @@ import "../CustomZonasWidgets/TableStyle.scss";
 import { Finca } from "../../../models/Finca";
 import AlertDialog from "../AlertDialog";
 import createApiClient from "../../../api/api-client-factory";
+import { useHistory } from 'react-router-dom';
 import Alert from "@mui/material/Alert";
 interface CustomFincaListElementProps {
   finca: Finca;
@@ -21,7 +22,7 @@ const CustomFincaListElement: React.FC<CustomFincaListElementProps> = ({
   count,
   onClick,
 }) => {
-  const [showSuccessMessageError, setShowSuccessMessageError] = useState(false);
+  const history = useHistory();
   const [openDialog, setOpenDialog] = useState(false);
   const [texto, setTexto] = useState("");
   const handleCloseDialog = () => {
@@ -32,7 +33,7 @@ const CustomFincaListElement: React.FC<CustomFincaListElementProps> = ({
   };
 
   const handleAgree = async () => {
-    const response = await createApiClient().makeApiRequest("DELETE", "/fincas/" + finca.Id, undefined);
+    await createApiClient().makeApiRequest("DELETE", "/fincas/"+finca.Id, undefined);
     handleCloseDialog();
     if (response.message != undefined) {
       setShowSuccessMessageError(true);
@@ -47,7 +48,8 @@ const CustomFincaListElement: React.FC<CustomFincaListElementProps> = ({
 
   const handleEditClick = (event: React.MouseEvent) => {
     event.stopPropagation();
-    window.location.href = '/Fincas/Edit?farm=' + finca.Id;
+    history.push('/Fincas/Edit?farm=' + finca.Id);
+
   };
 
   const handleDeleteClick = (event: React.MouseEvent) => {
