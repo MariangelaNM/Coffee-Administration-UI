@@ -9,6 +9,7 @@ import CustomButtonSecondary from "../widgets/CustomButtonSecondaryWidget/Custom
 import createApiClient from "../../api/api-client-factory";
 import Alert from "@mui/material/Alert";
 import { useHistory } from "react-router-dom";
+
 const Login = () => {
   const history = useHistory();
   const [mail, setMail] = useState("");
@@ -18,8 +19,6 @@ const Login = () => {
   const readyToSubmit = mail !== "" && password !== "";
   const [showSuccessMessage, setShowSuccessMessage] = useState(false);
   const [showSuccessMessageError, setShowSuccessMessageError] = useState(false);
-
-
 
   function onReset() {
     setMail("");
