@@ -21,6 +21,8 @@ const Login = ({ setIsLogged }) => {
   const [showSuccessMessage, setShowSuccessMessage] = useState(false);
   const [showSuccessMessageError, setShowSuccessMessageError] = useState(false);
 
+
+
   function onReset() {
     setMail("");
     setPassword("");
@@ -48,6 +50,7 @@ const Login = ({ setIsLogged }) => {
     setPassword(e.target.value);
   }
   async function callLoggin() {
+    localStorage.clear();
     try {
       const body = {
         "email": mail,
@@ -66,7 +69,7 @@ const Login = ({ setIsLogged }) => {
         setShowSuccessMessage(true);
         setTimeout(() => {
           setShowSuccessMessage(false);
-          history.push("");
+          history.push("/Inicio");
         }, 2000);
       }
     } catch (error) {

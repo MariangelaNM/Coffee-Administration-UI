@@ -1,4 +1,4 @@
-import React,{useState} from "react";
+import React, { useState } from "react";
 import { Row, Col, Container, Button } from "react-bootstrap";
 import styled from "styled-components";
 import { themes } from "../../../styles/ColorStyles";
@@ -32,8 +32,13 @@ const CustomZonaListElement: React.FC<CustomZonaListElementProps> = ({
   };
 
   const handleAgree = async () => {
-     await createApiClient().makeApiRequest("DELETE", "/zonas/"+zona.Id, undefined);
+    await createApiClient().makeApiRequest(
+      "DELETE",
+      "/zonas/" + zona.Id,
+      undefined
+    );
     handleCloseDialog();
+    window.location.reload();
   };
 
   const handleEditClick = (event: React.MouseEvent) => {
@@ -47,9 +52,13 @@ const CustomZonaListElement: React.FC<CustomZonaListElementProps> = ({
     setOpenDialog(true);
     console.log("BORRAR");
   };
+  const handleClick = (event: React.MouseEvent) => {
+    event.stopPropagation();
+    onClick(zona.Id);
+  };
 
   return (
-    <Container className="detail-card mb-3" onClick={() => onClick(zona.Id)}>
+    <Container className="detail-card mb-3">
       <Row className="mt-2">
         <Col className="d-flex flex-column justify-content-center">
           <Col className="d-flex mt-2">
@@ -98,7 +107,9 @@ const CustomZonaListElement: React.FC<CustomZonaListElementProps> = ({
           className="d-flex align-items-center justify-content-center"
         >
           <div className="center-icon">
-            <FiArrowRight className="custom-icon" />
+            <Button variant="link" onClick={handleClick}>
+              <FiArrowRight className="custom-icon-big" />
+            </Button>
           </div>
         </Col>
       </Row>

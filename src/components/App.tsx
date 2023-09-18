@@ -15,9 +15,8 @@ import FarmCreate from "./routes/FarmCreate";
 import RecolectorCreate from "./routes/RecolectorCreate";
 import RecoleccionCreate from "./routes/RecoleccionCreate";
 import Recolector from "./routes/Recolector";
-import LandingPage from "./routes/LandingPage";
 import Admin from "./routes/Admin";
-import Dashboard from "./routes/Dashboard";
+import IndexPage from "./routes/IndexPage";
 
 const App: FC = () => {
 

@@ -1,4 +1,4 @@
-import React,{useState} from "react";
+import React, { useState } from "react";
 import { Row, Col, Container, Button } from "react-bootstrap";
 import styled from "styled-components";
 import { themes } from "../../../styles/ColorStyles";
@@ -10,6 +10,7 @@ import { Finca } from "../../../models/Finca";
 import AlertDialog from "../AlertDialog";
 import createApiClient from "../../../api/api-client-factory";
 import { useHistory } from 'react-router-dom';
+import Alert from "@mui/material/Alert";
 interface CustomFincaListElementProps {
   finca: Finca;
   count: string;
@@ -34,11 +35,21 @@ const CustomFincaListElement: React.FC<CustomFincaListElementProps> = ({
   const handleAgree = async () => {
     await createApiClient().makeApiRequest("DELETE", "/fincas/"+finca.Id, undefined);
     handleCloseDialog();
+    if (response.message != undefined) {
+      setShowSuccessMessageError(true);
+      setTimeout(() => {
+        setShowSuccessMessageError(false);
+      }, 4000);
+    }
+    else {
+      window.location.reload();
+    }
   };
 
   const handleEditClick = (event: React.MouseEvent) => {
     event.stopPropagation();
     history.push('/Fincas/Edit?farm=' + finca.Id);
+
   };
 
   const handleDeleteClick = (event: React.MouseEvent) => {
@@ -47,9 +58,13 @@ const CustomFincaListElement: React.FC<CustomFincaListElementProps> = ({
     setOpenDialog(true);
     console.log("BORRAR");
   };
+  const handleClick = (event: React.MouseEvent) => {
+    event.stopPropagation();
+    onClick(finca.Id);
+  };
 
   return (
-    <Container className="detail-card mb-3" onClick={() => onClick(finca.Id)}>
+    <Container className="detail-card mb-3">
       <Row className="mt-2">
         <Col className="d-flex flex-column justify-content-center">
           <Col className="d-flex mt-2">
@@ -78,7 +93,13 @@ const CustomFincaListElement: React.FC<CustomFincaListElementProps> = ({
               </Description>
             </div>
           </Col>
-         
+          <Col className="d-flex mt-2">
+            {showSuccessMessageError && (
+              <Alert severity="error" style={{ marginBottom: "10px", marginTop: "10px" }}>
+                Está Finca cuenta con Zonas
+              </Alert>
+            )}
+          </Col>
           <Col
             xs={2}
             sm={1}
@@ -91,6 +112,7 @@ const CustomFincaListElement: React.FC<CustomFincaListElementProps> = ({
               <FiTrash2 className="custom-icon-red" />
             </Button>
           </Col>
+
         </Col>
         <Col
           xs={2}
@@ -98,7 +120,9 @@ const CustomFincaListElement: React.FC<CustomFincaListElementProps> = ({
           className="d-flex align-items-center justify-content-center"
         >
           <div className="center-icon">
-            <FiArrowRight className="custom-icon" />
+            <Button variant="link" onClick={handleClick}>
+              <FiArrowRight className="custom-icon-big" />
+            </Button>
           </div>
         </Col>
       </Row>

@@ -8,7 +8,6 @@ import CustomInput from "../widgets/CustomInputWidget/CustomInput";
 import CustomPasswordInput from "../widgets/CustomInputWidget/CustomPasswordInput";
 import { useHistory } from "react-router-dom";
 
-
 const UserRegister = () => {
   const emptyRegisterInput: Partial<Register> = {
     username: "",
@@ -28,19 +27,19 @@ const UserRegister = () => {
   const [showSuccessMessage, setShowSuccessMessage] = useState(false);
   const [showSuccessMessageError, setShowSuccessMessageError] = useState(false);
   const [errorMsg, setErrorMsg] = useState("");
- 
+
 
   function onChange(
     e: ChangeEvent<HTMLInputElement>,
     attribute: keyof Register
   ) {
-      // Restablecer el mensaje de error y ocultar el mensaje de error
+    // Restablecer el mensaje de error y ocultar el mensaje de error
     setShowSuccessMessageError(false);
-   setErrorMsg("");
+    setErrorMsg("");
 
     setRegisterInput({ ...registerInput, [attribute]: e.target.value });
-    
-    
+
+
     if (attribute == "password") {
       const safePass =
         (e.target.value as string).length >= 8 &&
@@ -64,8 +63,8 @@ const UserRegister = () => {
   }
 
   const readyToSubmit =
-  registerInput.mail !== "" &&
-  registerInput.username !== "" &&
+    registerInput.mail !== "" &&
+    registerInput.username !== "" &&
     registerInput.lastName !== "" &&
     registerInput.password !== "" &&
     registerInput.confirmPass !== "" &&
@@ -81,6 +80,8 @@ const UserRegister = () => {
   };
 
   async function postUser() {
+    localStorage.clear();
+    setShowSuccessMessageError(false);
     const errorMessage = !readyToSubmit
       ? "Uno o más datos son incorrectos"
       : undefined;
@@ -94,13 +95,13 @@ const UserRegister = () => {
     if (errorMessage == undefined) {
       try {
         const response = await createApiClient().makeApiRequest("POST", "/caficultores", newRegister);
-        if (response.message!=undefined) {
+        if (response.message != undefined) {
           setShowSuccessMessageError(true);
-          setErrorMsg(response.message||"");
+          setErrorMsg(response.message || "");
         }
         else {
-          setTimeout(() => {
-            setShowSuccessMessage(false);
+          setShowSuccessMessage(true);
+          setTimeout(() => {        
             history.push("/Fincas");
           }, 2000);
         }
@@ -116,20 +117,11 @@ const UserRegister = () => {
 
     }
   }
-    
+
   return (
     <Container className="col-lg-6 col-xxl-4 my-5 mx-auto">
       <CustomTitles txt={"Crea una nueva cuenta"} />
-      {showSuccessMessageError && (
-        <Alert severity="error" style={{ marginBottom: "10px" }}>
-          {errorMsg}
-        </Alert>
-      )}
-      {showSuccessMessage && (
-        <Alert severity="success" style={{ marginBottom: "10px" }}>
-          ¡El usuario ha sido registrada exitosamente!
-        </Alert>
-      )}
+
       <Form noValidate validated={readyToSubmit}>
         <CustomInput
           label="Nombre"
@@ -158,7 +150,7 @@ const UserRegister = () => {
           required
           onInvalidText={"El campo debe ser un correo válido"}
 
-  />
+        />
 
         <CustomPasswordInput
           label="Contraseña"
@@ -170,7 +162,7 @@ const UserRegister = () => {
           togglePasswordVisibility={togglePasswordVisibility}
           showPassword={showPassword}
           onInvalidText={
-            "La contraseña debe contener al menos 8 caracteres, 1 mayúscula y 1 número"
+            "La contraseña debe contener al menos 8 caracteres, 1 mayúscula, 1 minúscula y 1 número"
           }
         />
         <CustomPasswordInput
@@ -184,6 +176,16 @@ const UserRegister = () => {
           showPassword={showConfirmPass}
           onInvalidText={"Las contraseñas no coinciden"}
         />
+        {showSuccessMessageError && (
+          <Alert severity="error" style={{ marginBottom: "10px",marginTop:"10px" }}>
+            {errorMsg}
+          </Alert>
+        )}
+        {showSuccessMessage && (
+          <Alert severity="success" style={{ marginBottom: "10px",marginTop:"10px" }}>
+            ¡El usuario ha sido registrada exitosamente!
+          </Alert>
+        )}
         <div className="d-grid gap-2">
           <Button variant="primary gap-2" className="custombtn-primary no-active-style" onClick={() => postUser()}>
             Registrar

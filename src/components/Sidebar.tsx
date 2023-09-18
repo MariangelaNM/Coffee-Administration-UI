@@ -1,5 +1,5 @@
 import { FC, useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link,useLocation  } from "react-router-dom";
 import styled from "styled-components";
 import { IconContext } from "react-icons";
 import { AiOutlineMenu, AiOutlineClose } from "react-icons/ai";
@@ -35,26 +35,26 @@ const NavIconClose = styled(Link)`
   float: right;
   margin: 10px;
 `;
-
-
-
-
 const Sidebar: FC = () => {
   const [sidebar, setSidebar] = useState(false);
   const showSidebar = () => setSidebar(!sidebar);
-  const path = window.location.pathname;
+  let path = window.location.pathname;
+  const location = useLocation(); // Obtiene la ubicación actual desde React Router
 
-
+  useEffect(() => {
+    path = window.location.pathname;
+  }, [location]); // Se ejecutará el efecto cuando la ubicación (ruta) cambie
 
   return (
     <IconContext.Provider value={{ color: "#6DB575" }}>
       <div className="Nav" style={{ width: "100%" }}>
         <NavIcon to="#" onClick={showSidebar} style={{ width: "100%" }}>
-          {path != '/signup' && path != '/login' && <AiOutlineMenu />}
+          {path != '/signup' && path != '/login' && path != '/' && 
+            <AiOutlineMenu />}
           <img src={logoCompleto} className="icon-navbar" />
         </NavIcon>
       </div>
-      {path != '/signup' && path != '/login' &&
+      {path != '/signup' && path != '/login' && path != '/'  &&
         <SidebarNav sidebar={sidebar}>
           <img src={logoCompleto_blanco} className="icon-sidebar" />
 
@@ -65,9 +65,9 @@ const Sidebar: FC = () => {
           {SidebarData.map((item, index) => {
             return <Submenu item={item} key={index} />;
           })}
-      
+
         </SidebarNav>}
-        
+
     </IconContext.Provider>
   );
 };

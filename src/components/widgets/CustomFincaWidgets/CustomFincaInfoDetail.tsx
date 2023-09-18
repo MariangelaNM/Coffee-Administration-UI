@@ -38,9 +38,6 @@ const CustomFincaInfoDetail: React.FC<CustomFincaInfoDetailProps> = ({
             </div>
           </Col>
         </Col>
-        <Col xs={2} sm={1} className="text-right">
-          <FiEdit className="custom-icon" onClick={onClick} />
-        </Col>
       </Row>
     </div>
   );
