@@ -33,7 +33,7 @@ export const SidebarData: SidebarItem[] = [
     },
     {
         title: 'Mis Recolectores',
-        path: '/Mis Recolectores',
+        path: '/Recolectores',
         icon: null
     },
     {
