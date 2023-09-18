@@ -16,7 +16,7 @@ const RecolectorCreate = () => {
   const [validated, setValidated] = useState(false);
   const [showSuccessMessage, setShowSuccessMessage] = useState(false);
   const [showSuccessMessageError, setShowSuccessMessageError] = useState(false);
-  const [recolectorId, setRecolectorId] = useState<string | null>(null);
+  const [recolectorId, setRecolectorId] = useState<string>("");
 
   const storedID = localStorage.getItem("id");
   const [recolector, setRecolector] = useState<Recolector>({
@@ -38,7 +38,8 @@ const RecolectorCreate = () => {
     } else {
       history.push(`/login`);
     }
-  }, []);
+  }, [recolectorId]); // Añade recolectorId como dependencia
+  
 
   const handleInputChange = (field: string) => (e: React.ChangeEvent<HTMLInputElement>) => {
     setRecolector((prev) => ({ ...prev, [field]: e.target.value }));
