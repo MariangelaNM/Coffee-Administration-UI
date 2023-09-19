@@ -8,7 +8,7 @@ import CustomButtonPrimary from "../widgets/CustomBtnPrimaryWidget/CustomBtnPrim
 import CustomButtonSecondary from "../widgets/CustomButtonSecondaryWidget/CustomButtonSecondary";
 import { useHistory, useLocation } from 'react-router-dom';
 import Alert from "@mui/material/Alert";
-
+import { useUser } from '../UserContext';
 const ZonasControl = () => {
   const emptyZonaInput: Partial<Zona> = {
     Id: undefined,
@@ -16,7 +16,7 @@ const ZonasControl = () => {
     Descripcion: "",
     FincaID: undefined
   };
-
+  const { userId } = useUser();
   const [errorMsg, setErrorMsg] = useState("Error al registrar la data");
   const [zonaInput, setZonaInput] = useState<Partial<Zona>>(emptyZonaInput);
   const [zonaId, setZonaId] = useState(0);
@@ -28,8 +28,7 @@ const ZonasControl = () => {
   let zonaID: Number = 0;
 
   useEffect(() => {
-    const storedUserId = localStorage.getItem('id');
-    if (storedUserId != null) {
+    if (userId != null) {
       CallIds();
       if (zonaID != 0) {
         getData();

@@ -9,6 +9,7 @@ import "../CustomZonasWidgets/TableStyle.scss";
 import { Recolector } from "../../../models/Recolector";
 import AlertDialog from "../AlertDialog";
 import createApiClient from "../../../api/api-client-factory";
+import { useHistory, useLocation } from "react-router-dom";
 
 interface CustomRecolectorListElementProps {
   recolector: Recolector;
@@ -19,6 +20,8 @@ const CustomRecolectorListElement: React.FC<CustomRecolectorListElementProps> = 
   recolector,
   onClick,
 }) => {
+  
+  const history = useHistory();
   const [openDialog, setOpenDialog] = useState(false);
   const [texto, setTexto] = useState("");
   const handleCloseDialog = () => {
@@ -39,7 +42,7 @@ const CustomRecolectorListElement: React.FC<CustomRecolectorListElementProps> = 
   };
   const handleEditClick = (event: React.MouseEvent) => {
     event.stopPropagation();
-    window.location.href = "/Recolectores/Edit?recolector=" + recolector.Id;
+    history.push("/Recolectores/Edit?recolector=" + recolector.Id);
   };
 
   const handleDeleteClick = (event: React.MouseEvent) => {

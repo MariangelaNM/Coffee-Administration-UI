@@ -8,7 +8,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import createApiClient from "../../api/api-client-factory";
 import { Finca } from "../../models/Finca";
 import { useHistory } from "react-router-dom";
-
+import { useUser } from '../UserContext';
 const FarmCreate = () => {
   const history = useHistory();
   const [errorMsg, setErrorMsg] = useState("");
@@ -16,19 +16,18 @@ const FarmCreate = () => {
   const [showSuccessMessage, setShowSuccessMessage] = useState(false);
   const [showSuccessMessageError, setShowSuccessMessageError] = useState(false);
   const [fincaId, setFincaId] = useState("");
+  const { userId } = useUser();
   let id: string;
-  const storedID = localStorage.getItem('id');
   const [finca, setFinca] = useState<Finca>({
     Id: undefined,
-    CaficultorID: storedID !== null ? parseInt(storedID, 10) : 0,
+    CaficultorID: userId !== null ? parseInt(userId, 10) : 0,
     Nombre: "",
     Ubicacion: "",
     Descripcion: ""
   });
 
   useEffect(() => {
-    const storedUserId = localStorage.getItem('id');
-    if (storedUserId != null) {
+    if (userId != null) {
       CallIds();
       fincaData();
     }
@@ -158,12 +157,12 @@ const FarmCreate = () => {
           </Form.Control.Feedback>
         </Form.Group>
         {showSuccessMessageError && (
-          <Alert severity="error" style={{ marginBottom: "10px",marginTop:"10px" }}>
+          <Alert severity="error" style={{ marginBottom: "10px", marginTop: "10px" }}>
             Error: {errorMsg}
           </Alert>
         )}
         {showSuccessMessage && (
-          <Alert severity="success" style={{ marginBottom: "10px",marginTop:"10px" }}>
+          <Alert severity="success" style={{ marginBottom: "10px", marginTop: "10px" }}>
             ¡La finca ha sido registrada exitosamente!
           </Alert>
         )}

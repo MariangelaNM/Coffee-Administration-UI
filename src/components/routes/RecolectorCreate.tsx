@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
 import { Container, Form, Button } from "react-bootstrap";
 import Alert from "@mui/material/Alert";
 import styled from "styled-components";
@@ -8,7 +8,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import createApiClient from "../../api/api-client-factory";
 import { Recolector } from "../../models/Recolector";
 import { useHistory, useLocation } from "react-router-dom";
-
+import { useUser } from '../UserContext';
 const RecolectorCreate = () => {
   const history = useHistory();
   const location = useLocation();
@@ -16,12 +16,11 @@ const RecolectorCreate = () => {
   const [validated, setValidated] = useState(false);
   const [showSuccessMessage, setShowSuccessMessage] = useState(false);
   const [showSuccessMessageError, setShowSuccessMessageError] = useState(false);
-  const [recolectorId, setRecolectorId] = useState<string | null>(null);
-
-  const storedID = localStorage.getItem("id");
+  const [recolectorId, setRecolectorId] = useState<string>("");
+  const { userId } = useUser();
   const [recolector, setRecolector] = useState<Recolector>({
     Id: undefined,
-    CaficultorID: storedID !== null ? parseInt(storedID, 10) : 0,
+    CaficultorID: userId !== null ? parseInt(userId, 10) : 0,
     Nombre: "",
     Apellidos: "",
     Identificacion: undefined,
@@ -31,14 +30,16 @@ const RecolectorCreate = () => {
   });
 
   useEffect(() => {
-    const storedUserId = localStorage.getItem("id");
-    if (storedUserId !== null) {
+    debugger
+    console.log(recolector.CaficultorID);
+    if (userId != null) {
       CallIds();
       recolectorData();
     } else {
       history.push(`/login`);
     }
-  }, []);
+  }, []); // Añade recolectorId como dependencia
+
 
   const handleInputChange = (field: string) => (e: React.ChangeEvent<HTMLInputElement>) => {
     setRecolector((prev) => ({ ...prev, [field]: e.target.value }));
@@ -84,9 +85,12 @@ const RecolectorCreate = () => {
   };
 
   const recolectorData = async () => {
-    if (recolectorId !== null) {
+    const queryParams = new URLSearchParams(location.search);
+    const recolectorString = queryParams.get("recolector");
+
+    if (recolectorString != null) {
       try {
-        const response = await createApiClient().makeApiRequest("GET", `/recolectores/${recolectorId}/recolector`, null);
+        const response = await createApiClient().makeApiRequest("GET", `/recolectores/${recolectorString}/recolector`, null);
         setRecolector(response);
       } catch {
         history.push(`/error`);
@@ -123,7 +127,7 @@ const RecolectorCreate = () => {
           </Form.Control.Feedback>
         </Form.Group>
 
-          <Form.Group className="mb-3" controlId="formApellidos">
+        <Form.Group className="mb-3" controlId="formApellidos">
           <Form.Label>Apellidos</Form.Label>
           <Form.Control
             type="text"
@@ -159,11 +163,13 @@ const RecolectorCreate = () => {
             value={recolector.Cel}
             onChange={handleInputChange("Cel")}
             required
+            maxLength={8} // Add maxLength to limit the input to 8 characters
           />
           <Form.Control.Feedback type="invalid">
             El campo no puede estar vacío
           </Form.Control.Feedback>
         </Form.Group>
+
         {showSuccessMessageError && (
           <Alert severity="error" style={{ marginBottom: "10px", marginTop: "10px" }}>
             Error: {errorMsg}
