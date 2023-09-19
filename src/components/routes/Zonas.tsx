@@ -9,7 +9,7 @@ import CustomAdd from "../widgets/CustomAdd";
 import CustomSearch from "../widgets/CustomInputWidget/CustomSearch";
 import CustomZonaList from "../widgets/CustomZonasWidgets/CustomZonaList";
 import { useHistory, useLocation } from "react-router-dom";
-
+import { useUser } from '../UserContext';
 const Zonas = () => {
   let id: string;
   const history = useHistory();
@@ -18,10 +18,9 @@ const Zonas = () => {
   const [searchInput, setSearchInput] = useState("");
   const [zonaList, setZonaList] = useState<Zona[]>([]);
   const [fincasData, setFincasData] = useState<Finca>();
-
+  const { userId } = useUser();
   useEffect(() => {
-    const storedUserId = localStorage.getItem('id');
-    if (storedUserId != null) {
+    if (userId != null) {
       CallIds();
       callData();
     }

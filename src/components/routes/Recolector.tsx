@@ -7,15 +7,14 @@ import CustomAdd from "../widgets/CustomAdd";
 import CustomSearch from "../widgets/CustomInputWidget/CustomSearch";
 import CustomRecolectorList from "../widgets/CustomRecolectorWidget/CustomRecolectorList";
 import { useHistory } from "react-router-dom";
-
+import { useUser } from '../UserContext';
 const Recolectores = () => {
   const history = useHistory();
   const [searchInput, setSearchInput] = useState("");
   const [recolectoresData, setRecolectoresData] = useState<Recolector[]>([]);
-
+  const { userId } = useUser();
   useEffect(() => {
-    const storedUserId = localStorage.getItem('id');
-    if (storedUserId != null) {
+    if (userId != null) {
       callDataRecolector();
     } else {
       history.push(
@@ -26,7 +25,7 @@ const Recolectores = () => {
 
   async function callDataRecolector() {
     try {
-      const response = await createApiClient().makeApiRequest("GET", `/recolectores/${localStorage.getItem('id')}/caficultor`, null);
+      const response = await createApiClient().makeApiRequest("GET", `/recolectores/${userId}/caficultor`, null);
       if ('message' in response) {
         setRecolectoresData([] as Recolector[]);
       }
