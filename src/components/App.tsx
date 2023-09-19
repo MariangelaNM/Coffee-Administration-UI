@@ -17,6 +17,7 @@ import RecoleccionCreate from "./routes/RecoleccionCreate";
 import Recolector from "./routes/Recolector";
 import Admin from "./routes/Admin";
 import IndexPage from "./routes/IndexPage";
+import RecoleccionPeriodo from "./routes/RecoleccionPeriodo";
 
 const App: FC = () => {
   return (
@@ -54,11 +55,15 @@ const App: FC = () => {
         <Route path="/MisPeriodos/Create">
           <MisPeriodosControl />
         </Route>
-        <Route path="/MisPeriodos/Edit">
-
-        </Route>
+        <Route path="/MisPeriodos/Edit"></Route>
         <Route path="/MisPeriodos">
           <MisPeriodos />
+        </Route>
+        <Route path="/RecoleccionPeriodo">
+          <RecoleccionPeriodo />
+        </Route>
+        <Route path="/Recoleccion">
+          <RecoleccionCreate />
         </Route>
         <Route path="/Mis Recolectores/Create">
           <RecolectorCreate />
@@ -72,7 +77,7 @@ const App: FC = () => {
         <Route path="/Resumen Recolectores">
           {/* Lógica y componentes para la ruta /Resumen Recolectores */}
         </Route>
-        <Route path="/Recoleccion" > <RecoleccionCreate /></Route>
+
         <Route path="/Resumen Fincas">
           {/* Lógica y componentes para la ruta /Resumen Fincas */}
         </Route>

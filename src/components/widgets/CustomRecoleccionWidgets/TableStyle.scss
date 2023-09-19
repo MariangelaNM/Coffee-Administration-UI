@@ -1,0 +1,31 @@
+.detail-card {
+  border: 1px solid #7a501f;
+  border-radius: 4px;
+
+  &:hover {
+    border-color: white;
+    box-shadow: 0 0 10px #6db575;
+  }
+}
+
+.center-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+}
+
+.text-selection-disable {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.horizontal-scroll-container {
+  width: 100%;
+  overflow-x: auto;
+  white-space: nowrap;
+}
