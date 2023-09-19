@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Row, Col, Container, Button } from "react-bootstrap";
 import styled from "styled-components";
 import { themes } from "../../../styles/ColorStyles";
@@ -6,27 +6,49 @@ import { H3, MediumText } from "../../../styles/TextStyles";
 import { FiEdit, FiTrash2 } from "react-icons/fi";
 import "../Customicon.scss";
 import "../CustomZonasWidgets/TableStyle.scss";
-import { Colector } from "../../../models/Colector";
+import { Recolector } from "../../../models/Recolector";
+import AlertDialog from "../AlertDialog";
+import createApiClient from "../../../api/api-client-factory";
+import { useHistory, useLocation } from "react-router-dom";
 
-interface CustomColectorListElementProps {
-  colector: Colector;
+interface CustomRecolectorListElementProps {
+  recolector: Recolector;
   onClick: (id: number) => void;
 }
 
-const CustomColectorListElement: React.FC<CustomColectorListElementProps> = ({
-  colector,
+const CustomRecolectorListElement: React.FC<CustomRecolectorListElementProps> = ({
+  recolector,
   onClick,
 }) => {
+  
+  const history = useHistory();
+  const [openDialog, setOpenDialog] = useState(false);
+  const [texto, setTexto] = useState("");
+  const handleCloseDialog = () => {
+    setOpenDialog(false);
+  };
+  const handleDisagree = () => {
+    handleCloseDialog();
+  };
+  
+  const handleAgree = async () => {
+    await createApiClient().makeApiRequest(
+      "DELETE",
+      "/recolectores/" + recolector.Id,
+      undefined
+    );
+    handleCloseDialog();
+    window.location.reload();
+  };
   const handleEditClick = (event: React.MouseEvent) => {
     event.stopPropagation();
-    // Lógica para editar
-    console.log("EDITAR");
-    onClick(colector.id);
+    history.push("/Recolectores/Edit?recolector=" + recolector.Id);
   };
 
   const handleDeleteClick = (event: React.MouseEvent) => {
     event.stopPropagation();
-    // Lógica para eliminar
+    setTexto(`Eliminar el recolector "${recolector.Nombre}"`);
+    setOpenDialog(true);
     console.log("BORRAR");
   };
   return (
@@ -39,7 +61,7 @@ const CustomColectorListElement: React.FC<CustomColectorListElementProps> = ({
             </DescriptionTag>
             <div style={{ marginLeft: "5px" }}>
               <Description className="text-selection-disable">
-                {colector.nombre + " " + colector.apellido}
+                {recolector.Nombre + " " + recolector.Apellidos}
               </Description>
             </div>
           </Col>
@@ -57,6 +79,13 @@ const CustomColectorListElement: React.FC<CustomColectorListElementProps> = ({
           </Col>
         </Col>
       </Row>
+      <AlertDialog
+        open={openDialog}
+        texto={texto}
+        handleClose={handleCloseDialog}
+        handleDisagree={handleDisagree}
+        handleAgree={handleAgree}
+      />
     </Container>
   );
 };
@@ -69,4 +98,4 @@ const DescriptionTag = styled(MediumText)`
   color: ${themes.dark.cafe_medio};
   text-align: start;
 `;
-export default CustomColectorListElement;
+export default CustomRecolectorListElement;

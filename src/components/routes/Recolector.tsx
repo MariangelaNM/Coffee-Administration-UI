@@ -1,83 +1,55 @@
-import React, { ChangeEvent, useState, useEffect, useMemo } from "react";
-import { Container, Form } from "react-bootstrap";
-
+import  { ChangeEvent, useState, useEffect } from "react";
+import { Container } from "react-bootstrap";
 import createApiClient from "../../api/api-client-factory";
-import { Colector } from "../../models/Colector";
-import { useCreateUser } from "../../hooks/useCreateUser";
+import { Recolector } from "../../models/Recolector";
 import CustomTitles from "../widgets/CustomTitles";
 import CustomAdd from "../widgets/CustomAdd";
 import CustomSearch from "../widgets/CustomInputWidget/CustomSearch";
-import CustomColectorList from "../widgets/CustomColectorWidget/CustomColectorList";
-import CustomAlert from "../widgets/CustomAlert";
-
+import CustomRecolectorList from "../widgets/CustomRecolectorWidget/CustomRecolectorList";
 import { useHistory } from "react-router-dom";
-
-const Recolector = () => {
+import { useUser } from '../UserContext';
+const Recolectores = () => {
   const history = useHistory();
   const [searchInput, setSearchInput] = useState("");
-  const apiClient = useMemo(() => createApiClient(), []);
-
-  //const { create, status, error } = useCreate(apiClient.postUser);
-
-  //TODO Esto es un ejemplo
-  const ColectorList: Colector[] = [
-    {
-      id: 1,
-      nombre: "Nombre1",
-      apellido: "Apellido1",
-      identificacion: "12345asdf",
-      telefono:123455
-    },
-    {
-      id: 2,
-      nombre: "Nombre2",
-      apellido: "Apellido2",
-      identificacion: "12345asdf",
-      telefono:123455
-    },
-    {
-      id: 3,
-      nombre: "Nombre3",
-      apellido: "Apellido3",
-      identificacion: "12345asdf",
-      telefono:123455
-    },
-  ];
-
+  const [recolectoresData, setRecolectoresData] = useState<Recolector[]>([]);
+  const { userId } = useUser();
   useEffect(() => {
-    if (status === "success") {
-      console.log("Creacion exitosa");
+    if (userId != null) {
+      callDataRecolector();
     } else {
-      //console.log(error);
+      history.push(
+        `/login`
+      );
     }
-    // return () => {};
-  }, [status]);
+  }, [])
+
+  async function callDataRecolector() {
+    try {
+      const response = await createApiClient().makeApiRequest("GET", `/recolectores/${userId}/caficultor`, null);
+      if ('message' in response) {
+        setRecolectoresData([] as Recolector[]);
+      }
+      else {
+        setRecolectoresData(response as Recolector[]);
+      }
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    }
+  }
 
   function onChangeFilterTxt(e: ChangeEvent<HTMLInputElement>) {
     setSearchInput(e.target.value);
   }
 
   async function CreateColector() {
-    console.log("CreateColector");
-    const emptyColectorInput: Partial<Colector> = {
-      id: 0,
-      nombre: "",
-      apellido: "",
-      identificacion: "",
-      telefono:0
-    };
-    const newColectorString = JSON.stringify(emptyColectorInput);
     history.push(
-      `/Mis Recolectores/Create?colector=${encodeURIComponent(newColectorString)}`
+      `/Recolectores/Create`
     );
   }
+
   async function EditColector(id: number) {
     console.log("EditColector");
-    console.log(id);
-    const selectedColector = ColectorList.find((colector) => colector.id === id);
-
-    const selectedColectorString = JSON.stringify(selectedColector);
-    history.push(`/Mis Recolectores/Edit?colector=${encodeURIComponent(selectedColectorString)}`);
+    history.push(`/Recolectores/Edit?recolector=` + id);
   }
   return (
     <Container className="col-lg-6 col-xxl-4 my-5 mx-auto">
@@ -90,9 +62,9 @@ const Recolector = () => {
         onChange={(e) => onChangeFilterTxt(e)}
       />
       <Container>
-        <CustomColectorList
+        <CustomRecolectorList
           filterTxt={searchInput}
-          colectorList={ColectorList}
+          recolectorList={recolectoresData}
           onClick={EditColector}
         />
       </Container>
@@ -100,4 +72,4 @@ const Recolector = () => {
   );
 };
 
-export default Recolector;
+export default Recolectores;

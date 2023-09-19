@@ -9,6 +9,7 @@ import CustomButtonSecondary from "../widgets/CustomButtonSecondaryWidget/Custom
 import createApiClient from "../../api/api-client-factory";
 import Alert from "@mui/material/Alert";
 import { useHistory } from "react-router-dom";
+import { useUser } from "../UserContext";
 const Login = () => {
   const history = useHistory();
   const [mail, setMail] = useState("");
@@ -18,8 +19,7 @@ const Login = () => {
   const readyToSubmit = mail !== "" && password !== "";
   const [showSuccessMessage, setShowSuccessMessage] = useState(false);
   const [showSuccessMessageError, setShowSuccessMessageError] = useState(false);
-
-
+  const { setUserId } = useUser();
 
   function onReset() {
     setMail("");
@@ -62,7 +62,7 @@ const Login = () => {
       } else {
         setShowSuccessMessageError(false);
         localStorage.setItem('token', response?.token); // Guarda el userId en el local storage
-        localStorage.setItem('id', response?.id); // Guarda el userId en el local storage
+        setUserId(response?.id);
         setShowSuccessMessage(true);
         setTimeout(() => {
           setShowSuccessMessage(false);

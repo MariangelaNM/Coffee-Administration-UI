@@ -7,15 +7,14 @@ import CustomSearch from "../widgets/CustomInputWidget/CustomSearch";
 import CustomFincaList from "../widgets/CustomFincaWidgets/CustomFincaList";
 import { useHistory } from "react-router-dom";
 import CustomAdd from "../widgets/CustomAdd";
-
+import { useUser } from '../UserContext';
 const Farms = () => {
   const history = useHistory();
   const [searchInput, setSearchInput] = useState("");
   const [fincasData, setFincasData] = useState<Finca[]>([]);
-
+  const { userId } = useUser();
   useEffect(() => {
-    const storedUserId = localStorage.getItem('id');
-    if (storedUserId != null) {
+    if (userId != null) {
       callDataFinca();
     }else{
       history.push(
@@ -26,9 +25,8 @@ const Farms = () => {
 
   async function callDataFinca() {
     try {
-      const data = { CaficultorID: localStorage.getItem('id') };
+      const data = { CaficultorID: userId };
       const response = await createApiClient().makeApiRequest("PUT", "/fincas", data);
-
       if ('message' in response) {
         setFincasData([] as Finca[]);
       }
