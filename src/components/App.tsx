@@ -58,7 +58,7 @@ const App: FC = () => {
             <MisPeriodosControl />
           </Route>
           <Route path="/MisPeriodos/Edit">
-
+          <MisPeriodosControl />
           </Route>
           <Route path="/MisPeriodos">
             <MisPeriodos />

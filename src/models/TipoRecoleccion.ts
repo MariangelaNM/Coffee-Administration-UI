@@ -4,3 +4,20 @@ export enum TipoRecoleccion {
   Buena = 2,
   Repela = 3,
 }
+
+/*export interface TipoRecoleccion {
+  /**
+   *
+   * @type {number}
+   * @memberof TipoRecoleccion
+   */
+  //Id?: number;
+  /**
+   *
+   * @type {string}
+   * @memberof TipoRecoleccion
+   */
+ // Nombre: string;
+
+
+//}

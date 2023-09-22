@@ -65,7 +65,7 @@ const ZonasControl = () => {
 
   function onReset() {
     setZonaInput(emptyZonaInput);
-    history.push("/MisPeriodos?zona=" + zonaId);
+    history.push("/Zonas?farm=" + zonaInput.FincaID);
   }
 
   async function postZona() {

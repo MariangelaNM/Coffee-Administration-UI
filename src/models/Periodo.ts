@@ -45,11 +45,18 @@ export interface Periodo {
    * @type {Date}
    * @memberof Periodo
    */
-  createdAt: Date,
+  createdAt?: Date,
   /**
    *
    * @type {Date}
    * @memberof Periodo
    */
-  updatedAt: Date
+  updatedAt?: Date
+/**
+   *
+   * @type {number}
+   * @memberof Periodo
+   */
+
+  zona?:number
 }

@@ -9,7 +9,7 @@ import CustomSearch from "../widgets/CustomInputWidget/CustomSearch";
 import CustomPeriodoList from "../widgets/CustomPeriodosWidgets/CustomPeriodoList";
 import { useHistory, useLocation } from "react-router-dom";
 import { Periodo } from "../../models/Periodo";
-
+import { useUser } from '../UserContext';
 const MisPeriodos = () => {
   const history = useHistory();
   const location = useLocation();
@@ -17,10 +17,10 @@ const MisPeriodos = () => {
   const [searchInput, setSearchInput] = useState("");
   const [periodoData, setperiodoData] = useState<Periodo[]>([]);
   let id: string;
-
+  const { userId } = useUser();
   const [fincaInput, setFincaInput] = useState("");
   useEffect(() => {
-    CallIds() 
+    CallIds()
     callDataZona();
     callDataPeriodo();
   }, [])
@@ -31,22 +31,28 @@ const MisPeriodos = () => {
     if (fincaString) {
       id = (fincaString);
       setFincaInput((decodeURIComponent(fincaString)));
+
     }
   }
   async function callDataZona() {
     try {
       const response = await createApiClient().makeApiRequest("GET", "/zonas/" + id, null);
       setZonaInput(response as unknown as Zona);
-      
+
     } catch (error) {
       console.error('Error fetching data:', error);
     }
   }
   async function callDataPeriodo() {
     try {
+      debugger
       //corregir id caficultor
-      const response = await createApiClient().makeApiRequest("GET", "/periodos/" + 1, null);
+      const response = await createApiClient().makeApiRequest("GET", "/periodos/" + userId, null);
+      response.forEach((element) => {
+        element.zona = Number(id);
+      });
       setperiodoData(response as unknown as Periodo[]);
+
     } catch (error) {
       console.error('Error fetching data:', error);
     }
@@ -57,14 +63,14 @@ const MisPeriodos = () => {
   }
 
   async function updateZona() {
-    CallIds() 
+    CallIds()
     history.push(`/Zonas/Edit?zona=${id}`);
   }
 
   async function CreatePeriodo() {
     console.log("CreatePeriodo");
     history.push(
-      `/MisPeriodos/Create}`
+      `/MisPeriodos/Create?zona=${id}`
     );
   }
   async function getDetallePeriodo() {
@@ -78,7 +84,7 @@ const MisPeriodos = () => {
         descripcion={zonaInput?.Descripcion ?? ""}
         onClick={updateZona}
       />
-       <CustomTitles txt={"Mis periodos"} />
+      <CustomTitles txt={"Mis periodos"} />
       <CustomAdd onClick={CreatePeriodo} />
       <CustomSearch
         label="Buscar"
