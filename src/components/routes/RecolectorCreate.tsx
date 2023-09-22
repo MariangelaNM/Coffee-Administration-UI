@@ -30,7 +30,6 @@ const RecolectorCreate = () => {
   });
 
   useEffect(() => {
-    debugger
     console.log(recolector.CaficultorID);
     if (userId != null) {
       CallIds();

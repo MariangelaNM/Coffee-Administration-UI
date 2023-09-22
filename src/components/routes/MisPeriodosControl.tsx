@@ -67,7 +67,6 @@ const MisPeriodosControl = () => {
   }
 
   function onReset() {
-    debugger
     setPeriodoInput(emptyPeriodoInput);
     const queryParams = new URLSearchParams(location.search);
     const zona = queryParams.get("zona");
@@ -139,7 +138,6 @@ const MisPeriodosControl = () => {
     if (readyToSubmit) {
       try {
         periodoInput.CaficultorID = Number(userId);
-        debugger
         const response = await createApiClient().makeApiRequest(
           "PATCH",
           "/periodos/"+periodoInput.Id,
@@ -167,7 +165,6 @@ const MisPeriodosControl = () => {
           options={options}
           onSelect={handleSelect}
           onInvalidText={"El campo no puede estar vacio"}
-          defaultValue={options[0].value}
         />
         <CustomInput
           label="Pago por unidad"

@@ -45,8 +45,6 @@ const MisPeriodos = () => {
   }
   async function callDataPeriodo() {
     try {
-      debugger
-      //corregir id caficultor
       const response = await createApiClient().makeApiRequest("GET", "/periodos/" + userId, null);
       response.forEach((element) => {
         element.zona = Number(id);
