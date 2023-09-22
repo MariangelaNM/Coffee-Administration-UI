@@ -61,14 +61,16 @@ const MisPeriodos = () => {
   }
 
   async function updateZona() {
-    CallIds()
-    history.push(`/Zonas/Edit?zona=${id}`);
+    const queryParams = new URLSearchParams(location.search);
+    const zona = queryParams.get("zona");
+    history.push(`/Zonas/Edit?zona=${zona}`);
   }
 
   async function CreatePeriodo() {
-    console.log("CreatePeriodo");
+    const queryParams = new URLSearchParams(location.search);
+    const zona = queryParams.get("zona");
     history.push(
-      `/MisPeriodos/Create?zona=${id}`
+      `/MisPeriodos/Create?zona=${zona}`
     );
   }
   async function getDetallePeriodo() {

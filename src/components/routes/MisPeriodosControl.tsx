@@ -12,7 +12,7 @@ import { useUser } from '../UserContext';
 import { useHistory, useLocation } from "react-router-dom";
 import { TipoRecoleccion } from "../../models/TipoRecoleccion";
 import Alert from "@mui/material/Alert";
-
+import { Dropdown } from "react-bootstrap";
 const MisPeriodosControl = () => {
   const { userId } = useUser();
 
@@ -23,7 +23,7 @@ const MisPeriodosControl = () => {
     Hasta: new Date(),
     PrecioCajuela: 0,
     CaficultorID: Number(userId),
-    zona:undefined
+    zona: undefined
   };
 
   const options = [
@@ -42,7 +42,7 @@ const MisPeriodosControl = () => {
   const [showSuccessMessageError, setShowSuccessMessageError] = useState(false);
   const history = useHistory();
   const location = useLocation();
-  
+
   useEffect(() => {
     const queryParams = new URLSearchParams(location.search);
     const periodoString = queryParams.get("periodo");
@@ -140,7 +140,7 @@ const MisPeriodosControl = () => {
         periodoInput.CaficultorID = Number(userId);
         const response = await createApiClient().makeApiRequest(
           "PATCH",
-          "/periodos/"+periodoInput.Id,
+          "/periodos/" + periodoInput.Id,
           periodoInput
         );
         handleApiResponse(response);
@@ -159,13 +159,24 @@ const MisPeriodosControl = () => {
         }
       />
 
-      <Form noValidate validated={readyToSubmit}>
-        <CustomDropDown
-          labelname={"Seleccionar opción"}
-          options={options}
-          onSelect={handleSelect}
-          onInvalidText={"El campo no puede estar vacio"}
-        />
+      <Form noValidate validated={readyToSubmit} >
+      <Form.Label className="labelForm text-selection-disable">
+        {"Tipo de Recolección"}
+      </Form.Label>
+        <select 
+          className="form-select"
+          style={{marginBottom:'10px'}}
+          value={periodoInput.TipoRecoleccionID}
+          onChange={(e) => handleSelect(Number(e.target.value))}
+          required
+        >
+          {options.map((option) => (
+            <option key={option.value} value={option.value}>
+              {option.label}
+            </option>
+          ))}
+        </select>
+
         <CustomInput
           label="Pago por unidad"
           placeholder="Pago por unidad"
