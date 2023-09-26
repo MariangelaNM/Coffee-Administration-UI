@@ -30,7 +30,7 @@ export default function AlertDialog({
         aria-describedby="alert-dialog-description"
       >
         <DialogTitle id="alert-dialog-title">
-          {"Está seguro de realizar la acción?"}
+          {"¿Está seguro de realizar la acción?"}
         </DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-description">

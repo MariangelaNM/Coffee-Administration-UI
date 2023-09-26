@@ -12,7 +12,8 @@ import styled from "styled-components";
 import { themes } from "../../styles/ColorStyles";
 import { H4 } from "../../styles/TextStyles";
 import { useHistory, useLocation } from "react-router-dom";
-
+import CustomButtonPrimary from "../widgets/CustomBtnPrimaryWidget/CustomBtnPrimary";
+import CustoReleccionCostoUnitario from "../widgets/CustomRecoleccionWidgets/CustomRecoleccionCostoUnitario";
 const RecoleccionPeriodo = () => {
   const history = useHistory();
   // const location = useLocation();
@@ -43,7 +44,7 @@ const RecoleccionPeriodo = () => {
       cajuelas: 1,
       cuartillos: 2,
       total: 10,
-      pagado: "pendiente",
+      pagado: "Pendiente",
     },
     {
       Id: 2,
@@ -54,7 +55,7 @@ const RecoleccionPeriodo = () => {
       cajuelas: 2,
       cuartillos: 2,
       total: 7.5,
-      pagado: "pagado",
+      pagado: "Pagado",
     },
     {
       Id: 3,
@@ -65,7 +66,7 @@ const RecoleccionPeriodo = () => {
       cajuelas: 3,
       cuartillos: 2,
       total: 17.5,
-      pagado: "pendiente",
+      pagado: "Pendiente",
     },
   ];
 
@@ -85,6 +86,18 @@ const RecoleccionPeriodo = () => {
         periodo={"Nombre del periodo"}
         descripcion={"Descripcion del periodo"}
       />
+      <div className="mt-2">
+        <CustoReleccionCostoUnitario costounitario={10} Id={1} />
+      </div>
+      <div className="d-grid gap-2">
+        <CustomButtonPrimary
+          label="Pagos pendientes"
+          onClick={() => {
+            //history.push("/login");
+          }}
+          disabled={false}
+        />
+      </div>
       <Container>
         <CustomTitles txt={"Resumen del periodo"} />
         <BarChart

@@ -66,7 +66,6 @@ const CustomRecoleccionList: React.FC<CustomRecoleccionListProps> = ({
       }
     });
   }
-  
 
   if (!recoleccionList.length) {
     return (
@@ -81,7 +80,9 @@ const CustomRecoleccionList: React.FC<CustomRecoleccionListProps> = ({
         <TableHead columns={columns} onClickSort={ FilterByAccessor} />
         <TableBody
           columns={columns}
-          tableData={currentList}
+          tableData={currentList .filter((c) =>
+            c.recolectorname.toLowerCase().includes(filterTxt.toLowerCase())
+          )}
           onClickEdit={handleEditClick}
           onClickBorrar={handleDeleteClick}
         />

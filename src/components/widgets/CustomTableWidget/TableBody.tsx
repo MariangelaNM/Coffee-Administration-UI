@@ -31,8 +31,18 @@ const TableBody: React.FC<TableBodyProps> = ({
           <tr key={data.Id}>
             {columns.map(({ accessor }) => {
               const tData = data[accessor] ? data[accessor] : "——";
-              return <td key={accessor}>{tData}</td>;
+
+              const statusStyle =
+              accessor === "pagado" && data[accessor] === "Pagado"
+                ? { color: "green" }
+                : accessor === "pagado" && data[accessor] === "Pendiente"
+                ? { color: "red" }
+                : {};
+                
+
+              return <td key={accessor} style={statusStyle}>{tData}</td>;
             })}
+            
             <td key={"Edit"}>
               <Button variant="link" onClick={() => onClickEdit(data.Id)}>
                 <FiEdit className="custom-icon" />
@@ -46,6 +56,7 @@ const TableBody: React.FC<TableBodyProps> = ({
           </tr>
         );
       })}
+      
     </tbody>
   );
 };
