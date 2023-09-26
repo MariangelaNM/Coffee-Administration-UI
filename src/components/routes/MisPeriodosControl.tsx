@@ -1,4 +1,4 @@
-import { ChangeEvent, useState, useEffect, useMemo } from "react";
+import { ChangeEvent, useState, useEffect } from "react";
 import { Container, Form } from "react-bootstrap";
 import createApiClient from "../../api/api-client-factory";
 import { Periodo } from "../../models/Periodo";
@@ -6,23 +6,26 @@ import CustomTitles from "../widgets/CustomTitles";
 import CustomInput from "../widgets/CustomInputWidget/CustomInput";
 import CustomButtonPrimary from "../widgets/CustomBtnPrimaryWidget/CustomBtnPrimary";
 import CustomButtonSecondary from "../widgets/CustomButtonSecondaryWidget/CustomButtonSecondary";
-import CustomAlert from "../widgets/CustomAlert";
 import CustomDatePiker from "../widgets/CustomDatePikerWidget/CustomDatePiker";
 import CustomDropDown from "../widgets/CustomDropDown/CustomDropDown";
-
+import { useUser } from '../UserContext';
 import { useHistory, useLocation } from "react-router-dom";
 import { TipoRecoleccion } from "../../models/TipoRecoleccion";
-
+import Alert from "@mui/material/Alert";
+import { Dropdown } from "react-bootstrap";
 const MisPeriodosControl = () => {
+  const { userId } = useUser();
+
   const emptyPeriodoInput: Partial<Periodo> = {
     Id: 0,
     TipoRecoleccionID: 0,
     Desde: new Date(),
     Hasta: new Date(),
     PrecioCajuela: 0,
-    CaficultorID:0,
-
+    CaficultorID: Number(userId),
+    zona: undefined
   };
+
   const options = [
     { value: TipoRecoleccion.SinSeleccion, label: "Sin Selección" },
     { value: TipoRecoleccion.Granea, label: "Granea" },
@@ -30,102 +33,150 @@ const MisPeriodosControl = () => {
     { value: TipoRecoleccion.Repela, label: "Repela" },
   ];
 
-  const [periodoInput, setPeriodoInput] =
-    useState<Partial<Periodo>>(emptyPeriodoInput);
+  const [periodoInput, setPeriodoInput] = useState<Partial<Periodo>>(
+    emptyPeriodoInput
+  );
 
-  const [wasSelected, setWasSelected] = useState(false);
-
+  const [errorMsg, setErrorMsg] = useState("");
+  const [showSuccessMessage, setShowSuccessMessage] = useState(false);
+  const [showSuccessMessageError, setShowSuccessMessageError] = useState(false);
   const history = useHistory();
   const location = useLocation();
 
-  const apiClient = useMemo(() => createApiClient(), []);
-  //const { create, status, error } = useCreate(apiClient.postUser);
-
   useEffect(() => {
-    const storedUserId = localStorage.getItem('id');
-    if (storedUserId != null) {
-      const queryParams = new URLSearchParams(location.search);
-      const periodoString = queryParams.get("periodo");
-      if (periodoString) {
-        setPeriodoInput(JSON.parse(decodeURIComponent(periodoString)));
-      }
+    const queryParams = new URLSearchParams(location.search);
+    const periodoString = queryParams.get("periodo");
+    if (periodoString) {
+      periodoInput.Id = Number(periodoString);
+      periodoData();
     }
-    else {
-      history.push(
-        `/login`
-      );
-    }
-  }, [history, location.search, status]);
+  }, []);
 
   function onChange(
     e: ChangeEvent<HTMLInputElement>,
     attribute: keyof Periodo
   ) {
-    if (attribute == "Desde" || attribute == "Hasta") {
+    if (attribute === "Desde" || attribute === "Hasta") {
       setPeriodoInput({
         ...periodoInput,
         [attribute]: new Date(e.target.value),
       });
-      return;
+    } else {
+      setPeriodoInput({ ...periodoInput, [attribute]: e.target.value });
     }
-    setPeriodoInput({ ...periodoInput, [attribute]: e.target.value });
   }
 
   function onReset() {
     setPeriodoInput(emptyPeriodoInput);
+    const queryParams = new URLSearchParams(location.search);
+    const zona = queryParams.get("zona");
+    history.push(
+      `/MisPeriodos?zona=${zona}`
+    );
   }
 
-  const desdeDate = periodoInput.Desde ? new Date(Date.parse(periodoInput.Desde)) : null;
-  const hastaDate = periodoInput.Hasta ? new Date(Date.parse(periodoInput.Hasta)) : null;
-  
+  const desdeDate = periodoInput.Desde
+    ? new Date(Date.parse(periodoInput.Desde))
+    : null;
+  const hastaDate = periodoInput.Hasta
+    ? new Date(Date.parse(periodoInput.Hasta))
+    : null;
+
   const readyToSubmit =
     periodoInput.TipoRecoleccionID !== 0 &&
     (periodoInput.PrecioCajuela ?? 0) > 0 &&
     (!desdeDate || !hastaDate || desdeDate.getTime() <= hastaDate.getTime());
-  
 
- /* function displayErrorMessage() {
-    if (error) {
-      return <CustomAlert success={false} label={error.message} />;
-    }
-    return null;
-  }*/
-  function displaySuccessMessage() {
-    if (status === "success") {
-      return <CustomAlert success={true} label="Cuenta creada exitosamente" />;
-    }
-    return null;
-  }
   const handleSelect = (value: TipoRecoleccion) => {
-    console.log("Opción seleccionada:", value);
-    setWasSelected(true);
     setPeriodoInput({ ...periodoInput, ["TipoRecoleccionID"]: value });
   };
-  async function postPeriodo() {
-    const errorMessage = !readyToSubmit
-      ? "Uno o más datos son incorrectos"
-      : undefined;
 
-    console.log("postPeriodo" + errorMessage);
+  async function handleApiResponse(response: any) {
+    if (response.message !== undefined) {
+      setShowSuccessMessageError(true);
+      setErrorMsg("Error en la respuesta de la API");
+    } else {
+      setShowSuccessMessage(true);
+      setTimeout(() => {
+        setShowSuccessMessage(false);
+        history.goBack();
+      }, 2000);
+    }
   }
+
+  async function postPeriodo() {
+    if (readyToSubmit) {
+      try {
+        periodoInput.CaficultorID = Number(userId);
+        const response = await createApiClient().makeApiRequest(
+          "POST",
+          "/periodos",
+          periodoInput
+        );
+        handleApiResponse(response);
+      } catch (error) {
+        setShowSuccessMessageError(true);
+        setErrorMsg("Error en la respuesta de la API");
+      }
+    }
+  }
+
+  async function periodoData() {
+    try {
+      const response = await createApiClient().makeApiRequest(
+        "GET",
+        "/periodos/Periodo/" + periodoInput.Id,
+        null
+      );
+      setPeriodoInput(response as unknown as Periodo);
+    } catch {
+      history.push(`/error`);
+    }
+  }
+
   async function updatePeriodo() {
-    console.log("updatePeriodo");
+    if (readyToSubmit) {
+      try {
+        periodoInput.CaficultorID = Number(userId);
+        const response = await createApiClient().makeApiRequest(
+          "PATCH",
+          "/periodos/" + periodoInput.Id,
+          periodoInput
+        );
+        handleApiResponse(response);
+      } catch (error) {
+        setShowSuccessMessageError(true);
+        setErrorMsg("Error en la respuesta de la API");
+      }
+    }
   }
 
   return (
     <Container className="col-lg-6 col-xxl-4 my-5 mx-auto">
       <CustomTitles
-        txt={periodoInput.Id != 0 ? "Editar periodo" : "Crea un nuevo periodo"}
+        txt={
+          periodoInput.Id !== 0 ? "Editar periodo" : "Crea un nuevo periodo"
+        }
       />
-     
-      <Form noValidate validated={readyToSubmit}>
-        <CustomDropDown
-          labelname={"Seleccionar opción"}
-          options={options}
-          onSelect={handleSelect}
-          onInvalidText={"El campo no puede estar vacio"}
-         
-        />
+
+      <Form noValidate validated={readyToSubmit} >
+      <Form.Label className="labelForm text-selection-disable">
+        {"Tipo de Recolección"}
+      </Form.Label>
+        <select 
+          className="form-select"
+          style={{marginBottom:'10px'}}
+          value={periodoInput.TipoRecoleccionID}
+          onChange={(e) => handleSelect(Number(e.target.value))}
+          required
+        >
+          {options.map((option) => (
+            <option key={option.value} value={option.value}>
+              {option.label}
+            </option>
+          ))}
+        </select>
+
         <CustomInput
           label="Pago por unidad"
           placeholder="Pago por unidad"
@@ -139,7 +190,7 @@ const MisPeriodosControl = () => {
         <CustomDatePiker
           label="Desde"
           placeholder="Desde"
-          valuedate={periodoInput.Desde ? new Date(periodoInput.Desde) : null} // Cambia 'null' por un valor predeterminado si lo deseas
+          valuedate={desdeDate}
           onChange={(e) => onChange(e, "Desde")}
           required
           onInvalidText={"El campo no puede estar vacío"}
@@ -148,11 +199,22 @@ const MisPeriodosControl = () => {
         <CustomDatePiker
           label="Hasta"
           placeholder="Hasta"
-          valuedate={periodoInput.Hasta ? new Date(periodoInput.Hasta) : null} // Cambia 'null' por un valor predeterminado si lo deseas
+          valuedate={hastaDate}
           onChange={(e) => onChange(e, "Hasta")}
           required
           onInvalidText={"El campo no puede estar vacio"}
         />
+        {showSuccessMessageError && (
+          <Alert severity="error" style={{ marginBottom: "10px", marginTop: "10px" }}>
+            Error: {errorMsg}
+          </Alert>
+        )}
+        {showSuccessMessage && (
+          <Alert severity="success" style={{ marginBottom: "10px", marginTop: "10px" }}>
+            ¡La finca ha sido registrada exitosamente!
+          </Alert>
+        )}
+
         {periodoInput.Id != 0 ? (
           <div className="d-grid gap-2">
             <CustomButtonPrimary

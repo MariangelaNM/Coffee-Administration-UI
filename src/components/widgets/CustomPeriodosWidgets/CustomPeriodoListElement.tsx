@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Row, Col, Container, Button } from "react-bootstrap";
 import styled from "styled-components";
 import { themes } from "../../../styles/ColorStyles";
@@ -8,7 +8,9 @@ import "../Customicon.scss";
 import "../CustomZonasWidgets/TableStyle.scss";
 import { Periodo } from "../../../models/Periodo";
 import { TipoRecoleccion } from "../../../models/TipoRecoleccion";
-
+import createApiClient from "../../../api/api-client-factory";
+import { useHistory, useLocation } from "react-router-dom";
+import AlertDialog from "../AlertDialog";
 interface CustomPeriodoListElementProps {
   periodo: Periodo;
 
@@ -20,17 +22,39 @@ const CustomPeriodoListElement: React.FC<CustomPeriodoListElementProps> = ({
 
   onClick,
 }) => {
+  const history = useHistory();
+  const [openDialog, setOpenDialog] = useState(false);
+  const [texto, setTexto] = useState("");
+  
+  const handleCloseDialog = () => {
+    setOpenDialog(false);
+  };
+  const handleDisagree = () => {
+    handleCloseDialog();
+  };
+
   const handleEditClick = (event: React.MouseEvent) => {
     event.stopPropagation();
-    // Lógica para editar
+    history.push( `/MisPeriodos/Edit?periodo=${periodo.Id}&zona=${periodo.zona}`);
     console.log("EDITAR");
   };
 
+  const handleAgree = async () => {
+    await createApiClient().makeApiRequest(
+      "DELETE",
+      "/periodos/" + periodo.Id,
+      undefined
+    );
+    handleCloseDialog();
+    window.location.reload();
+  };
   const handleDeleteClick = (event: React.MouseEvent) => {
     event.stopPropagation();
-    // Lógica para eliminar
+    setTexto(`Eliminar el Periodo"`);
+    setOpenDialog(true);
     console.log("BORRAR");
   };
+
   const handleClick = (event: React.MouseEvent) => {
     event.stopPropagation();
     onClick(periodo.Id);
@@ -85,18 +109,15 @@ const CustomPeriodoListElement: React.FC<CustomPeriodoListElementProps> = ({
             </Button>
           </Col>
         </Col>
-        <Col
-          xs={2}
-          sm={1}
-          className="d-flex align-items-center justify-content-center"
-        >
-          <div className="center-icon">
-          <Button variant="link" onClick={handleClick}>
-            <FiArrowRight className="custom-icon-big" />
-            </Button>
-          </div>
-        </Col>
+    
       </Row>
+      <AlertDialog
+        open={openDialog}
+        texto={texto}
+        handleClose={handleCloseDialog}
+        handleDisagree={handleDisagree}
+        handleAgree={handleAgree}
+      />
     </Container>
   );
 };
