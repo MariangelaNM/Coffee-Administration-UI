@@ -124,7 +124,6 @@ const MisPeriodosControl = () => {
           options={options}
           onSelect={handleSelect}
           onInvalidText={"El campo no puede estar vacio"}
-         
         />
         <CustomInput
           label="Pago por unidad"

@@ -10,6 +10,9 @@ interface CustomInputProps {
   onChange: (e: ChangeEvent<HTMLInputElement>) => void;
   required?: boolean;
   onInvalidText: string;
+  max?:number
+  min?:number
+  step?:number
 }
 
 const CustomInput: React.FC<CustomInputProps> = ({
@@ -20,6 +23,7 @@ const CustomInput: React.FC<CustomInputProps> = ({
   onChange,
   required,
   onInvalidText,
+  max,min,step
 }) => {
   if (typeForm == "email") {
     return (
@@ -52,6 +56,9 @@ const CustomInput: React.FC<CustomInputProps> = ({
           value={value}
           onChange={onChange}
           required={required}
+          max={max}
+          min={min}
+          step={step}
         />
         <Form.Control.Feedback type="invalid">
           {onInvalidText}
