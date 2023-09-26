@@ -9,7 +9,7 @@ import "../CustomZonasWidgets/TableStyle.scss";
 import { Finca } from "../../../models/Finca";
 import AlertDialog from "../AlertDialog";
 import createApiClient from "../../../api/api-client-factory";
-import { useHistory } from 'react-router-dom';
+import { useHistory } from "react-router-dom";
 import Alert from "@mui/material/Alert";
 interface CustomFincaListElementProps {
   finca: Finca;
@@ -34,23 +34,25 @@ const CustomFincaListElement: React.FC<CustomFincaListElementProps> = ({
   };
 
   const handleAgree = async () => {
-    const response = await createApiClient().makeApiRequest("DELETE", "/fincas/"+finca.Id, undefined);
+    const response = await createApiClient().makeApiRequest(
+      "DELETE",
+      "/fincas/" + finca.Id,
+      undefined
+    );
     handleCloseDialog();
     if (response.message != undefined) {
       setShowSuccessMessageError(true);
       setTimeout(() => {
         setShowSuccessMessageError(false);
       }, 4000);
-    }
-    else {
+    } else {
       window.location.reload();
     }
   };
 
   const handleEditClick = (event: React.MouseEvent) => {
     event.stopPropagation();
-    history.push('/Fincas/Edit?farm=' + finca.Id);
-
+    history.push("/Fincas/Edit?farm=" + finca.Id);
   };
 
   const handleDeleteClick = (event: React.MouseEvent) => {
@@ -96,7 +98,10 @@ const CustomFincaListElement: React.FC<CustomFincaListElementProps> = ({
           </Col>
           <Col className="d-flex mt-2">
             {showSuccessMessageError && (
-              <Alert severity="error" style={{ marginBottom: "10px", marginTop: "10px" }}>
+              <Alert
+                severity="error"
+                style={{ marginBottom: "10px", marginTop: "10px" }}
+              >
                 Está Finca cuenta con Zonas
               </Alert>
             )}
@@ -113,7 +118,6 @@ const CustomFincaListElement: React.FC<CustomFincaListElementProps> = ({
               <FiTrash2 className="custom-icon-red" />
             </Button>
           </Col>
-
         </Col>
         <Col
           xs={2}
