@@ -70,12 +70,12 @@ const MisPeriodos = () => {
     const queryParams = new URLSearchParams(location.search);
     const zona = queryParams.get("zona");
     history.push(
-      `/MisPeriodos/Create?zona=${zona}`
+      `/Periodos/Create?zona=${zona}`
     );
   }
   async function getDetallePeriodo() {
     console.log("DetalleZona");
-    history.push("/MisPeriodos");
+    history.push("/Periodos");
   }
   return (
     <Container className="col-lg-6 col-xxl-4 my-5 mx-auto">

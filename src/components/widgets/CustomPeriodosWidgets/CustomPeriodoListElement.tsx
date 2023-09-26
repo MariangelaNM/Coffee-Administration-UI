@@ -35,7 +35,7 @@ const CustomPeriodoListElement: React.FC<CustomPeriodoListElementProps> = ({
 
   const handleEditClick = (event: React.MouseEvent) => {
     event.stopPropagation();
-    history.push( `/MisPeriodos/Edit?periodo=${periodo.Id}&zona=${periodo.zona}`);
+    history.push( `/Periodos/Edit?periodo=${periodo.Id}&zona=${periodo.zona}`);
     console.log("EDITAR");
   };
 

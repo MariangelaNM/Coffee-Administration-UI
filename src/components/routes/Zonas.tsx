@@ -63,7 +63,7 @@ const Zonas = () => {
   }
 
   async function getDetalleZona(id: number) {
-    history.push(`/MisPeriodos?zona=${encodeURIComponent(id)}`);
+    history.push(`/Periodos?zona=${encodeURIComponent(id)}`);
   }
 
   function onChangeFilterTxt(e: ChangeEvent<HTMLInputElement>) {

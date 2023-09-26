@@ -71,7 +71,7 @@ const MisPeriodosControl = () => {
     const queryParams = new URLSearchParams(location.search);
     const zona = queryParams.get("zona");
     history.push(
-      `/MisPeriodos?zona=${zona}`
+      `/Periodos?zona=${zona}`
     );
   }
 
