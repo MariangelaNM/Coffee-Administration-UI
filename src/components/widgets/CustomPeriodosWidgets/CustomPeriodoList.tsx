@@ -18,7 +18,7 @@ const CustomPeriodoList: React.FC<CustomPeriodoListProps> = ({
   if (!periodoList.length) {
     return (
       <div className="center">
-        <p className="text-center mt-5">No hay periodos creadas</p>
+        <p className="text-center mt-5">No hay periodos creados</p>
       </div>
     );
   } else {
