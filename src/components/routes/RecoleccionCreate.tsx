@@ -8,6 +8,8 @@ import { Recolector } from "../../models/Recolector";
 import { Recoleccion } from "../../models/Recoleccion";
 import { useUser } from '../UserContext';
 import createApiClient from "../../api/api-client-factory";
+import Alert from "@mui/material/Alert/Alert";
+import { useHistory } from "react-router-dom";
 
 const RecoleccionCreate = () => {
   const [recoleccion, setRecoleccion] = useState<Recoleccion>({
@@ -19,14 +21,16 @@ const RecoleccionCreate = () => {
     total: 0,
     pagado: "",
     Id: 0,
+    status: false
   });
   const [errorMsg, setErrorMsg] = useState("");
   const [validated, setValidated] = useState(false);
   const [showSuccessMessage, setShowSuccessMessage] = useState(false);
+  const [showErrorMessage, setShowErrorMessage] = useState(false);
   const [recolectoresData, setRecolectoresData] = useState<Recolector[]>([]);
   const { userId } = useUser();
-
-  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+  const history = useHistory();
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const form = e.currentTarget;
 
@@ -34,7 +38,27 @@ const RecoleccionCreate = () => {
       e.stopPropagation();
       setValidated(true);
     } else {
-      console.log(recoleccion);
+      try {
+        const response = await createApiClient().makeApiRequest("POST", "/registros", recoleccion);
+
+        if (response.message != undefined) {
+          setShowErrorMessage(true);
+          e.stopPropagation();
+          setValidated(true);
+          setErrorMsg("Error en la respuesta de la API");
+        } else {
+          setShowSuccessMessage(true);
+          setTimeout(() => {
+            setShowSuccessMessage(false);
+            history.push("/Fincas");
+          }, 2000);
+        }
+      } catch (error) {
+        setShowErrorMessage(true);
+        e.stopPropagation();
+        setValidated(true);
+        setErrorMsg("Error en la respuesta de la API");
+      }
 
       setTimeout(() => {
         setShowSuccessMessage(false);
@@ -43,6 +67,7 @@ const RecoleccionCreate = () => {
   };
 
   useEffect(() => {
+
     const fechaActual = new Date();
     const queryParams = new URLSearchParams(location.search);
     const periodo = parseInt(queryParams.get("periodo") ?? "0", 10);
@@ -58,6 +83,7 @@ const RecoleccionCreate = () => {
       Id: 0,
       Creado: fechaActual,
       Modificado: fechaActual,
+      status: false
     });
     callDataRecolector();
   }, []);
@@ -117,11 +143,6 @@ const RecoleccionCreate = () => {
     <Container className="col-lg-6 col-xxl-4 my-5 mx-auto">
       <Title>{"Nuevo Registro"}</Title>
       {displayErrorMessage()}
-      {showSuccessMessage && (
-        <div className="alert alert-success" role="alert">
-          ¡La Recolección fue guardada con éxito!
-        </div>
-      )}
       <Form noValidate validated={validated} onSubmit={handleSubmit}>
         <select
           className="form-select"
@@ -130,12 +151,14 @@ const RecoleccionCreate = () => {
           onChange={(e) => handleSelect(Number(e.target.value))}
           required
         >
+          <option value="">Selecciona un recolector</option> {/* Opción predeterminada */}
           {recolectoresData.map((option) => (
             <option key={option.Id} value={option.Id}>
               {option.Nombre}
             </option>
           ))}
         </select>
+
 
         <Form.Group className="mb-3" controlId="formCosto">
           <Form.Label>Costo Unitario (₡)</Form.Label>
@@ -184,7 +207,16 @@ const RecoleccionCreate = () => {
             El campo no puede ser menor a 0 o mayor a 4
           </Form.Control.Feedback>
         </Form.Group>
-
+        {showSuccessMessage && (
+          <Alert severity="success" style={{ marginBottom: "10px", marginTop: "10px" }}>
+            ¡La Recolección ha sido registrada exitosamente!
+          </Alert>
+        )}
+        {showErrorMessage && (
+          <Alert severity="error" style={{ marginBottom: "10px", marginTop: "10px" }}>
+            ¡La Recolección no se pudo registrar!
+          </Alert>
+        )}
         <div className="d-grid gap-2">
           <Button variant="primary" className="custombtn-primary no-active-style" type="submit">
             Registrar

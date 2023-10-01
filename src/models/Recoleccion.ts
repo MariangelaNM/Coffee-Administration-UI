@@ -58,18 +58,25 @@ export interface Recoleccion {
    * @type {number}
    * @memberof Recoleccion
    */
-  total: number;
+  total?: number;
   /**
    *
    * @type {string}
    * @memberof Recoleccion
    */
-  pagado: string;
+  pagado?: string;
 
     /**
    *
    * @type {number}
    * @memberof Recoleccion
    */
-    costo: number;
+    costo?: number;
+  
+    /**
+   *
+   * @type {Boolean}
+   * @memberof Recoleccion
+   */
+    status: Boolean;  
 }
