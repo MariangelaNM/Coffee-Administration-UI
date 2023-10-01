@@ -109,7 +109,17 @@ const CustomPeriodoListElement: React.FC<CustomPeriodoListElementProps> = ({
             </Button>
           </Col>
         </Col>
-    
+        <Col
+          xs={2}
+          sm={1}
+          className="d-flex align-items-center justify-content-center"
+        >
+          <div className="center-icon">
+            <Button variant="link" onClick={handleClick}>
+              <FiArrowRight className="custom-icon-big" />
+            </Button>
+          </div>
+        </Col>
       </Row>
       <AlertDialog
         open={openDialog}
