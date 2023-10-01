@@ -83,7 +83,7 @@ const RecoleccionPeriodo = () => {
 
   async function callDataZona() {
     try {
-      const queryParams = new URLSearchParams(location.search);
+      const queryParams = new URLSearchParams(decodeURIComponent(location.search));
       const zona = queryParams.get("zona");
       const response = await createApiClient().makeApiRequest("GET", "/zonas/" + zona, null);
       setZonaInput(response as unknown as Zona);
@@ -94,7 +94,7 @@ const RecoleccionPeriodo = () => {
   }
   async function callRecolecciones() {
     try {
-      const queryParams = new URLSearchParams(location.search);
+      const queryParams = new URLSearchParams(decodeURIComponent(location.search));
       const zona = queryParams.get("zona");
       const response = await createApiClient().makeApiRequest("GET", "/registros/zonas/" + zona, null);
       //setZonaInput(response as unknown as Zona);
@@ -105,7 +105,7 @@ const RecoleccionPeriodo = () => {
   }
   async function callPeriodo() {
     try {
-      const queryParams = new URLSearchParams(location.search);
+      const queryParams = new URLSearchParams(decodeURIComponent(location.search));
       const periodo = queryParams.get("periodo");
       const response = await createApiClient().makeApiRequest(
         "GET",
@@ -123,11 +123,10 @@ const RecoleccionPeriodo = () => {
 
   async function CrearRegistro() {
     console.log("CrearRegistro");
-    
-    const queryParams = new URLSearchParams(location.search);
+    const queryParams = new URLSearchParams(decodeURIComponent(location.search));
     const zona = queryParams.get("zona");
-    const periodo = queryParams.get("zona");
-    history.push(`/Recoleccion?periodo=${periodo}&zona=${zona}`);
+    const periodo = queryParams.get("periodo");
+    history.push(`/Recoleccion?`+encodeURIComponent(`periodo=`+periodo+`&zona=`+zona));
   
   }
 

@@ -69,9 +69,10 @@ const RecoleccionCreate = () => {
   useEffect(() => {
 
     const fechaActual = new Date();
-    const queryParams = new URLSearchParams(location.search);
-    const periodo = parseInt(queryParams.get("periodo") ?? "0", 10);
-    const zona = parseInt(queryParams.get("zona") ?? "0", 10);
+    const queryParams = new URLSearchParams(decodeURIComponent(location.search));
+    console.log(queryParams)
+    const periodo = parseInt(decodeURIComponent(queryParams.get("periodo") ?? "0"), 10);
+    const zona = parseInt(decodeURIComponent(queryParams.get("zona") ?? "0"), 10);
     setRecoleccion({
       ZonaID: zona,
       RecolectorID: 0,
