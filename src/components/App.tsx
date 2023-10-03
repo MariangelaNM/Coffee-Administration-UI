@@ -18,6 +18,7 @@ import Recolector from "./routes/Recolector";
 import Admin from "./routes/Admin";
 import IndexPage from "./routes/IndexPage";
 import RecoleccionPeriodo from "./routes/RecoleccionPeriodo";
+import RecoverPass from "./routes/RecoverPass";
 
 const App: FC = () => {
   return (
@@ -30,6 +31,10 @@ const App: FC = () => {
         <Route path="/login">
           <Login />
         </Route>
+        <Route path="/RecoverPass">
+          <RecoverPass />
+        </Route>
+       
         <Route path="/signup">
           <UserRegister />
         </Route>

@@ -1,4 +1,3 @@
-
 import { ChangeEvent, FormEvent, useState } from "react";
 import { Container, Form } from "react-bootstrap";
 import CustomTitles from "../widgets/CustomTitles";
@@ -10,6 +9,8 @@ import createApiClient from "../../api/api-client-factory";
 import Alert from "@mui/material/Alert";
 import { useHistory } from "react-router-dom";
 import { useUser } from "../UserContext";
+import Button from "react-bootstrap/Button";
+
 const Login = () => {
   const history = useHistory();
   const [mail, setMail] = useState("");
@@ -51,17 +52,21 @@ const Login = () => {
     localStorage.clear();
     try {
       const body = {
-        "email": mail,
-        "contrasena": password
-      }
+        email: mail,
+        contrasena: password,
+      };
 
-      const response = await createApiClient().makeApiRequest("POST", "/authentication/login", body);
+      const response = await createApiClient().makeApiRequest(
+        "POST",
+        "/authentication/login",
+        body
+      );
 
       if ("message" in response) {
         setShowSuccessMessageError(true);
       } else {
         setShowSuccessMessageError(false);
-        localStorage.setItem('token', response?.token); // Guarda el userId en el local storage
+        localStorage.setItem("token", response?.token); // Guarda el userId en el local storage
         setUserId(response?.id);
         setShowSuccessMessage(true);
         setTimeout(() => {
@@ -73,7 +78,10 @@ const Login = () => {
       setShowSuccessMessageError(true);
     }
   }
-
+  async function GotoRecoverPass() {
+    setShowSuccessMessage(false);
+    history.push("/RecoverPass");
+  }
 
   return (
     <Container className="col-lg-6 col-xxl-4 my-5 mx-auto">
@@ -109,6 +117,16 @@ const Login = () => {
           showPassword={showPassword}
           onInvalidText={""}
         />
+
+        <Button
+          variant="link"
+          style={{ color: "#6db575" }}
+          className="mb-3"
+          onClick={GotoRecoverPass}
+        >
+          Olvide mi contraseña
+        </Button>
+
         <div className="d-grid gap-2">
           <CustomButtonPrimary
             label="Ingresar"
