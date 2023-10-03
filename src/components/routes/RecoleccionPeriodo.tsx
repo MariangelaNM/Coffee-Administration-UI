@@ -37,9 +37,9 @@ const RecoleccionPeriodo = () => {
   ];
   const dataname = "Cajuelas";
   const dataValues = [12, 19, 3, 5, 2];
-
+  const RecoleccionList: Recoleccion[] =[];
   //TODO Esto es un ejemplo
-  const RecoleccionList: Recoleccion[] = [
+ /* const RecoleccionList: Recoleccion[] = [
     {
       Id: 1,
       createdAt: "10/02/2023",
@@ -73,7 +73,7 @@ const RecoleccionPeriodo = () => {
       total: 17.5,
       pagado: "Pendiente",
     },
-  ];
+  ];*/
 
   useEffect(() => {
     callDataZona()
@@ -97,7 +97,8 @@ const RecoleccionPeriodo = () => {
       const queryParams = new URLSearchParams(decodeURIComponent(location.search));
       const zona = queryParams.get("zona");
       const response = await createApiClient().makeApiRequest("GET", "/registros/zonas/" + zona, null);
-      //setZonaInput(response as unknown as Zona);
+      setRecoleccionoData(response  );
+      console.log(response)
 
     } catch (error) {
       console.error('Error fetching data:', error);
@@ -188,7 +189,7 @@ const RecoleccionPeriodo = () => {
       <Container>
         <CustomRecoleccionList
           filterTxt={searchInput}
-          recoleccionList={RecoleccionList}
+          recoleccionList={recoleccionData}
         />
       </Container>
     </Container>

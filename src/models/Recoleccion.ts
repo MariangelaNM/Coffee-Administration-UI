@@ -4,6 +4,7 @@
  * @interface Recoleccion
  */
 export interface Recoleccion {
+  recolectorname: any;
   /**
    *
    * @type {number}
