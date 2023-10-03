@@ -1,7 +1,7 @@
 import "bootstrap/dist/css/bootstrap.min.css";
 import "../App.scss";
 
-import { FC, useState } from "react";
+import { FC } from "react";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
 import Sidebar from "./Sidebar";
 import Login from "./routes/Login";
@@ -55,7 +55,7 @@ const App: FC = () => {
         <Route path="/MisPeriodos/Create">
           <MisPeriodosControl />
         </Route>
-        <Route path="/MisPeriodos/Edit"></Route>
+        <Route path="/MisPeriodos/Edit">  <MisPeriodosControl /></Route>
         <Route path="/MisPeriodos">
           <MisPeriodos />
         </Route>

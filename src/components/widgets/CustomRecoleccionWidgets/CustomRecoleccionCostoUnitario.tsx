@@ -2,13 +2,12 @@ import React, { useState } from "react";
 import { Row, Col, Container, Button } from "react-bootstrap";
 import styled from "styled-components";
 import { themes } from "../../../styles/ColorStyles";
-import { H3, MediumText } from "../../../styles/TextStyles";
+import { H3 } from "../../../styles/TextStyles";
 import { FiEdit } from "react-icons/fi";
 import "../Customicon.scss";
 import "./TableStyle.scss";
 import AlertDialog from "../AlertDialog";
 import AlertDialogCostoUnitario from "./AlertDialogCostoUnitario";
-import { useHistory } from "react-router-dom";
 
 interface CustoReleccionCostoUnitarioProps {
   costounitario: number;
@@ -17,14 +16,15 @@ interface CustoReleccionCostoUnitarioProps {
 
 const CustoReleccionCostoUnitario: React.FC<
   CustoReleccionCostoUnitarioProps
-> = ({ costounitario, Id }) => {
-  const history = useHistory();
+> = ({ costounitario/*, Id*/ }) => {
+  //const history = useHistory();
   const [openDialog, setOpenDialog] = useState(false);
   const [texto, setTexto] = useState("");
   const [openEdicion, setOpenEdicion] = useState(false);
 
   const handleCloseDialog = () => {
     setOpenDialog(false);
+    setTexto("");
     setOpenEdicion(false);
   };
   const handleDisagree = () => {
@@ -97,14 +97,6 @@ const Title = styled(H3)`
   text-align: start;
 `;
 const TitleTag = styled(H3)`
-  color: ${themes.dark.cafe_medio};
-  text-align: start;
-`;
-const Description = styled(MediumText)`
-  color: ${themes.dark.text1};
-  text-align: start;
-`;
-const DescriptionTag = styled(MediumText)`
   color: ${themes.dark.cafe_medio};
   text-align: start;
 `;

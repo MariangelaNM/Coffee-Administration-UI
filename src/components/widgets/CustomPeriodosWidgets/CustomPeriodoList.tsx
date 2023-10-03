@@ -1,5 +1,4 @@
 import CustomPeriodoListElement from "./CustomPeriodoListElement";
-import Form from "react-bootstrap/Form";
 import { Periodo } from "../../../models/Periodo";
 import { TipoRecoleccion } from "../../../models/TipoRecoleccion";
 

@@ -1,5 +1,4 @@
-import React from "react";
-import { Container, Form, Button } from "react-bootstrap";
+import { Container} from "react-bootstrap";
 import styled from "styled-components";
 import { themes } from "../../styles/ColorStyles";
 import { H1 } from "../../styles/TextStyles";

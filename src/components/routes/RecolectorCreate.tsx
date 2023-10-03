@@ -1,4 +1,4 @@
-import { FormEvent, useEffect, useState } from "react";
+import {  useEffect, useState } from "react";
 import { Container, Form, Button } from "react-bootstrap";
 import Alert from "@mui/material/Alert";
 import styled from "styled-components";
@@ -91,7 +91,7 @@ const RecolectorCreate = () => {
     if (recolectorString != null) {
       try {
         const response = await createApiClient().makeApiRequest("GET", `/recolectores/${recolectorString}/recolector`, null);
-        setRecolector(response);
+        setRecolector(response as unknown as Recolector);
       } catch {
         history.push(`/error`);
       }

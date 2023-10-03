@@ -7,12 +7,10 @@ import CustomInput from "../widgets/CustomInputWidget/CustomInput";
 import CustomButtonPrimary from "../widgets/CustomBtnPrimaryWidget/CustomBtnPrimary";
 import CustomButtonSecondary from "../widgets/CustomButtonSecondaryWidget/CustomButtonSecondary";
 import CustomDatePiker from "../widgets/CustomDatePikerWidget/CustomDatePiker";
-import CustomDropDown from "../widgets/CustomDropDown/CustomDropDown";
 import { useUser } from '../UserContext';
 import { useHistory, useLocation } from "react-router-dom";
 import { TipoRecoleccion } from "../../models/TipoRecoleccion";
 import Alert from "@mui/material/Alert";
-import { Dropdown } from "react-bootstrap";
 const MisPeriodosControl = () => {
   const { userId } = useUser();
 
@@ -75,12 +73,13 @@ const MisPeriodosControl = () => {
     );
   }
 
-  const desdeDate = periodoInput.Desde
-    ? new Date(Date.parse(periodoInput.Desde))
-    : null;
-  const hastaDate = periodoInput.Hasta
-    ? new Date(Date.parse(periodoInput.Hasta))
-    : null;
+
+  const desdeDate = new Date(periodoInput.Desde??new Date());
+   /* ? new Date(Date.parse(periodoInput.Desde))
+    : null*/;
+  const hastaDate = new Date(periodoInput.Hasta??new Date());
+   /* ? new Date(Date.parse(periodoInput.Hasta))
+    : null*/;
 
   const readyToSubmit =
     periodoInput.TipoRecoleccionID !== 0 &&

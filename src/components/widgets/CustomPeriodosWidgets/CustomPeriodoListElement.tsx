@@ -3,13 +3,13 @@ import { Row, Col, Container, Button } from "react-bootstrap";
 import styled from "styled-components";
 import { themes } from "../../../styles/ColorStyles";
 import { H3, MediumText } from "../../../styles/TextStyles";
-import { FiArrowRight, FiEdit, FiTrash2 } from "react-icons/fi";
+import {  FiEdit, FiTrash2 } from "react-icons/fi";
 import "../Customicon.scss";
 import "../CustomZonasWidgets/TableStyle.scss";
 import { Periodo } from "../../../models/Periodo";
 import { TipoRecoleccion } from "../../../models/TipoRecoleccion";
 import createApiClient from "../../../api/api-client-factory";
-import { useHistory, useLocation } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import AlertDialog from "../AlertDialog";
 interface CustomPeriodoListElementProps {
   periodo: Periodo;
@@ -19,8 +19,6 @@ interface CustomPeriodoListElementProps {
 
 const CustomPeriodoListElement: React.FC<CustomPeriodoListElementProps> = ({
   periodo,
-
-  onClick,
 }) => {
   const history = useHistory();
   const [openDialog, setOpenDialog] = useState(false);
@@ -55,10 +53,7 @@ const CustomPeriodoListElement: React.FC<CustomPeriodoListElementProps> = ({
     console.log("BORRAR");
   };
 
-  const handleClick = (event: React.MouseEvent) => {
-    event.stopPropagation();
-    onClick(periodo.Id);
-  };
+  
 
   const desde = new Date(periodo.Desde).toLocaleDateString("es-ES", {
     year: "numeric",

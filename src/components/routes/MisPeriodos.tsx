@@ -1,4 +1,4 @@
-import { ChangeEvent, useState, useEffect, useMemo } from "react";
+import { ChangeEvent, useState, useEffect } from "react";
 import { Container } from "react-bootstrap";
 import createApiClient from "../../api/api-client-factory";
 import { Zona } from "../../models/Zona";
@@ -18,7 +18,6 @@ const MisPeriodos = () => {
   const [periodoData, setperiodoData] = useState<Periodo[]>([]);
   let id: string;
   const { userId } = useUser();
-  const [fincaInput, setFincaInput] = useState("");
   useEffect(() => {
     CallIds()
     callDataZona();
@@ -30,8 +29,7 @@ const MisPeriodos = () => {
     const fincaString = queryParams.get("zona");
     if (fincaString) {
       id = (fincaString);
-      setFincaInput((decodeURIComponent(fincaString)));
-
+     
     }
   }
   async function callDataZona() {
@@ -46,11 +44,15 @@ const MisPeriodos = () => {
   async function callDataPeriodo() {
     try {
       const response = await createApiClient().makeApiRequest("GET", "/periodos/" + userId, null);
-      response.forEach((element) => {
-        element.zona = Number(id);
-      });
+     
+      if (Array.isArray(response)) {
+        response.forEach((element) => {
+          element.zona = Number(id);
+        });
+      } 
       setperiodoData(response as unknown as Periodo[]);
-
+      
+      
     } catch (error) {
       console.error('Error fetching data:', error);
     }

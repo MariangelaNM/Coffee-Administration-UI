@@ -14,7 +14,6 @@ const CustomRecoleccionList: React.FC<CustomRecoleccionListProps> = ({
   recoleccionList,
 }) => {
   const [openDialog, setOpenDialog] = useState(false);
-  const [texto, setTexto] = useState("");
   const [currentList, setCurrentList] = useState(recoleccionList);
 
   const columns: Column[] = [
@@ -34,18 +33,19 @@ const CustomRecoleccionList: React.FC<CustomRecoleccionListProps> = ({
   const handleDeleteClick = (id: number) => {
     // setTexto(`Eliminar la Zona "${zona.Nombre}"`);
     setOpenDialog(true);
+    console.log(openDialog);
     console.log("Borrar recoleccion" + id);
   };
 
-  const FilterByAccessor = (label:string) => {
+  const FilterByAccessor = (/*label:string*/) => {
     console.log('Hello, world!');
     let newRecoleccionList = recoleccionList.filter((c) => c.recolectorname.toLowerCase().includes(filterTxt.toLowerCase()));
 
-    newRecoleccionList = sortByProperty(newRecoleccionList,label);
+    //newRecoleccionList = sortByProperty(newRecoleccionList,label);
     setCurrentList(newRecoleccionList);
     console.dir(newRecoleccionList);
   };
-
+/*
   function sortByProperty <Recoleccion>(arr: Recoleccion[], propName: keyof Recoleccion, ascending= true): Recoleccion[] {
     return arr.sort((a, b) => {
       const valueA = a[propName];
@@ -65,7 +65,7 @@ const CustomRecoleccionList: React.FC<CustomRecoleccionListProps> = ({
         throw new Error("Unsupported data type for sorting");
       }
     });
-  }
+  }*/
 
   if (!recoleccionList.length) {
     return (

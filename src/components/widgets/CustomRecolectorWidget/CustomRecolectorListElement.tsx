@@ -2,14 +2,14 @@ import React, { useState } from "react";
 import { Row, Col, Container, Button } from "react-bootstrap";
 import styled from "styled-components";
 import { themes } from "../../../styles/ColorStyles";
-import { H3, MediumText } from "../../../styles/TextStyles";
+import {  MediumText } from "../../../styles/TextStyles";
 import { FiEdit, FiTrash2 } from "react-icons/fi";
 import "../Customicon.scss";
 import "../CustomZonasWidgets/TableStyle.scss";
 import { Recolector } from "../../../models/Recolector";
 import AlertDialog from "../AlertDialog";
 import createApiClient from "../../../api/api-client-factory";
-import { useHistory, useLocation } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 
 interface CustomRecolectorListElementProps {
   recolector: Recolector;
@@ -18,7 +18,6 @@ interface CustomRecolectorListElementProps {
 
 const CustomRecolectorListElement: React.FC<CustomRecolectorListElementProps> = ({
   recolector,
-  onClick,
 }) => {
   
   const history = useHistory();

@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useState, useEffect, useMemo } from "react";
+import  { ChangeEvent, useState, useEffect } from "react";
 import { Container, Form } from "react-bootstrap";
 import createApiClient from "../../api/api-client-factory";
 import { Zona } from "../../models/Zona";
@@ -24,7 +24,6 @@ const ZonasControl = () => {
   const [showSuccessMessage, setShowSuccessMessage] = useState(false);
   const history = useHistory();
   const location = useLocation();
-  let fincaID: Number = 0;
   let zonaID: Number = 0;
 
   useEffect(() => {
@@ -43,13 +42,12 @@ const ZonasControl = () => {
 
   function CallIds() {
     const queryParams = new URLSearchParams(location.search);
-    const fincaString = queryParams.get('farm') ?? "";
-    const zonaString = queryParams.get('zona') ?? "";
-    setZonaId(zonaString);
+    const fincaString = queryParams.get('farm') ?? null
+    const zonaString = queryParams.get('zona') ?? null;
+    setZonaId(Number(zonaString)??"0");
     if (fincaString) {
       const id = (fincaString);
       emptyZonaInput.FincaID = (parseInt(id));
-      fincaID = (emptyZonaInput.FincaID);
     } else if (zonaString) {
       emptyZonaInput.Id = (parseInt(zonaString));
       zonaID = (parseInt(zonaString));

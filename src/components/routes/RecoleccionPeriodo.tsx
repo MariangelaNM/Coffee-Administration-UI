@@ -1,4 +1,4 @@
-import { ChangeEvent, useState, useEffect, useMemo } from "react";
+import { ChangeEvent, useState } from "react";
 // import createApiClient from "../../api/api-client-factory";
 import { Container, Col } from "react-bootstrap";
 import CustomTitles from "../widgets/CustomTitles";
@@ -11,14 +11,14 @@ import { Recoleccion } from "../../models/Recoleccion";
 import styled from "styled-components";
 import { themes } from "../../styles/ColorStyles";
 import { H4 } from "../../styles/TextStyles";
-import { useHistory, useLocation } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import CustomButtonPrimary from "../widgets/CustomBtnPrimaryWidget/CustomBtnPrimary";
 import CustoReleccionCostoUnitario from "../widgets/CustomRecoleccionWidgets/CustomRecoleccionCostoUnitario";
 const RecoleccionPeriodo = () => {
   const history = useHistory();
   // const location = useLocation();
   const [searchInput, setSearchInput] = useState("");
-  const [recoleccionData, setRecoleccionoData] = useState<Recoleccion[]>([]);
+  //const [recoleccionData, setRecoleccionoData] = useState<Recoleccion[]>([]);
   // let id: string;
   const nombre = "Recolección mensual";
   const labels = [
