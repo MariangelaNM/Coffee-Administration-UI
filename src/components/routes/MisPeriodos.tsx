@@ -76,6 +76,7 @@ const MisPeriodos = () => {
   async function getDetallePeriodo(id: number) {
     const queryParams = new URLSearchParams(location.search);
     const zona = queryParams.get("zona");
+
     history.push(`/RecoleccionPeriodo?`+encodeURIComponent(`periodo=`+id+`&zona=`+zona ));
   }
   return (

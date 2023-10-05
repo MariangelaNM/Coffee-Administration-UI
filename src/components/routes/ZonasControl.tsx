@@ -45,7 +45,7 @@ const ZonasControl = () => {
     const queryParams = new URLSearchParams(location.search);
     const fincaString = queryParams.get('farm') ?? "";
     const zonaString = queryParams.get('zona') ?? "";
-    setZonaId(zonaString);
+    setZonaId(Number(zonaString)??0);
     if (fincaString) {
       const id = (fincaString);
       emptyZonaInput.FincaID = (parseInt(id));

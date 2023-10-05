@@ -1,5 +1,4 @@
-import { ChangeEvent, useState, useEffect, useMemo } from "react";
-// import createApiClient from "../../api/api-client-factory";
+import { ChangeEvent, useState, useEffect } from "react";
 import { Container, Col } from "react-bootstrap";
 import CustomTitles from "../widgets/CustomTitles";
 import CustomPeriodoInfoDetail from "../widgets/CustomPeriodosWidgets/CustomPeriodoInfoDetail";
@@ -11,7 +10,7 @@ import { Recoleccion } from "../../models/Recoleccion";
 import styled from "styled-components";
 import { themes } from "../../styles/ColorStyles";
 import { H4 } from "../../styles/TextStyles";
-import { useHistory, useLocation } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import CustomButtonPrimary from "../widgets/CustomBtnPrimaryWidget/CustomBtnPrimary";
 import CustoReleccionCostoUnitario from "../widgets/CustomRecoleccionWidgets/CustomRecoleccionCostoUnitario";
 import { Zona } from "../../models/Zona";
@@ -37,43 +36,6 @@ const RecoleccionPeriodo = () => {
   ];
   const dataname = "Cajuelas";
   const dataValues = [12, 19, 3, 5, 2];
-  const RecoleccionList: Recoleccion[] =[];
-  //TODO Esto es un ejemplo
- /* const RecoleccionList: Recoleccion[] = [
-    {
-      Id: 1,
-      createdAt: "10/02/2023",
-      recolector: 1,
-      recolectorname: "Juan",
-      costo: 2,
-      cajuelas: 1,
-      cuartillos: 2,
-      total: 10,
-      pagado: "Pendiente",
-    },
-    {
-      Id: 2,
-      createdAt: "10/02/2023",
-      recolector: 1,
-      recolectorname: "Pedro",
-      costo: 3,
-      cajuelas: 2,
-      cuartillos: 2,
-      total: 7.5,
-      pagado: "Pagado",
-    },
-    {
-      Id: 3,
-      createdAt: "10/02/2023",
-      recolector: 1,
-      recolectorname: "Arturo",
-      costo: 5,
-      cajuelas: 3,
-      cuartillos: 2,
-      total: 17.5,
-      pagado: "Pendiente",
-    },
-  ];*/
 
   useEffect(() => {
     callDataZona()
@@ -87,6 +49,7 @@ const RecoleccionPeriodo = () => {
       const zona = queryParams.get("zona");
       const response = await createApiClient().makeApiRequest("GET", "/zonas/" + zona, null);
       setZonaInput(response as unknown as Zona);
+   
 
     } catch (error) {
       console.error('Error fetching data:', error);
@@ -95,9 +58,9 @@ const RecoleccionPeriodo = () => {
   async function callRecolecciones() {
     try {
       const queryParams = new URLSearchParams(decodeURIComponent(location.search));
-      const zona = queryParams.get("zona");
-      const response = await createApiClient().makeApiRequest("GET", "/registros/zonas/" + zona, null);
-      setRecoleccionoData(response  );
+      const zona = queryParams.get("periodo");
+      const response = await createApiClient().makeApiRequest("GET", "/registros/periodos/" + zona, null);
+      setRecoleccionoData(response as unknown as Recoleccion[] );
       console.log(response)
 
     } catch (error) {
@@ -134,8 +97,7 @@ const RecoleccionPeriodo = () => {
   return (
     <Container className="col-lg-6 col-xxl-8 my-5 mx-auto">
       <CustomPeriodoInfoDetail
-        nombreZona={zonaInput?.Nombre}
-        periodo={"Nombre del periodo"}
+        nombreZona={zonaInput?.Nombre??""}
         descripcion={periodoData?.Desde+" al "+periodoData?.Hasta}
       />
       <div className="mt-2">

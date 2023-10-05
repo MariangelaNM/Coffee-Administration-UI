@@ -139,12 +139,17 @@ const RecoleccionCreate = () => {
   const handleSelect = (id: number) => {
     setRecoleccion({ ...recoleccion, RecolectorID: id });
   };
-
+  const handleCancel = () => {
+    const queryParams = new URLSearchParams(decodeURIComponent(location.search));
+    const periodo = parseInt(decodeURIComponent(queryParams.get("periodo") ?? "0"), 10);
+    const zona = parseInt(decodeURIComponent(queryParams.get("zona") ?? "0"), 10);
+    history.push(`/RecoleccionPeriodo?`+encodeURIComponent(`periodo=`+periodo+`&zona=`+zona ));
+  };
   return (
     <Container className="col-lg-6 col-xxl-4 my-5 mx-auto">
       <Title>{"Nuevo Registro"}</Title>
       {displayErrorMessage()}
-      <Form noValidate validated={validated} onSubmit={handleSubmit}>
+      <Form noValidate validated={validated} onSubmit={handleSubmit} >
         <select
           className="form-select"
           style={{ marginBottom: "10px" }}
@@ -223,7 +228,12 @@ const RecoleccionCreate = () => {
             Registrar
           </Button>
 
-          <Button variant="primary" className="custombtn-secondary" type="button">
+          <Button
+            variant="primary"
+            className="custombtn-secondary"
+            type="button" // Cambié "Abort" a "button"
+            onClick={handleCancel} // Agregué el manejador de eventos onClick
+          >
             Cancelar
           </Button>
         </div>

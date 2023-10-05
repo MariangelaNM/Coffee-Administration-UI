@@ -20,7 +20,7 @@ const CustomRecoleccionList: React.FC<CustomRecoleccionListProps> = ({
    // { label: "Recolector", accessor: "recolectorname" },
     { label: "Cajuela", accessor: "Cajuelas" },
     { label: "Cuartillo", accessor: "Cuartillos" },
-    { label: "Total", accessor: "total" },
+    { label: "Total", accessor: "Total" },
     { label: "Status", accessor: "Status" },
   ];
   const handleEditClick = (id: number) => {
@@ -33,9 +33,10 @@ const CustomRecoleccionList: React.FC<CustomRecoleccionListProps> = ({
   
     for (let i = 0; i < jsonData.length; i++) {
       const item = jsonData[i];
+      debugger
       const modifiedItem = { ...item }; // Create a copy of the original object
       if (item.Status === true) {
-        modifiedItem.Status = "pagado";
+        modifiedItem.Status = "Pagado";
       } else {
         modifiedItem.Status = "Pendiente";
       }
@@ -51,7 +52,6 @@ const CustomRecoleccionList: React.FC<CustomRecoleccionListProps> = ({
   };
 
   const FilterByAccessor = (label:string) => {
-    console.log('Hello, world!');
     let newRecoleccionList = recoleccionList.filter((c) => c.recolectorname.toLowerCase().includes(filterTxt.toLowerCase()));
 
     newRecoleccionList = sortByProperty(newRecoleccionList,label);

@@ -4,7 +4,7 @@
  * @interface Recoleccion
  */
 export interface Recoleccion {
-  recolectorname: any;
+  //recolectorname: any;
   /**
    *
    * @type {number}
@@ -28,32 +28,32 @@ export interface Recoleccion {
    * @type {number}
    * @memberof Recoleccion
    */
-  RecolectorID: number;
+  RecolectorID?: number;
   /**
    *
    * @type {number}
    * @memberof Recoleccion
    */
-  ZonaID: number;
+  ZonaID?: number;
   /**
    *
    * @type {number}
    * @memberof Recoleccion
    */
-  PeriodoID: number;
+  PeriodoID?: number;
 
   /**
    *
    * @type {number}
    * @memberof Recoleccion
    */
-  Cajuelas: number;
+  Cajuelas?: number;
   /**
    *
    * @type {number}
    * @memberof Recoleccion
    */
-  Cuartillos: number;
+  Cuartillos?: number;
   /**
    *
    * @type {number}
@@ -79,5 +79,5 @@ export interface Recoleccion {
    * @type {Boolean}
    * @memberof Recoleccion
    */
-    status: Boolean;  
+    status?: Boolean;  
 }
