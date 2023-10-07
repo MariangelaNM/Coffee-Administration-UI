@@ -23,6 +23,7 @@ const RecoleccionPeriodo = () => {
   const [zonaInput, setZonaInput] = useState<Zona>();
   const [recoleccionData, setRecoleccionoData] = useState<Recoleccion[]>([]);
   const [periodoData, setperiodoData] = useState<Periodo>();
+  const [costo, setCosto] = useState(0);
   // let id: string;
   const nombre = "Recolección mensual";
   const labels = [
@@ -41,6 +42,9 @@ const RecoleccionPeriodo = () => {
     callDataZona()
     callPeriodo();
     callRecolecciones();
+    const queryParams = new URLSearchParams(decodeURIComponent(location.search));
+    const costo = queryParams.get("costo");
+    setCosto(Number(costo));
   }, [])
 
   async function callDataZona() {
@@ -61,8 +65,6 @@ const RecoleccionPeriodo = () => {
       const zona = queryParams.get("periodo");
       const response = await createApiClient().makeApiRequest("GET", "/registros/periodos/" + zona, null);
       setRecoleccionoData(response as unknown as Recoleccion[] );
-      console.log(response)
-
     } catch (error) {
       console.error('Error fetching data:', error);
     }
@@ -101,7 +103,7 @@ const RecoleccionPeriodo = () => {
         descripcion={periodoData?.Desde+" al "+periodoData?.Hasta}
       />
       <div className="mt-2">
-        <CustoReleccionCostoUnitario costounitario={10} Id={1} />
+        <CustoReleccionCostoUnitario costounitario={costo} Id={1} />
       </div>
       <div className="d-grid gap-2">
         <CustomButtonPrimary

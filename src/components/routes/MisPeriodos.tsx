@@ -76,9 +76,19 @@ const MisPeriodos = () => {
   async function getDetallePeriodo(id: number) {
     const queryParams = new URLSearchParams(location.search);
     const zona = queryParams.get("zona");
-
-    history.push(`/RecoleccionPeriodo?`+encodeURIComponent(`periodo=`+id+`&zona=`+zona ));
+    const data =findItemById(id);
+    localStorage.setItem("Costo", data?.PrecioCajuela ??0);
+    history.push(`/RecoleccionPeriodo?`+encodeURIComponent(`periodo=`+id+`&zona=`+zona+`&costo=`+data?.PrecioCajuela ));
+ 
   }
+  
+function findItemById(idToFind: number): Periodo | undefined {
+  const foundItems = periodoData.filter(item => item.Id === idToFind);
+  if (foundItems.length > 0) {
+      return foundItems[0];
+  }
+  return undefined;
+}
   return (
     <Container className="col-lg-6 col-xxl-4 my-5 mx-auto">
       <CustomZonaInfoDetail

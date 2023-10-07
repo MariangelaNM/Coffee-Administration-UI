@@ -39,7 +39,12 @@ const RecoleccionCreate = () => {
       setValidated(true);
     } else {
       try {
-        const response = await createApiClient().makeApiRequest("POST", "/registros", recoleccion);
+        let response:any;
+        console.log(recoleccion);
+        if(recoleccion.Id==0){
+         response = await createApiClient().makeApiRequest("POST", "/registros", recoleccion);}
+        else{
+          response = await createApiClient().makeApiRequest("PATCH", "/registros/"+recoleccion.Id, recoleccion);}
 
         if (response.message != undefined) {
           setShowErrorMessage(true);
@@ -50,7 +55,8 @@ const RecoleccionCreate = () => {
           setShowSuccessMessage(true);
           setTimeout(() => {
             setShowSuccessMessage(false);
-            history.push("/Fincas");
+            history.push(`/RecoleccionPeriodo?`+encodeURIComponent(`periodo=`+recoleccion.PeriodoID+`&zona=`+recoleccion.ZonaID+`&costo=`+ Number(localStorage.getItem("Costo"))??0));
+
           }, 2000);
         }
       } catch (error) {
@@ -70,9 +76,10 @@ const RecoleccionCreate = () => {
 
     const fechaActual = new Date();
     const queryParams = new URLSearchParams(decodeURIComponent(location.search));
-    console.log(queryParams)
     const periodo = parseInt(decodeURIComponent(queryParams.get("periodo") ?? "0"), 10);
     const zona = parseInt(decodeURIComponent(queryParams.get("zona") ?? "0"), 10);
+    const Id = parseInt(decodeURIComponent(queryParams.get("id") ?? "0"), 10);
+   
     setRecoleccion({
       ZonaID: zona,
       RecolectorID: 0,
@@ -81,14 +88,37 @@ const RecoleccionCreate = () => {
       Cuartillos: 0,
       total: 0,
       pagado: "",
-      Id: 0,
+      Id: Id,
       Creado: fechaActual,
       Modificado: fechaActual,
-      status: false
+      status: false,
+      costo:Number(localStorage.getItem("Costo"))??0
     });
+    recoleccion.Id=Id;
     callDataRecolector();
-  }, []);
+    if(Id!=0){
+      callDataRecolecion();
+    }
 
+  }, []);
+  async function callDataRecolecion() {
+    try {
+      debugger
+      const response = await createApiClient().makeApiRequest(
+        "GET",
+        `/registros/${recoleccion.Id}/recolecciones`,
+        null
+      );
+      if ("message" in response) {
+        setRecoleccion( response as Recoleccion);
+      } else {
+        setRecoleccion(response[0] as Recoleccion);
+      }
+      console.log(response)
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  }
   async function callDataRecolector() {
     try {
       const response = await createApiClient().makeApiRequest(
@@ -100,6 +130,7 @@ const RecoleccionCreate = () => {
         setRecolectoresData([] as Recolector[]);
       } else {
         setRecolectoresData(response as Recolector[]);
+      
       }
     } catch (error) {
       console.error("Error fetching data:", error);
@@ -143,11 +174,11 @@ const RecoleccionCreate = () => {
     const queryParams = new URLSearchParams(decodeURIComponent(location.search));
     const periodo = parseInt(decodeURIComponent(queryParams.get("periodo") ?? "0"), 10);
     const zona = parseInt(decodeURIComponent(queryParams.get("zona") ?? "0"), 10);
-    history.push(`/RecoleccionPeriodo?`+encodeURIComponent(`periodo=`+periodo+`&zona=`+zona ));
+    history.push(`/RecoleccionPeriodo?`+encodeURIComponent(`periodo=`+periodo+`&zona=`+zona+`&costo=`+ Number(localStorage.getItem("Costo"))??0 ));
   };
   return (
     <Container className="col-lg-6 col-xxl-4 my-5 mx-auto">
-      <Title>{"Nuevo Registro"}</Title>
+      <Title>{recoleccion.Id==0&&"Nuevo Registro"}{recoleccion.Id!=0&&"Modificar Registro"}</Title>
       {displayErrorMessage()}
       <Form noValidate validated={validated} onSubmit={handleSubmit} >
         <select
@@ -225,7 +256,7 @@ const RecoleccionCreate = () => {
         )}
         <div className="d-grid gap-2">
           <Button variant="primary" className="custombtn-primary no-active-style" type="submit">
-            Registrar
+          {recoleccion.Id==0&&"Registrar"}{recoleccion.Id!=0&&"Actualizar"}
           </Button>
 
           <Button
