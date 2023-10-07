@@ -29,6 +29,12 @@ export interface Recoleccion {
    * @memberof Recoleccion
    */
   RecolectorID?: number;
+   /**
+   *
+   * @type {string}
+   * @memberof Recoleccion
+   */
+   RecolectorNombre?: string;
   /**
    *
    * @type {number}

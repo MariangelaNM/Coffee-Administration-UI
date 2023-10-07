@@ -9,6 +9,8 @@ import AlertDialog from "../AlertDialog";
 import createApiClient from "../../../api/api-client-factory";
 import { useHistory } from "react-router-dom";
 import Alert from "@mui/material/Alert/Alert";
+import { useUser } from '../../UserContext';
+import { Recolector } from "../../../models/Recolector";
 interface CustomRecoleccionListProps {
   filterTxt: string;
   recoleccionList: Recoleccion[];
@@ -17,6 +19,8 @@ const CustomRecoleccionList: React.FC<CustomRecoleccionListProps> = ({
   filterTxt,
   recoleccionList,
 }) => {
+  const { userId } = useUser();
+  const [recolectoresData, setRecolectoresData] = useState<Recolector[]>([]);
   const [showSuccessMessageError, setShowSuccessMessageError] = useState(false);
   const history = useHistory();
   const [openDialog, setOpenDialog] = useState(false);
@@ -48,7 +52,7 @@ const CustomRecoleccionList: React.FC<CustomRecoleccionListProps> = ({
   let currentList = modifyStatus(recoleccionList);
   const columns: Column[] = [
     { label: "Registro", accessor: "Creado" },
-    // { label: "Recolector", accessor: "recolectorname" },
+     { label: "Recolector", accessor: "RecolectorNombre" },
     { label: "Cajuela", accessor: "Cajuelas" },
     { label: "Cuartillo", accessor: "Cuartillos" },
     { label: "Total", accessor: "Total" },
@@ -66,8 +70,26 @@ const CustomRecoleccionList: React.FC<CustomRecoleccionListProps> = ({
     const foundItem = findItemById(id);
     history.push(`/Recoleccion?`+encodeURIComponent(`periodo=`+foundItem?.PeriodoID+`&zona=`+foundItem?.ZonaID+`&id=`+foundItem?.Id+`&costo=`+foundItem?.costo));
   };
+  async function callDataRecolector() {
+    try {
+      const response = await createApiClient().makeApiRequest(
+        "GET",
+        `/recolectores/${userId}/caficultor`,
+        null
+      );
+      if ("message" in response) {
+        setRecolectoresData([] as Recolector[]);
+      } else {
+        setRecolectoresData(response as Recolector[]);
+      
+      }
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  }
 
   function modifyStatus(jsonData: any[]): any[] {
+    callDataRecolector();
     const modifiedData = [];
 
     for (let i = 0; i < jsonData.length; i++) {
@@ -80,10 +102,18 @@ const CustomRecoleccionList: React.FC<CustomRecoleccionListProps> = ({
         modifiedItem.Status = "Pendiente";
       }
       modifiedItem.Creado=formatDateToShort(new Date(modifiedItem.Creado))
+      const NombreRecolector=(filtrarPorId(modifiedItem.RecolectorID));
+      if(NombreRecolector.length>0){
+console.log(NombreRecolector)
+        modifiedItem.RecolectorNombre=NombreRecolector[0].Nombre;
+      }
       modifiedData.push(modifiedItem);
     }
 
     return modifiedData;
+  }
+  function filtrarPorId(id: number) {
+    return recolectoresData.filter((item) => item.Id === id);
   }
   function formatDateToShort(date: Date): string {
     const dia = date.getDate().toString().padStart(2, "0");
@@ -99,7 +129,7 @@ const CustomRecoleccionList: React.FC<CustomRecoleccionListProps> = ({
   };
 
   const FilterByAccessor = (label: string) => {
-    let newRecoleccionList = recoleccionList.filter((c) => c.recolectorname.toLowerCase().includes(filterTxt.toLowerCase()));
+    let newRecoleccionList = recoleccionList.filter((c) => c.RecolectorNombre.toLowerCase().includes(filterTxt.toLowerCase()));
 
     newRecoleccionList = sortByProperty(newRecoleccionList, label);
     currentList = (newRecoleccionList);
