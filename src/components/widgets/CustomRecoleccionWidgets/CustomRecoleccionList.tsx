@@ -79,10 +79,17 @@ const CustomRecoleccionList: React.FC<CustomRecoleccionListProps> = ({
       } else {
         modifiedItem.Status = "Pendiente";
       }
+      modifiedItem.Creado=formatDateToShort(new Date(modifiedItem.Creado))
       modifiedData.push(modifiedItem);
     }
 
     return modifiedData;
+  }
+  function formatDateToShort(date: Date): string {
+    const dia = date.getDate().toString().padStart(2, "0");
+    const mes = (date.getMonth() + 1).toString().padStart(2, "0");
+    const año = date.getFullYear();
+    return `${dia}/${mes}/${año}`;
   }
   const handleDeleteClick = (id: number) => {
      setTexto(`Eliminar la Recolección`);

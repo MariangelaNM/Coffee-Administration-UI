@@ -39,8 +39,12 @@ const RecoleccionCreate = () => {
       setValidated(true);
     } else {
       try {
+        debugger
         let response:any;
-        console.log(recoleccion);
+        recoleccion.total =
+        ((recoleccion.Cajuelas ?? 0) * (Number(localStorage.getItem("Costo"))??0)) +
+        (((recoleccion.Cuartillos ?? 0) * 0.25) *  (Number(localStorage.getItem("Costo"))??0));
+      
         if(recoleccion.Id==0){
          response = await createApiClient().makeApiRequest("POST", "/registros", recoleccion);}
         else{
@@ -103,7 +107,6 @@ const RecoleccionCreate = () => {
   }, []);
   async function callDataRecolecion() {
     try {
-      debugger
       const response = await createApiClient().makeApiRequest(
         "GET",
         `/registros/${recoleccion.Id}/recolecciones`,
