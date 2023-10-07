@@ -16,9 +16,10 @@ import CustoReleccionCostoUnitario from "../widgets/CustomRecoleccionWidgets/Cus
 import { Zona } from "../../models/Zona";
 import { Periodo } from "../../models/Periodo";
 import createApiClient from "../../api/api-client-factory";
+import { useUser } from "../UserContext";
 const RecoleccionPeriodo = () => {
   const history = useHistory();
-  // const location = useLocation();
+  const { userId } = useUser();
   const [searchInput, setSearchInput] = useState("");
   const [zonaInput, setZonaInput] = useState<Zona>();
   const [recoleccionData, setRecoleccionoData] = useState<Recoleccion[]>([]);
@@ -39,12 +40,16 @@ const RecoleccionPeriodo = () => {
   const dataValues = [12, 19, 3, 5, 2];
 
   useEffect(() => {
-    callDataZona()
-    callPeriodo();
-    callRecolecciones();
-    const queryParams = new URLSearchParams(decodeURIComponent(location.search));
-    const costo = queryParams.get("costo");
-    setCosto(Number(costo));
+    if (userId != null) {
+      callDataZona()
+      callPeriodo();
+      callRecolecciones();
+      const queryParams = new URLSearchParams(decodeURIComponent(location.search));
+      const costo = queryParams.get("costo");
+      setCosto(Number(costo));
+    } else {
+      history.push(`/login`);
+    }
   }, [])
 
   async function callDataZona() {
@@ -53,7 +58,7 @@ const RecoleccionPeriodo = () => {
       const zona = queryParams.get("zona");
       const response = await createApiClient().makeApiRequest("GET", "/zonas/" + zona, null);
       setZonaInput(response as unknown as Zona);
-   
+
 
     } catch (error) {
       console.error('Error fetching data:', error);
@@ -64,7 +69,7 @@ const RecoleccionPeriodo = () => {
       const queryParams = new URLSearchParams(decodeURIComponent(location.search));
       const zona = queryParams.get("periodo");
       const response = await createApiClient().makeApiRequest("GET", "/registros/periodos/" + zona, null);
-      setRecoleccionoData(response as unknown as Recoleccion[] );
+      setRecoleccionoData(response as unknown as Recoleccion[]);
     } catch (error) {
       console.error('Error fetching data:', error);
     }
@@ -92,15 +97,15 @@ const RecoleccionPeriodo = () => {
     const queryParams = new URLSearchParams(decodeURIComponent(location.search));
     const zona = queryParams.get("zona");
     const periodo = queryParams.get("periodo");
-    history.push(`/Recoleccion?`+encodeURIComponent(`periodo=`+periodo+`&zona=`+zona));
-  
+    history.push(`/Recoleccion?` + encodeURIComponent(`periodo=` + periodo + `&zona=` + zona));
+
   }
 
   return (
     <Container className="col-lg-6 col-xxl-8 my-5 mx-auto">
       <CustomPeriodoInfoDetail
-        nombreZona={zonaInput?.Nombre??""}
-        descripcion={(new Date(periodoData?.Desde).toLocaleDateString())+" al "+(new Date(periodoData?.Hasta).toLocaleDateString())}
+        nombreZona={zonaInput?.Nombre ?? ""}
+        descripcion={(new Date(periodoData?.Desde).toLocaleDateString()) + " al " + (new Date(periodoData?.Hasta).toLocaleDateString())}
       />
       <div className="mt-2">
         <CustoReleccionCostoUnitario costounitario={costo} Id={1} />

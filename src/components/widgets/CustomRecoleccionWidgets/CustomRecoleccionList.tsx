@@ -31,7 +31,7 @@ const CustomRecoleccionList: React.FC<CustomRecoleccionListProps> = ({
   const handleDisagree = () => {
     handleCloseDialog();
   };
-  let id=0;
+  let id = 0;
   const handleAgree = async () => {
     const response = await createApiClient().makeApiRequest(
       "DELETE",
@@ -52,7 +52,7 @@ const CustomRecoleccionList: React.FC<CustomRecoleccionListProps> = ({
   let currentList = modifyStatus(recoleccionList);
   const columns: Column[] = [
     { label: "Registro", accessor: "Creado" },
-     { label: "Recolector", accessor: "RecolectorNombre" },
+    { label: "Recolector", accessor: "RecolectorNombre" },
     { label: "Cajuela", accessor: "Cajuelas" },
     { label: "Cuartillo", accessor: "Cuartillos" },
     { label: "Total", accessor: "Total" },
@@ -61,14 +61,14 @@ const CustomRecoleccionList: React.FC<CustomRecoleccionListProps> = ({
   function findItemById(idToFind: number): Recoleccion | undefined {
     const foundItems = recoleccionList.filter(item => item.Id === idToFind);
     if (foundItems.length > 0) {
-        return foundItems[0];
+      return foundItems[0];
     }
     return undefined;
-}
+  }
 
   const handleEditClick = (id: number) => {
     const foundItem = findItemById(id);
-    history.push(`/Recoleccion?`+encodeURIComponent(`periodo=`+foundItem?.PeriodoID+`&zona=`+foundItem?.ZonaID+`&id=`+foundItem?.Id+`&costo=`+foundItem?.costo));
+    history.push(`/Recoleccion?` + encodeURIComponent(`periodo=` + foundItem?.PeriodoID + `&zona=` + foundItem?.ZonaID + `&id=` + foundItem?.Id + `&costo=` + foundItem?.costo));
   };
   async function callDataRecolector() {
     try {
@@ -81,7 +81,7 @@ const CustomRecoleccionList: React.FC<CustomRecoleccionListProps> = ({
         setRecolectoresData([] as Recolector[]);
       } else {
         setRecolectoresData(response as Recolector[]);
-      
+
       }
     } catch (error) {
       console.error("Error fetching data:", error);
@@ -101,11 +101,10 @@ const CustomRecoleccionList: React.FC<CustomRecoleccionListProps> = ({
       } else {
         modifiedItem.Status = "Pendiente";
       }
-      modifiedItem.Creado=formatDateToShort(new Date(modifiedItem.Creado))
-      const NombreRecolector=(filtrarPorId(modifiedItem.RecolectorID));
-      if(NombreRecolector.length>0){
-console.log(NombreRecolector)
-        modifiedItem.RecolectorNombre=NombreRecolector[0].Nombre;
+      modifiedItem.Creado = formatDateToShort(new Date(modifiedItem.Creado))
+      const NombreRecolector = (filtrarPorId(modifiedItem.RecolectorID));
+      if (NombreRecolector.length > 0) {
+        modifiedItem.RecolectorNombre = NombreRecolector[0].Nombre;
       }
       modifiedData.push(modifiedItem);
     }
@@ -122,18 +121,16 @@ console.log(NombreRecolector)
     return `${dia}/${mes}/${año}`;
   }
   const handleDeleteClick = (id: number) => {
-     setTexto(`Eliminar la Recolección`);
-    id=id;
+    setTexto(`Eliminar la Recolección`);
+    id = id;
     setOpenDialog(true);
     console.log("Borrar recoleccion" + id);
   };
 
   const FilterByAccessor = (label: string) => {
     let newRecoleccionList = recoleccionList.filter((c) => c.RecolectorNombre.toLowerCase().includes(filterTxt.toLowerCase()));
-
     newRecoleccionList = sortByProperty(newRecoleccionList, label);
     currentList = (newRecoleccionList);
-    console.dir(newRecoleccionList);
   };
 
   function sortByProperty<Recoleccion>(arr: Recoleccion[], propName: keyof Recoleccion, ascending = true): Recoleccion[] {
@@ -166,16 +163,16 @@ console.log(NombreRecolector)
   } else {
     return (
       <div className="horizontal-scroll-container">
-       
-            {showSuccessMessageError && (
-              <Alert
-                severity="error"
-                style={{ marginBottom: "10px", marginTop: "10px" }}
-              >
-                Está Finca cuenta con Zonas
-              </Alert>
-            )}
-       
+
+        {showSuccessMessageError && (
+          <Alert
+            severity="error"
+            style={{ marginBottom: "10px", marginTop: "10px" }}
+          >
+            Está Finca cuenta con Zonas
+          </Alert>
+        )}
+
         <Table>
           <TableHead columns={columns} onClickSort={FilterByAccessor} />
           <TableBody

@@ -1,4 +1,4 @@
-import { Container, Row, Col, Button } from "react-bootstrap";
+import { Container, Row, Col } from "react-bootstrap";
 import CustomButtonPrimary from "../widgets/CustomBtnPrimaryWidget/CustomBtnPrimary";
 import logoCompleto from "../../assets/logoCompleto.png";
 import foto from "../../assets/cafeFondo.jpeg";

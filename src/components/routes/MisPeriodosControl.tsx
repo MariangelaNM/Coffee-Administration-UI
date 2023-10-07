@@ -7,7 +7,7 @@ import CustomInput from "../widgets/CustomInputWidget/CustomInput";
 import CustomButtonPrimary from "../widgets/CustomBtnPrimaryWidget/CustomBtnPrimary";
 import CustomButtonSecondary from "../widgets/CustomButtonSecondaryWidget/CustomButtonSecondary";
 import CustomDatePiker from "../widgets/CustomDatePikerWidget/CustomDatePiker";
-import { useUser } from '../UserContext';
+import { useUser } from "../UserContext";
 import { useHistory, useLocation } from "react-router-dom";
 import { TipoRecoleccion } from "../../models/TipoRecoleccion";
 import Alert from "@mui/material/Alert";
@@ -21,7 +21,7 @@ const MisPeriodosControl = () => {
     Hasta: new Date(),
     PrecioCajuela: 0,
     CaficultorID: Number(userId),
-    zona: undefined
+    zona: undefined,
   };
 
   const options = [
@@ -31,9 +31,8 @@ const MisPeriodosControl = () => {
     { value: TipoRecoleccion.Repela, label: "Repela" },
   ];
 
-  const [periodoInput, setPeriodoInput] = useState<Partial<Periodo>>(
-    emptyPeriodoInput
-  );
+  const [periodoInput, setPeriodoInput] =
+    useState<Partial<Periodo>>(emptyPeriodoInput);
 
   const [errorMsg, setErrorMsg] = useState("");
   const [showSuccessMessage, setShowSuccessMessage] = useState(false);
@@ -42,11 +41,15 @@ const MisPeriodosControl = () => {
   const location = useLocation();
 
   useEffect(() => {
-    const queryParams = new URLSearchParams(location.search);
-    const periodoString = queryParams.get("periodo");
-    if (periodoString) {
-      periodoInput.Id = Number(periodoString);
-      periodoData();
+    if (userId != null) {
+      const queryParams = new URLSearchParams(location.search);
+      const periodoString = queryParams.get("periodo");
+      if (periodoString) {
+        periodoInput.Id = Number(periodoString);
+        periodoData();
+      }
+    } else {
+      history.push(`/login`);
     }
   }, []);
 
@@ -68,18 +71,11 @@ const MisPeriodosControl = () => {
     setPeriodoInput(emptyPeriodoInput);
     const queryParams = new URLSearchParams(location.search);
     const zona = queryParams.get("zona");
-    history.push(
-      `/Periodos?zona=${zona}`
-    );
+    history.push(`/Periodos?zona=${zona}`);
   }
 
-  const desdeDate = periodoInput.Desde
-    ? new Date(Date.parse(periodoInput.Desde))
-    : null;
-  const hastaDate = periodoInput.Hasta
-    ? new Date(Date.parse(periodoInput.Hasta))
-    : null;
-
+  const desdeDate = new Date(periodoInput.Desde ?? new Date());
+  const hastaDate = new Date(periodoInput.Hasta ?? new Date());
   const readyToSubmit =
     periodoInput.TipoRecoleccionID !== 0 &&
     (periodoInput.PrecioCajuela ?? 0) > 0 &&
@@ -112,7 +108,6 @@ const MisPeriodosControl = () => {
           periodoInput
         );
         handleApiResponse(response);
-    
       } catch (error) {
         setShowSuccessMessageError(true);
         setErrorMsg("Error en la respuesta de la API");
@@ -153,18 +148,16 @@ const MisPeriodosControl = () => {
   return (
     <Container className="col-lg-6 col-xxl-4 my-5 mx-auto">
       <CustomTitles
-        txt={
-          periodoInput.Id !== 0 ? "Editar periodo" : "Crea un nuevo periodo"
-        }
+        txt={periodoInput.Id !== 0 ? "Editar periodo" : "Crea un nuevo periodo"}
       />
 
-      <Form noValidate validated={readyToSubmit} >
-      <Form.Label className="labelForm text-selection-disable">
-        {"Tipo de Recolección"}
-      </Form.Label>
-        <select 
+      <Form noValidate validated={readyToSubmit}>
+        <Form.Label className="labelForm text-selection-disable">
+          {"Tipo de Recolección"}
+        </Form.Label>
+        <select
           className="form-select"
-          style={{marginBottom:'10px'}}
+          style={{ marginBottom: "10px" }}
           value={periodoInput.TipoRecoleccionID}
           onChange={(e) => handleSelect(Number(e.target.value))}
           required
@@ -204,12 +197,18 @@ const MisPeriodosControl = () => {
           onInvalidText={"El campo no puede estar vacio"}
         />
         {showSuccessMessageError && (
-          <Alert severity="error" style={{ marginBottom: "10px", marginTop: "10px" }}>
+          <Alert
+            severity="error"
+            style={{ marginBottom: "10px", marginTop: "10px" }}
+          >
             Error: {errorMsg}
           </Alert>
         )}
         {showSuccessMessage && (
-          <Alert severity="success" style={{ marginBottom: "10px", marginTop: "10px" }}>
+          <Alert
+            severity="success"
+            style={{ marginBottom: "10px", marginTop: "10px" }}
+          >
             ¡La finca ha sido registrada exitosamente!
           </Alert>
         )}

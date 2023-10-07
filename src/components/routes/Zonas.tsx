@@ -9,7 +9,7 @@ import CustomAdd from "../widgets/CustomAdd";
 import CustomSearch from "../widgets/CustomInputWidget/CustomSearch";
 import CustomZonaList from "../widgets/CustomZonasWidgets/CustomZonaList";
 import { useHistory, useLocation } from "react-router-dom";
-import { useUser } from '../UserContext';
+import { useUser } from "../UserContext";
 const Zonas = () => {
   let id: string;
   const history = useHistory();
@@ -23,20 +23,25 @@ const Zonas = () => {
     if (userId != null) {
       CallIds();
       callData();
+    } else {
+      history.push(`/login`);
     }
-    else {
-      history.push(
-        `/login`
-      );
-    }
-  }, [])
-  
+  }, []);
+
   async function callData() {
     try {
       const data = { FincaID: id };
-      const response = await createApiClient().makeApiRequest("PUT", "/zonas", data);
+      const response = await createApiClient().makeApiRequest(
+        "PUT",
+        "/zonas",
+        data
+      );
       setZonaList(response as unknown as Zona[]);
-      const responseFinca = await createApiClient().makeApiRequest("GET", "/fincas/" + id, null);
+      const responseFinca = await createApiClient().makeApiRequest(
+        "GET",
+        "/fincas/" + id,
+        null
+      );
       setFincasData(responseFinca as unknown as Finca);
     } catch (error) {
       history.push("/error");
@@ -46,15 +51,14 @@ const Zonas = () => {
   async function updateFinca() {
     CallIds();
     history.push(`/Fincas/Edit?farm=${encodeURIComponent(fincaInput)}`);
-  
   }
 
   function CallIds() {
     const queryParams = new URLSearchParams(location.search);
     const fincaString = queryParams.get("farm");
     if (fincaString) {
-      id = (fincaString);
-      setFincaInput((decodeURIComponent(fincaString)));
+      id = fincaString;
+      setFincaInput(decodeURIComponent(fincaString));
     }
   }
 
@@ -77,7 +81,7 @@ const Zonas = () => {
         descripcion={fincasData?.Descripcion ?? ""}
         onClick={updateFinca}
       />
-       <CustomTitles txt={"Mis zonas"} />
+      <CustomTitles txt={"Mis zonas"} />
       <CustomAdd onClick={CreateZona} />
       <CustomSearch
         label="Buscar"

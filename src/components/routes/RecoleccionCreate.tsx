@@ -1,4 +1,4 @@
-import React, { ChangeEvent, FormEvent, useEffect, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
 import { Container, Form, Button } from "react-bootstrap";
 import styled from "styled-components";
 import { themes } from "../../styles/ColorStyles";
@@ -40,15 +40,17 @@ const RecoleccionCreate = () => {
     } else {
       try {
         debugger
-        let response:any;
+        let response: any;
         recoleccion.total =
-        ((recoleccion.Cajuelas ?? 0) * (Number(localStorage.getItem("Costo"))??0)) +
-        (((recoleccion.Cuartillos ?? 0) * 0.25) *  (Number(localStorage.getItem("Costo"))??0));
-      
-        if(recoleccion.Id==0){
-         response = await createApiClient().makeApiRequest("POST", "/registros", recoleccion);}
-        else{
-          response = await createApiClient().makeApiRequest("PATCH", "/registros/"+recoleccion.Id, recoleccion);}
+          ((recoleccion.Cajuelas ?? 0) * (Number(localStorage.getItem("Costo")) ?? 0)) +
+          (((recoleccion.Cuartillos ?? 0) * 0.25) * (Number(localStorage.getItem("Costo")) ?? 0));
+
+        if (recoleccion.Id == 0) {
+          response = await createApiClient().makeApiRequest("POST", "/registros", recoleccion);
+        }
+        else {
+          response = await createApiClient().makeApiRequest("PATCH", "/registros/" + recoleccion.Id, recoleccion);
+        }
 
         if (response.message != undefined) {
           setShowErrorMessage(true);
@@ -59,7 +61,7 @@ const RecoleccionCreate = () => {
           setShowSuccessMessage(true);
           setTimeout(() => {
             setShowSuccessMessage(false);
-            history.push(`/RecoleccionPeriodo?`+encodeURIComponent(`periodo=`+recoleccion.PeriodoID+`&zona=`+recoleccion.ZonaID+`&costo=`+ Number(localStorage.getItem("Costo"))??0));
+            history.push(`/RecoleccionPeriodo?` + encodeURIComponent(`periodo=` + recoleccion.PeriodoID + `&zona=` + recoleccion.ZonaID + `&costo=` + Number(localStorage.getItem("Costo")) ?? 0));
 
           }, 2000);
         }
@@ -77,33 +79,35 @@ const RecoleccionCreate = () => {
   };
 
   useEffect(() => {
+    if (userId != null) {
+      const fechaActual = new Date();
+      const queryParams = new URLSearchParams(decodeURIComponent(location.search));
+      const periodo = parseInt(decodeURIComponent(queryParams.get("periodo") ?? "0"), 10);
+      const zona = parseInt(decodeURIComponent(queryParams.get("zona") ?? "0"), 10);
+      const Id = parseInt(decodeURIComponent(queryParams.get("id") ?? "0"), 10);
 
-    const fechaActual = new Date();
-    const queryParams = new URLSearchParams(decodeURIComponent(location.search));
-    const periodo = parseInt(decodeURIComponent(queryParams.get("periodo") ?? "0"), 10);
-    const zona = parseInt(decodeURIComponent(queryParams.get("zona") ?? "0"), 10);
-    const Id = parseInt(decodeURIComponent(queryParams.get("id") ?? "0"), 10);
-   
-    setRecoleccion({
-      ZonaID: zona,
-      RecolectorID: 0,
-      PeriodoID: periodo,
-      Cajuelas: 0,
-      Cuartillos: 0,
-      total: 0,
-      pagado: "",
-      Id: Id,
-      Creado: fechaActual,
-      Modificado: fechaActual,
-      status: false,
-      costo:Number(localStorage.getItem("Costo"))??0
-    });
-    recoleccion.Id=Id;
-    callDataRecolector();
-    if(Id!=0){
-      callDataRecolecion();
+      setRecoleccion({
+        ZonaID: zona,
+        RecolectorID: 0,
+        PeriodoID: periodo,
+        Cajuelas: 0,
+        Cuartillos: 0,
+        total: 0,
+        pagado: "",
+        Id: Id,
+        Creado: fechaActual,
+        Modificado: fechaActual,
+        status: false,
+        costo: Number(localStorage.getItem("Costo")) ?? 0
+      });
+      recoleccion.Id = Id;
+      callDataRecolector();
+      if (Id != 0) {
+        callDataRecolecion();
+      }
+    } else {
+      history.push(`/login`);
     }
-
   }, []);
   async function callDataRecolecion() {
     try {
@@ -113,7 +117,7 @@ const RecoleccionCreate = () => {
         null
       );
       if ("message" in response) {
-        setRecoleccion( response as Recoleccion);
+        setRecoleccion(response as Recoleccion);
       } else {
         setRecoleccion(response[0] as Recoleccion);
       }
@@ -133,7 +137,7 @@ const RecoleccionCreate = () => {
         setRecolectoresData([] as Recolector[]);
       } else {
         setRecolectoresData(response as Recolector[]);
-      
+
       }
     } catch (error) {
       console.error("Error fetching data:", error);
@@ -177,11 +181,11 @@ const RecoleccionCreate = () => {
     const queryParams = new URLSearchParams(decodeURIComponent(location.search));
     const periodo = parseInt(decodeURIComponent(queryParams.get("periodo") ?? "0"), 10);
     const zona = parseInt(decodeURIComponent(queryParams.get("zona") ?? "0"), 10);
-    history.push(`/RecoleccionPeriodo?`+encodeURIComponent(`periodo=`+periodo+`&zona=`+zona+`&costo=`+ Number(localStorage.getItem("Costo"))??0 ));
+    history.push(`/RecoleccionPeriodo?` + encodeURIComponent(`periodo=` + periodo + `&zona=` + zona + `&costo=` + Number(localStorage.getItem("Costo")) ?? 0));
   };
   return (
     <Container className="col-lg-6 col-xxl-4 my-5 mx-auto">
-      <Title>{recoleccion.Id==0&&"Nuevo Registro"}{recoleccion.Id!=0&&"Modificar Registro"}</Title>
+      <Title>{recoleccion.Id == 0 && "Nuevo Registro"}{recoleccion.Id != 0 && "Modificar Registro"}</Title>
       {displayErrorMessage()}
       <Form noValidate validated={validated} onSubmit={handleSubmit} >
         <select
@@ -259,7 +263,7 @@ const RecoleccionCreate = () => {
         )}
         <div className="d-grid gap-2">
           <Button variant="primary" className="custombtn-primary no-active-style" type="submit">
-          {recoleccion.Id==0&&"Registrar"}{recoleccion.Id!=0&&"Actualizar"}
+            {recoleccion.Id == 0 && "Registrar"}{recoleccion.Id != 0 && "Actualizar"}
           </Button>
 
           <Button
