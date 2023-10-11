@@ -14,6 +14,7 @@ import { H4 } from "../../styles/TextStyles";
 import { useHistory, useLocation } from "react-router-dom";
 import CustomButtonPrimary from "../widgets/CustomBtnPrimaryWidget/CustomBtnPrimary";
 import CustoReleccionCostoUnitario from "../widgets/CustomRecoleccionWidgets/CustomRecoleccionCostoUnitario";
+
 const RecoleccionPeriodo = () => {
   const history = useHistory();
   // const location = useLocation();
@@ -93,7 +94,7 @@ const RecoleccionPeriodo = () => {
         <CustomButtonPrimary
           label="Pagos pendientes"
           onClick={() => {
-            //history.push("/login");
+            history.push("/PeriodoPago");
           }}
           disabled={false}
         />
