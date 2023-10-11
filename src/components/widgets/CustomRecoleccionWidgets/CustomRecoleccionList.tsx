@@ -94,7 +94,6 @@ const CustomRecoleccionList: React.FC<CustomRecoleccionListProps> = ({
 
     for (let i = 0; i < jsonData.length; i++) {
       const item = jsonData[i];
-      debugger
       const modifiedItem = { ...item }; // Create a copy of the original object
       if (item.Status === true) {
         modifiedItem.Status = "Pagado";

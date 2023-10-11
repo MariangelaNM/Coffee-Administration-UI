@@ -119,7 +119,7 @@ const RecoleccionPeriodo = () => {
           disabled={false}
         />
       </div>
-      <Container>
+    {/*    <Container>
         <CustomTitles txt={"Resumen del periodo"} />
         <BarChart
           nombre={nombre}
@@ -144,7 +144,7 @@ const RecoleccionPeriodo = () => {
             </Title>
           </div>
         </Col>
-      </Container>
+        </Container>*/}
       <div style={{ marginLeft: "10px" }}>
         <CustomTitles txt={"Registros"} />
       </div>

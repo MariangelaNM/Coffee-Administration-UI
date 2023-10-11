@@ -44,7 +44,6 @@ const Farms = () => {
   }
 
   async function CreateFinca() {
-    console.log("CreateFinca");
     history.push(`/Fincas/Create`);
   }
 

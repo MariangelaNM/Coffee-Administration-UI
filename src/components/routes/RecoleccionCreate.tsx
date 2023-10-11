@@ -30,6 +30,42 @@ const RecoleccionCreate = () => {
   const [recolectoresData, setRecolectoresData] = useState<Recolector[]>([]);
   const { userId } = useUser();
   const history = useHistory();
+
+  useEffect(() => {
+   
+    if (userId != null) {
+      const fechaActual = new Date();
+      const queryParams = new URLSearchParams(decodeURIComponent(location.search));
+      const periodo = parseInt(decodeURIComponent(queryParams.get("periodo") ?? "0"), 10);
+      const zona = parseInt(decodeURIComponent(queryParams.get("zona") ?? "0"), 10);
+      const Id = parseInt(decodeURIComponent(queryParams.get("id") ?? "0"), 10);
+
+      setRecoleccion({
+        ZonaID: zona,
+        RecolectorID: 0,
+        PeriodoID: periodo,
+        Cajuelas: 0,
+        Cuartillos: 0,
+        total: 0,
+        pagado: "",
+        Id: Id,
+        Creado: fechaActual,
+        Modificado: fechaActual,
+        status: false,
+        costo: Number(localStorage.getItem("Costo")) ?? 0
+      });
+      recoleccion.Id = Id;
+      callDataRecolector();
+      if (Id != 0) {
+        callDataRecolecion();
+      }
+    
+    } else {
+      history.push(`/login`);
+    }
+  
+  }, []);
+
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const form = e.currentTarget;
@@ -39,7 +75,6 @@ const RecoleccionCreate = () => {
       setValidated(true);
     } else {
       try {
-        debugger
         let response: any;
         recoleccion.total =
           ((recoleccion.Cajuelas ?? 0) * (Number(localStorage.getItem("Costo")) ?? 0)) +
@@ -78,39 +113,9 @@ const RecoleccionCreate = () => {
     }
   };
 
-  useEffect(() => {
-    if (userId != null) {
-      const fechaActual = new Date();
-      const queryParams = new URLSearchParams(decodeURIComponent(location.search));
-      const periodo = parseInt(decodeURIComponent(queryParams.get("periodo") ?? "0"), 10);
-      const zona = parseInt(decodeURIComponent(queryParams.get("zona") ?? "0"), 10);
-      const Id = parseInt(decodeURIComponent(queryParams.get("id") ?? "0"), 10);
-
-      setRecoleccion({
-        ZonaID: zona,
-        RecolectorID: 0,
-        PeriodoID: periodo,
-        Cajuelas: 0,
-        Cuartillos: 0,
-        total: 0,
-        pagado: "",
-        Id: Id,
-        Creado: fechaActual,
-        Modificado: fechaActual,
-        status: false,
-        costo: Number(localStorage.getItem("Costo")) ?? 0
-      });
-      recoleccion.Id = Id;
-      callDataRecolector();
-      if (Id != 0) {
-        callDataRecolecion();
-      }
-    } else {
-      history.push(`/login`);
-    }
-  }, []);
   async function callDataRecolecion() {
     try {
+
       const response = await createApiClient().makeApiRequest(
         "GET",
         `/registros/${recoleccion.Id}/recolecciones`,
@@ -120,24 +125,25 @@ const RecoleccionCreate = () => {
         setRecoleccion(response as Recoleccion);
       } else {
         setRecoleccion(response[0] as Recoleccion);
+        callDataRecolector();
       }
-      console.log(response)
     } catch (error) {
       console.error("Error fetching data:", error);
     }
   }
   async function callDataRecolector() {
+      
     try {
       const response = await createApiClient().makeApiRequest(
         "GET",
         `/recolectores/${userId}/caficultor`,
         null
       );
+      console.log(response)
       if ("message" in response) {
         setRecolectoresData([] as Recolector[]);
       } else {
         setRecolectoresData(response as Recolector[]);
-
       }
     } catch (error) {
       console.error("Error fetching data:", error);
@@ -239,7 +245,7 @@ const RecoleccionCreate = () => {
             type="number"
             maxLength={1}
             min={0}
-            max={4}
+            max={3}
             step={1}
             placeholder="Cantidad de Cuartillos"
             value={recoleccion?.Cuartillos}
