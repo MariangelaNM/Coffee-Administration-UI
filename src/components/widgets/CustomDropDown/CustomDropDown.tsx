@@ -1,5 +1,4 @@
 import React from "react";
-import Dropdown from "react-bootstrap/Dropdown";
 import Form from "react-bootstrap/Form";
 import "./CustomDropDown.scss";
 

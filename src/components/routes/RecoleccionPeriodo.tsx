@@ -1,15 +1,11 @@
 import { ChangeEvent, useState, useEffect } from "react";
-import { Container, Col } from "react-bootstrap";
+import { Container } from "react-bootstrap";
 import CustomTitles from "../widgets/CustomTitles";
 import CustomPeriodoInfoDetail from "../widgets/CustomPeriodosWidgets/CustomPeriodoInfoDetail";
 import CustomAdd from "../widgets/CustomAdd";
 import CustomRecoleccionList from "../widgets/CustomRecoleccionWidgets/CustomRecoleccionList";
 import CustomSearch from "../widgets/CustomInputWidget/CustomSearch";
-import BarChart from "../widgets/BarChart";
 import { Recoleccion } from "../../models/Recoleccion";
-import styled from "styled-components";
-import { themes } from "../../styles/ColorStyles";
-import { H4 } from "../../styles/TextStyles";
 import { useHistory } from "react-router-dom";
 import CustomButtonPrimary from "../widgets/CustomBtnPrimaryWidget/CustomBtnPrimary";
 import CustoReleccionCostoUnitario from "../widgets/CustomRecoleccionWidgets/CustomRecoleccionCostoUnitario";
@@ -26,7 +22,7 @@ const RecoleccionPeriodo = () => {
   const [periodoData, setperiodoData] = useState<Periodo>();
   const [costo, setCosto] = useState(0);
   // let id: string;
-  const nombre = "Recolección mensual";
+  /*const nombre = "Recolección mensual";
   const labels = [
     "Enero 23",
     "Febrero 23",
@@ -37,7 +33,7 @@ const RecoleccionPeriodo = () => {
     "Julio 23",
   ];
   const dataname = "Cajuelas";
-  const dataValues = [12, 19, 3, 5, 2];
+  const dataValues = [12, 19, 3, 5, 2];*/
 
   useEffect(() => {
     if (userId != null) {
@@ -164,12 +160,5 @@ const RecoleccionPeriodo = () => {
     </Container>
   );
 };
-const Title = styled(H4)`
-  color: ${themes.dark.text1};
-  text-align: start;
-`;
-const TitleTag = styled(H4)`
-  color: ${themes.dark.cafe_medio};
-  text-align: start;
-`;
+
 export default RecoleccionPeriodo;

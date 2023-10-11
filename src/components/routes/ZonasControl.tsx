@@ -24,7 +24,6 @@ const ZonasControl = () => {
   const [showSuccessMessage, setShowSuccessMessage] = useState(false);
   const history = useHistory();
   const location = useLocation();
-  let fincaID: Number = 0;
   let zonaID: Number = 0;
 
   useEffect(() => {
@@ -46,7 +45,6 @@ const ZonasControl = () => {
     if (fincaString) {
       const id = fincaString;
       emptyZonaInput.FincaID = parseInt(id);
-      fincaID = emptyZonaInput.FincaID;
     } else if (zonaString) {
       emptyZonaInput.Id = parseInt(zonaString);
       zonaID = parseInt(zonaString);

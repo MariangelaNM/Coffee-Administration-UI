@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Row, Col, Container, Button } from "react-bootstrap";
 import styled from "styled-components";
 import { themes } from "../../../styles/ColorStyles";
-import { H3, MediumText } from "../../../styles/TextStyles";
+import { H3 } from "../../../styles/TextStyles";
 import { FiEdit } from "react-icons/fi";
 import "../Customicon.scss";
 import "./TableStyle.scss";
@@ -100,12 +100,5 @@ const TitleTag = styled(H3)`
   color: ${themes.dark.cafe_medio};
   text-align: start;
 `;
-const Description = styled(MediumText)`
-  color: ${themes.dark.text1};
-  text-align: start;
-`;
-const DescriptionTag = styled(MediumText)`
-  color: ${themes.dark.cafe_medio};
-  text-align: start;
-`;
+
 export default CustoReleccionCostoUnitario;

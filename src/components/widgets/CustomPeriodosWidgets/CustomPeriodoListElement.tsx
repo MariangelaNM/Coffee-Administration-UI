@@ -9,7 +9,7 @@ import "../CustomZonasWidgets/TableStyle.scss";
 import { Periodo } from "../../../models/Periodo";
 import { TipoRecoleccion } from "../../../models/TipoRecoleccion";
 import createApiClient from "../../../api/api-client-factory";
-import { useHistory, useLocation } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import AlertDialog from "../AlertDialog";
 interface CustomPeriodoListElementProps {
   periodo: Periodo;

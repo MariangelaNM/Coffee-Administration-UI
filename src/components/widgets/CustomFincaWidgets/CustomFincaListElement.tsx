@@ -19,7 +19,6 @@ interface CustomFincaListElementProps {
 
 const CustomFincaListElement: React.FC<CustomFincaListElementProps> = ({
   finca,
-  count,
   onClick,
 }) => {
   const [showSuccessMessageError, setShowSuccessMessageError] = useState(false);
