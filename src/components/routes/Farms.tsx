@@ -7,7 +7,7 @@ import CustomSearch from "../widgets/CustomInputWidget/CustomSearch";
 import CustomFincaList from "../widgets/CustomFincaWidgets/CustomFincaList";
 import { useHistory } from "react-router-dom";
 import CustomAdd from "../widgets/CustomAdd";
-import { useUser } from '../UserContext';
+import { useUser } from "../UserContext";
 const Farms = () => {
   const history = useHistory();
   const [searchInput, setSearchInput] = useState("");
@@ -16,25 +16,26 @@ const Farms = () => {
   useEffect(() => {
     if (userId != null) {
       callDataFinca();
-    }else{
-      history.push(
-        `/login`
-      );
+    } else {
+      history.push(`/login`);
     }
-  }, [])
+  }, []);
 
   async function callDataFinca() {
     try {
       const data = { CaficultorID: userId };
-      const response = await createApiClient().makeApiRequest("PUT", "/fincas", data);
-      if ('message' in response) {
+      const response = await createApiClient().makeApiRequest(
+        "PUT",
+        "/fincas",
+        data
+      );
+      if ("message" in response) {
         setFincasData([] as Finca[]);
-      }
-      else {
+      } else {
         setFincasData(response as Finca[]);
       }
     } catch (error) {
-      console.error('Error fetching data:', error);
+      console.error("Error fetching data:", error);
     }
   }
 
@@ -43,10 +44,7 @@ const Farms = () => {
   }
 
   async function CreateFinca() {
-    console.log("CreateFinca");
-    history.push(
-      `/Fincas/Create`
-    );
+    history.push(`/Fincas/Create`);
   }
 
   async function getDetalleFinca(id: number) {

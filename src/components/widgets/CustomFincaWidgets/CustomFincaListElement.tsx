@@ -19,7 +19,6 @@ interface CustomFincaListElementProps {
 
 const CustomFincaListElement: React.FC<CustomFincaListElementProps> = ({
   finca,
-  count,
   onClick,
 }) => {
   const [showSuccessMessageError, setShowSuccessMessageError] = useState(false);
@@ -63,7 +62,7 @@ const CustomFincaListElement: React.FC<CustomFincaListElementProps> = ({
   };
   const handleClick = (event: React.MouseEvent) => {
     event.stopPropagation();
-    onClick(finca.Id);
+    onClick(Number(finca.Id)??0);
   };
 
   return (

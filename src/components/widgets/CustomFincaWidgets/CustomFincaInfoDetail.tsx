@@ -3,7 +3,6 @@ import { Row, Col } from "react-bootstrap";
 import styled from "styled-components";
 import { themes } from "../../../styles/ColorStyles";
 import { H3, MediumText } from "../../../styles/TextStyles";
-import { FiEdit } from "react-icons/fi";
 import "../Customicon.scss";
 
 interface CustomFincaInfoDetailProps {
@@ -14,8 +13,7 @@ interface CustomFincaInfoDetailProps {
 
 const CustomFincaInfoDetail: React.FC<CustomFincaInfoDetailProps> = ({
   nombre,
-  descripcion,
-  onClick,
+  descripcion
 }) => {
   return (
     <div className="data-item">

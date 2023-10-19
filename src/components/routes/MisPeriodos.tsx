@@ -1,4 +1,4 @@
-import { ChangeEvent, useState, useEffect, useMemo } from "react";
+import { ChangeEvent, useState, useEffect } from "react";
 import { Container } from "react-bootstrap";
 import createApiClient from "../../api/api-client-factory";
 import { Zona } from "../../models/Zona";
@@ -18,11 +18,14 @@ const MisPeriodos = () => {
   const [periodoData, setperiodoData] = useState<Periodo[]>([]);
   let id: string;
   const { userId } = useUser();
-  const [fincaInput, setFincaInput] = useState("");
   useEffect(() => {
-    CallIds()
-    callDataZona();
-    callDataPeriodo();
+    if (userId != null) {
+      CallIds()
+      callDataZona();
+      callDataPeriodo();
+    } else {
+      history.push(`/login`);
+    }
   }, [])
 
   function CallIds() {
@@ -30,8 +33,6 @@ const MisPeriodos = () => {
     const fincaString = queryParams.get("zona");
     if (fincaString) {
       id = (fincaString);
-      setFincaInput((decodeURIComponent(fincaString)));
-
     }
   }
   async function callDataZona() {
@@ -46,10 +47,14 @@ const MisPeriodos = () => {
   async function callDataPeriodo() {
     try {
       const response = await createApiClient().makeApiRequest("GET", "/periodos/" + userId, null);
-      response.forEach((element) => {
-        element.zona = Number(id);
-      });
+
+      if (Array.isArray(response)) {
+        response.forEach((element) => {
+          element.zona = Number(id);
+        });
+      }
       setperiodoData(response as unknown as Periodo[]);
+
 
     } catch (error) {
       console.error('Error fetching data:', error);
@@ -70,12 +75,24 @@ const MisPeriodos = () => {
     const queryParams = new URLSearchParams(location.search);
     const zona = queryParams.get("zona");
     history.push(
-      `/MisPeriodos/Create?zona=${zona}`
+      `/Periodos/Create?zona=${zona}`
     );
   }
-  async function getDetallePeriodo() {
-    console.log("DetalleZona");
-    history.push("/MisPeriodos");
+  async function getDetallePeriodo(id: number) {
+    const queryParams = new URLSearchParams(location.search);
+    const zona = queryParams.get("zona");
+    const data = findItemById(id);
+    localStorage.setItem("Costo", String(data?.PrecioCajuela) ?? 0);
+    history.push(`/RecoleccionPeriodo?` + encodeURIComponent(`periodo=` + id + `&zona=` + zona + `&costo=` + data?.PrecioCajuela));
+
+  }
+
+  function findItemById(idToFind: number): Periodo | undefined {
+    const foundItems = periodoData.filter(item => item.Id === idToFind);
+    if (foundItems.length > 0) {
+      return foundItems[0];
+    }
+    return undefined;
   }
   return (
     <Container className="col-lg-6 col-xxl-4 my-5 mx-auto">

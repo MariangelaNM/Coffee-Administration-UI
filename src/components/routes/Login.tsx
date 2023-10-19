@@ -61,7 +61,7 @@ const Login = () => {
         setShowSuccessMessageError(true);
       } else {
         setShowSuccessMessageError(false);
-        localStorage.setItem('token', response?.token); // Guarda el userId en el local storage
+        localStorage.setItem('token', response?.token ); // Guarda el userId en el local storage
         setUserId(response?.id);
         setShowSuccessMessage(true);
         setTimeout(() => {
@@ -113,7 +113,6 @@ const Login = () => {
           <CustomButtonPrimary
             label="Ingresar"
             onClick={() => {
-              console.log("Login");
               callLoggin();
             }}
             disabled={!readyToSubmit} //status === "loading" ||

@@ -9,7 +9,7 @@ import "../CustomZonasWidgets/TableStyle.scss";
 import { Periodo } from "../../../models/Periodo";
 import { TipoRecoleccion } from "../../../models/TipoRecoleccion";
 import createApiClient from "../../../api/api-client-factory";
-import { useHistory, useLocation } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import AlertDialog from "../AlertDialog";
 interface CustomPeriodoListElementProps {
   periodo: Periodo;
@@ -35,7 +35,7 @@ const CustomPeriodoListElement: React.FC<CustomPeriodoListElementProps> = ({
 
   const handleEditClick = (event: React.MouseEvent) => {
     event.stopPropagation();
-    history.push( `/MisPeriodos/Edit?periodo=${periodo.Id}&zona=${periodo.zona}`);
+    history.push( `/Periodos/Edit?periodo=${periodo.Id}&zona=${periodo.zona}`);
     console.log("EDITAR");
   };
 
@@ -109,7 +109,17 @@ const CustomPeriodoListElement: React.FC<CustomPeriodoListElementProps> = ({
             </Button>
           </Col>
         </Col>
-    
+        <Col
+          xs={2}
+          sm={1}
+          className="d-flex align-items-center justify-content-center"
+        >
+          <div className="center-icon">
+            <Button variant="link" onClick={handleClick}>
+              <FiArrowRight className="custom-icon-big" />
+            </Button>
+          </div>
+        </Col>
       </Row>
       <AlertDialog
         open={openDialog}

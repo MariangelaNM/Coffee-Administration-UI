@@ -7,13 +7,11 @@ import "../Customicon.scss";
 
 interface CustomPeriodoInfoDetailProps {
   nombreZona: string;
-  periodo: string;
   descripcion: string;
 }
 
 const CustomPeriodoInfoDetail: React.FC<CustomPeriodoInfoDetailProps> = ({
   nombreZona,
-  periodo,
   descripcion,
 }) => {
   return (
@@ -26,16 +24,7 @@ const CustomPeriodoInfoDetail: React.FC<CustomPeriodoInfoDetailProps> = ({
               <Title className="text-selection-disable">{nombreZona}</Title>
             </div>
           </Col>
-          <Col className="d-flex mt-2">
-            <DescriptionTag className="text-selection-disable">
-              Periodo:
-            </DescriptionTag>
-            <div style={{ marginLeft: "5px" }}>
-              <Description className="text-selection-disable">
-                {periodo}
-              </Description>
-            </div>
-          </Col>
+     
           <Col className="d-flex mt-2">
             <DescriptionTag className="text-selection-disable">
               Descripcion:

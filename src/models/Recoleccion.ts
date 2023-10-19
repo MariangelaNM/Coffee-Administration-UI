@@ -4,59 +4,86 @@
  * @interface Recoleccion
  */
 export interface Recoleccion {
-    /**
-     *
-     * @type {number}
-     * @memberof Recoleccion
-     */
-    Id: number;
-    /**
-     *
-     * @type {string}
-     * @memberof Recoleccion
-     */
-     createdAt: string;
+  //recolectorname: any;
+  /**
+   *
+   * @type {number}
+   * @memberof Recoleccion
+   */
+  Id?: number;
+  /**
+   *
+   * @type {Date}
+   * @memberof Recoleccion
+   */
+  Creado?: Date;
+  /**
+   *
+   * @type {Date}
+   * @memberof Recoleccion
+   */
+  Modificado?: Date;
+  /**
+   *
+   * @type {number}
+   * @memberof Recoleccion
+   */
+  RecolectorID?: number;
    /**
-     *
-     * @type {number}
-     * @memberof Recoleccion
-     */
-    recolector: number;
+   *
+   * @type {string}
+   * @memberof Recoleccion
+   */
+   RecolectorNombre?: string;
+  /**
+   *
+   * @type {number}
+   * @memberof Recoleccion
+   */
+  ZonaID?: number;
+  /**
+   *
+   * @type {number}
+   * @memberof Recoleccion
+   */
+  PeriodoID?: number;
+
+  /**
+   *
+   * @type {number}
+   * @memberof Recoleccion
+   */
+  Cajuelas?: number;
+  /**
+   *
+   * @type {number}
+   * @memberof Recoleccion
+   */
+  Cuartillos?: number;
+  /**
+   *
+   * @type {number}
+   * @memberof Recoleccion
+   */
+  total?: number;
+  /**
+   *
+   * @type {string}
+   * @memberof Recoleccion
+   */
+  pagado?: string;
+
     /**
-     *
-     * @type {string}
-     * @memberof Recoleccion
-     */
-    recolectorname:string
-     /**
-     *
-     * @type {number}
-     * @memberof Recoleccion
-     */
-    costo: number;
-    /**
-     *
-     * @type {number}
-     * @memberof Recoleccion
-     */
-    cajuelas: number;
-    /**
-     *
-     * @type {number}
-     * @memberof Recoleccion
-     */
-    cuartillos: number;
-    /**
-     *
-     * @type {number}
-     * @memberof Recoleccion
-     */
-    total: number;
-      /**
-     *
-     * @type {string}
-     * @memberof Recoleccion
-     */
-    pagado: string;
-  }
+   *
+   * @type {number}
+   * @memberof Recoleccion
+   */
+    costo?: number;
   
+    /**
+   *
+   * @type {Boolean}
+   * @memberof Recoleccion
+   */
+    status?: Boolean;  
+}
