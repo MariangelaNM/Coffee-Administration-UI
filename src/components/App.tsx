@@ -18,6 +18,8 @@ import Recolector from "./routes/Recolector";
 import Admin from "./routes/Admin";
 import IndexPage from "./routes/IndexPage";
 import RecoleccionPeriodo from "./routes/RecoleccionPeriodo";
+import PeriodoPago from "./routes/PeriodoPago";
+import RecolectorPago from "./routes/RecolectorPago";
 
 const App: FC = () => {
   return (
@@ -67,7 +69,16 @@ const App: FC = () => {
         <Route path="/Recoleccion">
           <RecoleccionCreate />
         </Route>
+
+        <Route path="/PeriodoPago">
+          <PeriodoPago />
+        </Route>
+        <Route path="/RecolectorPago">
+          <RecolectorPago />
+        </Route>
+
         <Route path="/Recolectores/Create">
+
           <RecolectorCreate />
         </Route>
         <Route path="/Recolectores/Edit">

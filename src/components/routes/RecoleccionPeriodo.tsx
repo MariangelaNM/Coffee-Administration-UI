@@ -13,6 +13,7 @@ import { Zona } from "../../models/Zona";
 import { Periodo } from "../../models/Periodo";
 import createApiClient from "../../api/api-client-factory";
 import { useUser } from "../UserContext";
+
 const RecoleccionPeriodo = () => {
   const history = useHistory();
   const { userId } = useUser();
@@ -110,7 +111,7 @@ const RecoleccionPeriodo = () => {
         <CustomButtonPrimary
           label="Pagos pendientes"
           onClick={() => {
-            //history.push("/login");
+            history.push("/PeriodoPago");
           }}
           disabled={false}
         />
