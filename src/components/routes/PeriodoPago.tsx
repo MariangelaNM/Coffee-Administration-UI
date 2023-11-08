@@ -65,10 +65,11 @@ const PagosPendientes = () => {
   return (
     <Container className="col-lg-6 col-xxl-8 my-5 mx-auto">
       <CustomTitles txt="Pagos Pendientes" />
-      <CustomPeriodoListElement
+     {/* <CustomPeriodoListElement
         periodo={"Nombre del periodo"}
         descripcion={"Descripcion del periodo"}
-      />
+      
+  />*/}
       <Form>
         <CustomInput
           label="Buscar por nombre"

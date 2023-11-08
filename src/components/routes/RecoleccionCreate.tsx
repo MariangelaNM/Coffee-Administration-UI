@@ -32,14 +32,14 @@ const RecoleccionCreate = () => {
   const history = useHistory();
 
   useEffect(() => {
-   
+
     if (userId != null) {
       const fechaActual = new Date();
       const queryParams = new URLSearchParams(decodeURIComponent(location.search));
       const periodo = parseInt(decodeURIComponent(queryParams.get("periodo") ?? "0"), 10);
       const zona = parseInt(decodeURIComponent(queryParams.get("zona") ?? "0"), 10);
       const Id = parseInt(decodeURIComponent(queryParams.get("id") ?? "0"), 10);
-
+      callDataRecolector();
       setRecoleccion({
         ZonaID: zona,
         RecolectorID: 0,
@@ -55,15 +55,14 @@ const RecoleccionCreate = () => {
         costo: Number(localStorage.getItem("Costo")) ?? 0
       });
       recoleccion.Id = Id;
-      callDataRecolector();
       if (Id != 0) {
         callDataRecolecion();
       }
-    
+
     } else {
       history.push(`/login`);
     }
-  
+
   }, []);
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
@@ -125,14 +124,14 @@ const RecoleccionCreate = () => {
         setRecoleccion(response as Recoleccion);
       } else {
         setRecoleccion(response[0] as Recoleccion);
-        callDataRecolector();
+       
       }
     } catch (error) {
       console.error("Error fetching data:", error);
     }
   }
   async function callDataRecolector() {
-      
+
     try {
       const response = await createApiClient().makeApiRequest(
         "GET",
@@ -189,6 +188,13 @@ const RecoleccionCreate = () => {
     const zona = parseInt(decodeURIComponent(queryParams.get("zona") ?? "0"), 10);
     history.push(`/RecoleccionPeriodo?` + encodeURIComponent(`periodo=` + periodo + `&zona=` + zona + `&costo=` + Number(localStorage.getItem("Costo")) ?? 0));
   };
+  const renderRecolectorOptions = () => {
+    return recolectoresData.map((option) => (
+      <option key={option.Id} value={option.Id}>
+        {option.Nombre}
+      </option>
+    ));
+  };
   return (
     <Container className="col-lg-6 col-xxl-4 my-5 mx-auto">
       <Title>{recoleccion.Id == 0 && "Nuevo Registro"}{recoleccion.Id != 0 && "Modificar Registro"}</Title>
@@ -201,12 +207,8 @@ const RecoleccionCreate = () => {
           onChange={(e) => handleSelect(Number(e.target.value))}
           required
         >
-          <option value="">Selecciona un recolector</option> {/* Opción predeterminada */}
-          {recolectoresData.map((option) => (
-            <option key={option.Id} value={option.Id}>
-              {option.Nombre}
-            </option>
-          ))}
+          <option value="">Selecciona un recolector</option>
+          {renderRecolectorOptions()} {/* Renderizamos las opciones aquí */}
         </select>
 
 
