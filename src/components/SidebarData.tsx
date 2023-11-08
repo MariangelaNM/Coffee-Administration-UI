@@ -36,16 +36,7 @@ export const SidebarData: SidebarItem[] = [
         path: '/Recolectores',
         icon: null
     },
-    {
-        title: 'Resumen de Recolector',
-        path: '/Resumen Recolectores',
-        icon: null
-    },
-    {
-        title: 'Resumen Fincas',
-        path: '/Resumen Fincas',
-        icon: null
-    },
+ 
     {
         title: 'Salir',
         path: '/Login',
