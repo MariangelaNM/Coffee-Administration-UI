@@ -24,6 +24,7 @@ const Recolectores = () => {
   }, [])
 
   async function callDataRecolector() {
+
     try {
       const response = await createApiClient().makeApiRequest("GET", `/recolectores/${userId}/caficultor`, null);
       if ('message' in response) {
@@ -48,7 +49,6 @@ const Recolectores = () => {
   }
 
   async function EditColector(id: number) {
-    console.log("EditColector");
     history.push(`/Recolectores/Edit?recolector=` + id);
   }
   return (
