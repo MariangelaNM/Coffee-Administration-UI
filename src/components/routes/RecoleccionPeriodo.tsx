@@ -102,7 +102,7 @@ const RecoleccionPeriodo = () => {
     <Container className="col-lg-6 col-xxl-8 my-5 mx-auto">
       <CustomPeriodoInfoDetail
         nombreZona={zonaInput?.Nombre ?? ""}
-        descripcion={(new Date(periodoData?.Desde).toLocaleDateString()) + " al " + (new Date(periodoData?.Hasta).toLocaleDateString())}
+        descripcion={(new Date((periodoData as any)?.Desde).toLocaleDateString()) + " al " + (new Date((periodoData as any)?.Hasta).toLocaleDateString())}
       />
       <div className="mt-2">
         <CustoReleccionCostoUnitario costounitario={costo} Id={1} />

@@ -8,7 +8,7 @@ import "../Customicon.scss";
 import "./TableStyle.scss";
 import AlertDialog from "../AlertDialog";
 import AlertDialogCostoUnitario from "./AlertDialogCostoUnitario";
-import { useHistory } from "react-router-dom";
+//import { useHistory } from "react-router-dom";
 
 interface CustoReleccionCostoUnitarioProps {
   costounitario: number;
@@ -17,10 +17,10 @@ interface CustoReleccionCostoUnitarioProps {
 
 const CustoReleccionCostoUnitario: React.FC<
   CustoReleccionCostoUnitarioProps
-> = ({ costounitario, Id }) => {
-  const history = useHistory();
+> = ({ costounitario}) => {
+ // const history = useHistory();
   const [openDialog, setOpenDialog] = useState(false);
-  const [texto, setTexto] = useState("");
+ // const [texto, setTexto] = useState("");
   const [openEdicion, setOpenEdicion] = useState(false);
 
   const handleCloseDialog = () => {
@@ -77,7 +77,7 @@ const CustoReleccionCostoUnitario: React.FC<
       </Row>
       <AlertDialog
         open={openDialog}
-        texto={texto}
+        texto={""}
         handleClose={handleCloseDialog}
         handleDisagree={handleDisagree}
         handleAgree={handleAgree}

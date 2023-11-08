@@ -16,7 +16,7 @@ interface CustomRecoleccionListProps {
   recoleccionList: Recoleccion[];
 }
 const CustomRecoleccionList: React.FC<CustomRecoleccionListProps> = ({
-  filterTxt,
+
   recoleccionList,
 }) => {
   const { userId } = useUser();
@@ -126,32 +126,8 @@ const CustomRecoleccionList: React.FC<CustomRecoleccionListProps> = ({
     console.log("Borrar recoleccion" + id);
   };
 
-  const FilterByAccessor = (label: string) => {
-    let newRecoleccionList = recoleccionList.filter((c) => c.RecolectorNombre.toLowerCase().includes(filterTxt.toLowerCase()));
-    newRecoleccionList = sortByProperty(newRecoleccionList, label);
-    currentList = (newRecoleccionList);
-  };
+ 
 
-  function sortByProperty<Recoleccion>(arr: Recoleccion[], propName: keyof Recoleccion, ascending = true): Recoleccion[] {
-    return arr.sort((a, b) => {
-      const valueA = a[propName];
-      const valueB = b[propName];
-
-      if (typeof valueA === "string" || typeof valueB === "string") {
-        if (ascending) {
-          return String(valueA).localeCompare(String(valueB));
-        } else {
-          return String(valueB).localeCompare(String(valueA));
-        }
-      } else if (typeof valueA === "number" || typeof valueB === "number") {
-        return ascending ? Number(valueA) - Number(valueB) : Number(valueB) - Number(valueA);
-      } else if (valueA instanceof Date || valueB instanceof Date) {
-        return ascending ? (valueA as Date).getTime() - (valueB as Date).getTime() : (valueB as Date).getTime() - (valueA as Date).getTime();
-      } else {
-        throw new Error("Unsupported data type for sorting");
-      }
-    });
-  }
 
   if (!recoleccionList.length) {
     return (
@@ -160,6 +136,10 @@ const CustomRecoleccionList: React.FC<CustomRecoleccionListProps> = ({
       </div>
     );
   } else {
+    function FilterByAccessor(accessor: string): void {
+      throw new Error("Function not implemented."+accessor);
+    }
+
     return (
       <div className="horizontal-scroll-container">
 

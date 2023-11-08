@@ -29,7 +29,7 @@ export function useCreate<T, ResponseType>(
         if (err instanceof Error) {
           setError(err);
         } else {
-          setError(new Error(err.description));
+          setError(new Error((err as any).description));
         }
         setStatus(undefined);
       }

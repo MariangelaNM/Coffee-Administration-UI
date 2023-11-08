@@ -1,10 +1,9 @@
-import React, { ChangeEvent, useState, useEffect } from "react";
+import  { ChangeEvent, useState, useEffect } from "react";
 import { Container, Form } from "react-bootstrap";
 import CustomTitles from "../widgets/CustomTitles";
 import CustomInput from "../widgets/CustomInputWidget/CustomInput";
-import CustomPeriodoListElement from "../widgets/CustomPeriodosWidgets/CustomPeriodoListElement";
 import CustomPagoList from "../widgets/CustomPagosWidget/CustomPagoList"; // Nuevo widget de pagos
-import { useHistory } from 'react-router-dom';
+//import { useHistory } from 'react-router-dom';
 import { Pago } from "../../models/Pago"; // Nuevo modelo de pago
 
 
@@ -37,7 +36,7 @@ const PagoList: Pago[] = [
 const PagosPendientes = () => {
   const [searchInput, setSearchInput] = useState<string>("");
   const [filteredPagos, setFilteredPagos] = useState<Pago[]>([]); // Estado para los pagos filtrados
-  const history = useHistory();
+  //const history = useHistory();
 
   useEffect(() => {
     // Puedes agregar aquí cualquier efecto secundario que desees realizar al cargar el componente.
@@ -58,9 +57,7 @@ const PagosPendientes = () => {
     setFilteredPagos(filtered);
   }
 
-  function onViewDetailsClick(recolector: number) {
-    history.push(`/RecolectorPago/${recolector}`);
-  }  
+ 
 
   return (
     <Container className="col-lg-6 col-xxl-8 my-5 mx-auto">
@@ -81,7 +78,7 @@ const PagosPendientes = () => {
           onInvalidText={""}
         />
       </Form>
-      <CustomPagoList pagos={filteredPagos} onClick={onViewDetailsClick} />
+      <CustomPagoList pagos={filteredPagos} /*onClick={onViewDetailsClick} *//>
     </Container>
   );
 };

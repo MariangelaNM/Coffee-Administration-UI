@@ -4,7 +4,8 @@ import { FiCheckCircle, FiXCircle } from "react-icons/fi";
 import styled from "styled-components";
 import { themes } from "../../../styles/ColorStyles";
 import { SmallText } from "../../../styles/TextStyles";
-import { Pago } from "../../models/Pago";
+import { Pago } from "../../../models/Pago";
+//import { Pago } from "../../models/Pa";
 
 interface CustomPagoListProps {
   pagos: Pago[];

@@ -1,5 +1,3 @@
-import { Periodo } from "./Periodo";
-import { Zona } from "./Zona";
 
 /**
  * @export
