@@ -70,6 +70,7 @@ const PagosPendientes = () => {
         descripcion={"Descripcion del periodo"}
       
   />*/}
+
       <Form>
         <CustomInput
           label="Buscar por nombre"
