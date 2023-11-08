@@ -62,6 +62,7 @@ const Login = () => {
       } else {
         setShowSuccessMessageError(false);
         localStorage.setItem('token', response?.token ); // Guarda el userId en el local storage
+        localStorage.setItem('nombre', response?.nombre ); // Guarda el nombre en el local storage
         setUserId(response?.id);
         setShowSuccessMessage(true);
         setTimeout(() => {
